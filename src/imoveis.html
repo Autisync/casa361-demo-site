@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Imóveis à venda e para arrendar · Casa 361</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="imoveis">
+<a class="skip" href="#main">Saltar para o conteúdo</a>
+<header id="top"></header>
+
+<main id="main">
+  <section class="page-head" style="padding-block:48px 40px">
+    <div class="wrap"><p class="kicker">Imóveis</p><h1>Encontre a sua casa</h1></div>
+  </section>
+  <section class="sec" style="padding-top:32px">
+    <div class="wrap">
+      <div class="filters" role="group" aria-label="Filtrar imóveis">
+        <select id="f-deal" aria-label="Negócio"><option value="venda">Comprar</option><option value="arrendamento">Arrendar</option></select>
+        <select id="f-type" aria-label="Tipo"><option value="">Qualquer tipo</option><option>Apartamento</option><option>Moradia</option><option>Terreno</option></select>
+        <select id="f-zona" aria-label="Zona"><option value="">Todas as zonas</option></select>
+        <select id="f-max" aria-label="Preço máximo"><option value="">Qualquer preço</option><option value="150000">Até 150 000 €</option><option value="250000">Até 250 000 €</option><option value="350000">Até 350 000 €</option><option value="500000">Até 500 000 €</option></select>
+        <select id="f-sort" aria-label="Ordenar"><option value="new">Mais recentes</option><option value="asc">Preço: mais baixo</option><option value="desc">Preço: mais alto</option></select>
+        <span class="count" id="count" aria-live="polite"></span>
+      </div>
+      <div class="mq" style="margin-bottom:24px"><b>Ligação ao Casafari</b>A lista completa vem do Casafari CRM. Um imóvel novo publicado no Casafari aparece aqui sozinho; um imóvel vendido ou retirado sai sozinho.</div>
+      <div class="grid" id="list"></div>
+    </div>
+  </section>
+</main>
+
+<footer id="foot"></footer>
+<script src="listings.js"></script>
+<script src="chrome.js"></script>
+<script>
+  (function () {
+    var q = new URLSearchParams(location.search), $ = function (id) { return document.getElementById(id); };
+    var zonas = Array.from(new Set(CASA361_LISTINGS.map(function (l) { return l.area_name; }))).sort();
+    $('f-zona').innerHTML += zonas.map(function (z) { return '<option>' + C361.esc(z) + '</option>'; }).join('');
+    $('f-deal').value = q.get('deal') === 'arrendamento' ? 'arrendamento' : 'venda';
+    if (q.get('tipo')) $('f-type').value = q.get('tipo');
+    if (q.get('zona')) $('f-zona').value = q.get('zona');
+    if (q.get('max')) $('f-max').value = q.get('max');
+    function render() {
+      var d = $('f-deal').value, t = $('f-type').value, z = $('f-zona').value, m = +$('f-max').value || Infinity, s = $('f-sort').value;
+      var rows = CASA361_LISTINGS.filter(function (l) { return l.deal === d && (!t || l.type === t) && (!z || l.area_name === z) && (!l.price || l.price <= m); });
+      if (s === 'asc') rows.sort(function (a, b) { return a.price - b.price; });
+      if (s === 'desc') rows.sort(function (a, b) { return b.price - a.price; });
+      $('count').textContent = rows.length === 1 ? '1 imóvel' : rows.length + ' imóveis';
+      $('list').innerHTML = rows.length ? rows.map(C361.card).join('') :
+        '<p class="empty" style="grid-column:1/-1">Não temos imóveis com estes filtros neste momento. <a href="index.html#contactos">Diga-nos o que procura</a> e avisamos quando entrar um.</p>';
+    }
+    ['f-deal', 'f-type', 'f-zona', 'f-max', 'f-sort'].forEach(function (id) { $(id).addEventListener('change', render); });
+    render();
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Imóvel · Casa 361</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="imoveis">
+<a class="skip" href="#main">Saltar para o conteúdo</a>
+<header id="top"></header>
+
+<main id="main" class="wrap">
+  <p class="crumbs"><a href="index.html">Início</a> / <a href="imoveis.html">Imóveis</a> / <span id="crumb"></span></p>
+  <div class="gallery" id="gallery"></div>
+
+  <div class="prop">
+    <div>
+      <p class="kicker" id="kicker"></p>
+      <h1 id="title"></h1>
+      <p class="where" id="where"></p>
+      <div class="facts" id="facts"></div>
+
+      <div class="mq"><b>Ligação ao Casafari</b>Tudo nesta página (título, preço, fotografias, descrição, características, certificado energético) vem da ficha do imóvel no Casafari CRM. Altera no Casafari e a página muda sozinha.</div>
+
+      <section class="block" id="desc-block"><h2>Sobre este imóvel</h2><div id="desc"></div></section>
+      <section class="block" id="rooms-block"><h2>Divisões</h2><table class="rooms"><tbody id="rooms"></tbody></table></section>
+      <section class="block" id="feat-block"><h2>Características</h2><ul class="feats" id="feats"></ul></section>
+      <section class="block" id="plans-block" hidden><h2>Plantas</h2><div class="grid" id="plans" style="grid-template-columns:repeat(2,minmax(0,1fr))"></div></section>
+      <section class="block"><h2>Localização</h2>
+        <div class="mapbox"><div><strong id="loc-name"></strong><br><span style="color:var(--muted);font-size:14px" id="loc-sub"></span></div>
+          <a class="btn btn-line" id="map-link" target="_blank" rel="noopener">Ver no mapa</a></div>
+      </section>
+      <section class="block"><h2>Imóveis semelhantes</h2><div class="grid" id="similar" style="grid-template-columns:repeat(2,minmax(0,1fr))"></div></section>
+    </div>
+
+    <aside class="side" aria-label="Marcar visita">
+      <div class="panel">
+        <p class="price" id="price"></p>
+        <p class="ref" id="ref"></p>
+        <div class="actions" style="margin-top:18px">
+          <a class="btn btn-wa" id="wa" target="_blank" rel="noopener">WhatsApp</a>
+          <a class="btn btn-line" href="tel:+351913613005">Ligar</a>
+        </div>
+      </div>
+      <div class="panel">
+        <h2 style="font-size:28px;margin-bottom:14px">Marcar visita</h2>
+        <form class="form" novalidate>
+          <div class="hide-sent" style="display:grid;gap:14px">
+            <label>Nome<input name="name" required autocomplete="name"></label>
+            <div class="row"><label>Telefone<input name="phone" type="tel" required autocomplete="tel"></label><label>Email<input name="email" type="email" required autocomplete="email"></label></div>
+            <div class="row"><label>Dia preferido<select name="day"><option>Dias úteis</option><option>Sábado</option><option>Qualquer dia</option></select></label>
+              <label>Hora<select name="time"><option>Manhã</option><option>Hora de almoço</option><option>Tarde</option><option>Fim do dia</option></select></label></div>
+            <label>Mensagem (opcional)<textarea name="message" id="msg"></textarea></label>
+            <label class="check"><input type="checkbox" required> Autorizo a Casa 361 a usar estes dados para marcar a visita, de acordo com a Política de Privacidade.</label>
+            <button class="btn btn-ink" type="submit">Pedir visita</button>
+          </div>
+          <p class="ok" role="status">Pedido de visita recebido. Ligamos-lhe para combinar o dia e a hora.</p>
+        </form>
+      </div>
+      <div class="mq"><b>Para onde vai este pedido</b>Entra no Casafari CRM como pedido de visita, já com a referência do imóvel (<span class="mq-ref"></span>), origem "Website", e fica ligado ao imóvel certo. É no Casafari que o vê e responde, como hoje.</div>
+    </aside>
+  </div>
+</main>
+
+<div class="lightbox" id="lb" hidden role="dialog" aria-modal="true" aria-label="Fotografias">
+  <button type="button" class="prev" aria-label="Anterior">‹</button><img alt=""><button type="button" class="next" aria-label="Seguinte">›</button>
+  <button type="button" class="x" aria-label="Fechar">×</button><p class="count"></p>
+</div>
+
+<footer id="foot"></footer>
+<script src="listings.js"></script>
+<script>
+  (function () {
+    var q = new URLSearchParams(location.search);
+    var ref = q.get('ref') || (location.pathname.match(/imovel\/(\w+)/) || [])[1] || '0076';
+    var l = C361.find(ref) || C361.find('0076'), e = C361.esc, $ = function (id) { return document.getElementById(id); };
+    document.title = l.typology + ' em ' + l.area_name + ' · ' + C361.price(l) + ' · Casa 361';
+    $('crumb').textContent = 'Ref. ' + l.ref;
+    $('kicker').textContent = (l.deal === 'venda' ? 'Venda' : 'Arrendamento') + ' · ' + l.type + ' ' + l.typology + (l.isNew ? ' · Construção nova' : '');
+    $('title').textContent = l.title;
+    $('where').textContent = l.parish + ', ' + l.county + ' · ' + l.district;
+    $('price').textContent = C361.price(l);
+    $('ref').textContent = 'Referência ' + l.ref;
+    Array.prototype.forEach.call(document.querySelectorAll('.mq-ref'), function (s) { s.textContent = 'ref. ' + l.ref; });
+    $('msg').placeholder = 'Gostava de visitar o ' + l.typology + ' (ref. ' + l.ref + ').';
+    $('wa').href = 'https://wa.me/351913613005?text=' + encodeURIComponent('Olá! Tenho interesse no imóvel ref. ' + l.ref + ' (' + l.typology + ', ' + l.area_name + ').');
+
+    var facts = [];
+    if (l.beds) facts.push([l.beds, 'Quartos']);
+    if (l.baths) facts.push([l.baths, 'Casas de banho']);
+    if (l.area) facts.push([C361.area(l.area), l.type === 'Terreno' ? 'Área do terreno' : 'Área bruta']);
+    if (l.garage) facts.push([l.garage, 'Lugares de garagem']);
+    else if (l.energy) facts.push([l.energy, 'Certificado energético']);
+    $('facts').innerHTML = facts.map(function (f) { return '<div><strong>' + e(f[0]) + '</strong><span>' + e(f[1]) + '</span></div>'; }).join('');
+    $('facts').style.gridTemplateColumns = 'repeat(' + Math.min(4, facts.length) + ', minmax(0, 1fr))';
+
+    var photos = l.photos;
+    $('gallery').innerHTML = photos.slice(0, 5).map(function (src, i) {
+      return '<button type="button" data-i="' + i + '" aria-label="Ver fotografia ' + (i + 1) + ' de ' + photos.length + '"><img src="' + e(src) + '" alt="" ' + (i ? 'loading="lazy"' : '') + '>' +
+        (i === Math.min(4, photos.length - 1) && photos.length > 1 ? '<span class="more">Ver as ' + photos.length + ' fotografias</span>' : '') + '</button>';
+    }).join('');
+    if (photos.length < 3) { $('gallery').style.gridTemplateColumns = '1fr ' + (photos.length > 1 ? '1fr' : ''); $('gallery').style.gridTemplateRows = '1fr'; }
+
+    $('desc').innerHTML = (l.description || [l.summary || l.title + '. Contacte-nos para saber mais e marcar uma visita.']).map(function (p) { return '<p>' + e(p) + '</p>'; }).join('');
+    if (l.rooms) $('rooms').innerHTML = l.rooms.map(function (r) { return '<tr><td>' + e(r[0]) + '</td><td>' + e(r[1]) + '</td></tr>'; }).join(''); else $('rooms-block').hidden = true;
+    if (l.features) {
+      $('feats').innerHTML = l.features.map(function (f) { return '<li>' + e(f) + '</li>'; }).join('') +
+        (l.energy ? '<li class="energy" style="padding-left:0">Certificado energético <b>' + e(l.energy) + '</b></li>' : '') + (l.year ? '<li>Ano de construção: ' + l.year + '</li>' : '');
+    } else $('feat-block').hidden = true;
+    if (l.plans) { $('plans-block').hidden = false; $('plans').innerHTML = l.plans.map(function (src, i) { return '<img src="' + e(src) + '" alt="Planta ' + (i + 1) + '" loading="lazy" style="border:1px solid var(--line);border-radius:6px;background:#fff">'; }).join(''); }
+    $('loc-name').textContent = l.area_name;
+    $('loc-sub').textContent = l.parish + ', ' + l.county;
+    $('map-link').href = 'https://www.openstreetmap.org/search?query=' + encodeURIComponent(l.area_name + ', ' + l.county + ', Portugal');
+    $('similar').innerHTML = CASA361_LISTINGS.filter(function (x) { return x.ref !== l.ref && x.type === l.type; }).slice(0, 2).map(C361.card).join('');
+
+    // Fotografias em ecrã inteiro
+    var lb = $('lb'), img = lb.querySelector('img'), cur = 0, last = null;
+    function show(i) { cur = (i + photos.length) % photos.length; img.src = photos[cur]; img.alt = 'Fotografia ' + (cur + 1); lb.querySelector('.count').textContent = (cur + 1) + ' / ' + photos.length; }
+    function open(i) { last = document.activeElement; show(i); lb.hidden = false; lb.querySelector('.x').focus(); }
+    function close() { lb.hidden = true; if (last) last.focus(); }
+    $('gallery').addEventListener('click', function (ev) { var b = ev.target.closest('button'); if (b) open(+b.dataset.i); });
+    lb.querySelector('.prev').onclick = function () { show(cur - 1); };
+    lb.querySelector('.next').onclick = function () { show(cur + 1); };
+    lb.querySelector('.x').onclick = close;
+    document.addEventListener('keydown', function (ev) { if (lb.hidden) return; if (ev.key === 'Escape') close(); if (ev.key === 'ArrowLeft') show(cur - 1); if (ev.key === 'ArrowRight') show(cur + 1); });
+  })();
+</script>
+<script src="chrome.js"></script>
+</body>
+</html>
