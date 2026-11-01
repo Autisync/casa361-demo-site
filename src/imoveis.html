@@ -6,7 +6,8 @@
 <title>Imóveis à venda e para arrendar · Casa 361</title>
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Manrope:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body data-page="imoveis">
@@ -14,8 +15,8 @@
 <header id="top"></header>
 
 <main id="main">
-  <section class="page-head" style="padding-block:48px 40px">
-    <div class="wrap"><p class="kicker">Imóveis</p><h1>Encontre a sua casa</h1></div>
+  <section class="page-head" style="padding-block:56px 48px">
+    <div class="wrap"><p class="kicker">Imóveis</p><h1 id="h1">Encontre a sua casa</h1></div>
   </section>
   <section class="sec" style="padding-top:32px">
     <div class="wrap">
@@ -25,36 +26,77 @@
         <select id="f-zona" aria-label="Zona"><option value="">Todas as zonas</option></select>
         <select id="f-max" aria-label="Preço máximo"><option value="">Qualquer preço</option><option value="150000">Até 150 000 €</option><option value="250000">Até 250 000 €</option><option value="350000">Até 350 000 €</option><option value="500000">Até 500 000 €</option></select>
         <select id="f-sort" aria-label="Ordenar"><option value="new">Mais recentes</option><option value="asc">Preço: mais baixo</option><option value="desc">Preço: mais alto</option></select>
+        <label style="display:inline-flex;gap:8px;align-items:center;font-size:14px;font-weight:600"><input type="checkbox" id="f-fav"> Só guardados</label>
+        <span class="view" role="group" aria-label="Vista"><button type="button" id="v-map" aria-pressed="true">Lista e mapa</button><button type="button" id="v-list" aria-pressed="false">Só lista</button></span>
         <span class="count" id="count" aria-live="polite"></span>
       </div>
-      <div class="mq" style="margin-bottom:24px"><b>Ligação ao Casafari</b>A lista completa vem do Casafari CRM. Um imóvel novo publicado no Casafari aparece aqui sozinho; um imóvel vendido ou retirado sai sozinho.</div>
-      <div class="grid" id="list"></div>
+      <div class="mq" style="margin-bottom:24px"><b>Ligação ao Casafari</b>A lista completa vem do Casafari CRM. Um imóvel novo publicado no Casafari aparece aqui sozinho; um imóvel vendido ou retirado sai sozinho. No mapa, cada imóvel aparece pela localização da ficha no Casafari (na maquete, o centro da freguesia).</div>
+      <div class="list-wrap with-map" id="wrap"><div class="grid" id="list"></div><div id="map" role="region" aria-label="Mapa dos imóveis"></div></div>
     </div>
   </section>
 </main>
 
 <footer id="foot"></footer>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="listings.js"></script>
 <script src="chrome.js"></script>
 <script>
   (function () {
-    var q = new URLSearchParams(location.search), $ = function (id) { return document.getElementById(id); };
+    var q = new URLSearchParams(location.search), $ = function (id) { return document.getElementById(id); }, e = C361.esc;
     var zonas = Array.from(new Set(CASA361_LISTINGS.map(function (l) { return l.area_name; }))).sort();
-    $('f-zona').innerHTML += zonas.map(function (z) { return '<option>' + C361.esc(z) + '</option>'; }).join('');
+    $('f-zona').innerHTML += zonas.map(function (z) { return '<option>' + e(z) + '</option>'; }).join('');
     $('f-deal').value = q.get('deal') === 'arrendamento' ? 'arrendamento' : 'venda';
     if (q.get('tipo')) $('f-type').value = q.get('tipo');
     if (q.get('zona')) $('f-zona').value = q.get('zona');
     if (q.get('max')) $('f-max').value = q.get('max');
+    if (q.get('guardados')) { $('f-fav').checked = true; $('h1').textContent = 'Os seus imóveis guardados'; }
+
+    // Mapa (OpenStreetMap, com o estilo claro da CARTO).
+    var map = null, layer = null, pins = {};
+    if (window.L) {
+      map = L.map('map', { scrollWheelZoom: false, zoomControl: true }).setView([38.9, -9.05], 10);
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { maxZoom: 18, attribution: '© OpenStreetMap · © CARTO' }).addTo(map);
+      layer = L.layerGroup().addTo(map);
+    } else { $('wrap').classList.remove('with-map'); $('map').hidden = true; }
+
+    function short(l) { return l.price ? (l.price >= 1e6 ? (l.price / 1e6).toFixed(1).replace('.', ',') + ' M€' : Math.round(l.price / 1000) + ' mil €') : 'Consulta'; }
     function render() {
-      var d = $('f-deal').value, t = $('f-type').value, z = $('f-zona').value, m = +$('f-max').value || Infinity, s = $('f-sort').value;
-      var rows = CASA361_LISTINGS.filter(function (l) { return l.deal === d && (!t || l.type === t) && (!z || l.area_name === z) && (!l.price || l.price <= m); });
+      var d = $('f-deal').value, t = $('f-type').value, z = $('f-zona').value, m = +$('f-max').value || Infinity, s = $('f-sort').value, onlyFav = $('f-fav').checked, fav = C361.favs();
+      var rows = CASA361_LISTINGS.filter(function (l) { return (onlyFav || l.deal === d) && (!t || l.type === t) && (!z || l.area_name === z) && (!l.price || l.price <= m) && (!onlyFav || fav.indexOf(l.ref) >= 0); });
       if (s === 'asc') rows.sort(function (a, b) { return a.price - b.price; });
       if (s === 'desc') rows.sort(function (a, b) { return b.price - a.price; });
       $('count').textContent = rows.length === 1 ? '1 imóvel' : rows.length + ' imóveis';
       $('list').innerHTML = rows.length ? rows.map(C361.card).join('') :
-        '<p class="empty" style="grid-column:1/-1">Não temos imóveis com estes filtros neste momento. <a href="index.html#contactos">Diga-nos o que procura</a> e avisamos quando entrar um.</p>';
+        '<p class="empty" style="grid-column:1/-1">' + (onlyFav ? 'Ainda não guardou nenhum imóvel. Toque no coração de um imóvel para o guardar aqui.' : 'Não temos imóveis com estes filtros neste momento. <a href="index.html#contactos">Diga-nos o que procura</a> e avisamos quando entrar um.') + '</p>';
+      window.C361Reveal($('list'));
+      if (map) {
+        layer.clearLayers(); pins = {};
+        var seen = {}, pts = [];
+        rows.forEach(function (l) {
+          if (!l.lat) return;
+          var k = l.lat + ',' + l.lng, n = seen[k] = (seen[k] || 0) + 1, off = (n - 1) * 0.006;
+          var ll = [l.lat + off * Math.cos(n * 2.1), l.lng + off * Math.sin(n * 2.1)]; pts.push(ll);
+          var mk = L.marker(ll, { icon: L.divIcon({ className: '', html: '<span class="pin" data-pin="' + e(l.ref) + '">' + short(l) + '</span>', iconSize: [0, 0] }) })
+            .bindPopup('<a class="pop-card" href="imovel.html?ref=' + e(l.ref) + '"><img src="' + e(l.photos[0]) + '" alt=""><div><b>' + C361.price(l) + '</b>' + e(l.typology + ' · ' + l.area_name) + '</div></a>');
+          mk.addTo(layer); pins[l.ref] = mk;
+        });
+        if (pts.length) map.fitBounds(pts, { padding: [40, 40], maxZoom: 13 });
+      }
     }
-    ['f-deal', 'f-type', 'f-zona', 'f-max', 'f-sort'].forEach(function (id) { $(id).addEventListener('change', render); });
+    // Passar o rato num cartão acende o imóvel no mapa.
+    $('list').addEventListener('mouseover', function (ev) {
+      var c = ev.target.closest('.card'); document.querySelectorAll('.pin.on').forEach(function (p) { p.classList.remove('on'); });
+      if (!c) return; var ref = (c.querySelector('[data-fav]') || {}).getAttribute && c.querySelector('[data-fav]').getAttribute('data-fav');
+      var p = ref && document.querySelector('.pin[data-pin="' + ref + '"]'); if (p) p.classList.add('on');
+    });
+    function view(withMap) {
+      $('v-map').setAttribute('aria-pressed', String(withMap)); $('v-list').setAttribute('aria-pressed', String(!withMap));
+      $('wrap').classList.toggle('with-map', withMap && !!map); $('map').hidden = !withMap || !map;
+      if (map && withMap) setTimeout(function () { map.invalidateSize(); render(); }, 50);
+    }
+    $('v-map').onclick = function () { view(true); }; $('v-list').onclick = function () { view(false); };
+    ['f-deal', 'f-type', 'f-zona', 'f-max', 'f-sort', 'f-fav'].forEach(function (id) { $(id).addEventListener('change', render); });
+    document.addEventListener('c361:favs', function () { if ($('f-fav').checked) render(); });
     render();
   })();
 </script>

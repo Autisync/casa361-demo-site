@@ -7,10 +7,10 @@
 <meta name="description" content="Casa 361: comprar, vender e arrendar casa em Vila Franca de Xira, Alverca, Póvoa de Santa Iria e Alhandra. Avaliação gratuita do seu imóvel. AMI 24691.">
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Manrope:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="styles.css">
 </head>
-<body data-page="inicio">
+<body data-page="inicio" data-hero>
 <a class="skip" href="#main">Saltar para o conteúdo</a>
 <header id="top"></header>
 
@@ -20,17 +20,21 @@
     <div class="wrap">
       <div>
         <p class="kicker">Imobiliária · Zona norte de Lisboa</p>
-        <h1>A sua próxima casa, entre Lisboa e o Tejo.</h1>
+        <h1><span class="ln"><span>A sua próxima casa,</span></span><span class="ln"><span>entre Lisboa</span></span><span class="ln"><span>e o Tejo.</span></span></h1>
         <p class="lead">Compramos, vendemos e arrendamos casas em Vila Franca de Xira, Alverca, Póvoa de Santa Iria e Alhandra. Acompanhamos cada passo, da primeira visita à escritura.</p>
-        <p style="display:flex;gap:10px;flex-wrap:wrap;margin-top:26px">
-          <a class="btn btn-gold" href="imoveis.html">Ver imóveis à venda</a>
+        <p class="cta-row" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:30px">
+          <a class="btn btn-gold" href="imoveis.html">Ver imóveis à venda <span class="arr" aria-hidden="true">→</span></a>
           <a class="btn btn-line" href="vender.html" style="color:#fff">Quanto vale a minha casa?</a>
         </p>
+        <div class="meta"><div><strong>Avaliação gratuita</strong>para quem quer vender</div><div><strong>Proposta em 48 h</strong>na venda rápida</div><div><strong>AMI 24691</strong>mediação licenciada</div></div>
       </div>
       <div class="ring" aria-hidden="true">
-        <svg viewBox="0 0 300 300"><circle cx="150" cy="150" r="128" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="1"/>
-          <circle cx="150" cy="150" r="128" fill="none" stroke="#b9925a" stroke-width="1.5" stroke-dasharray="804.25" stroke-dashoffset="0" transform="rotate(-90 150 150)"/>
-          <line x1="150" y1="14" x2="150" y2="34" stroke="#b9925a" stroke-width="1.5"/><circle cx="152.2" cy="22" r="4" fill="#b9925a"/></svg>
+        <svg viewBox="0 0 300 300">
+          <g class="orbit"><circle cx="150" cy="150" r="142" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="1" stroke-dasharray="2 9"/></g>
+          <circle cx="150" cy="150" r="128" fill="none" stroke="rgba(255,255,255,.16)" stroke-width="1"/>
+          <circle class="draw" cx="150" cy="150" r="128" fill="none" stroke="#b9925a" stroke-width="1.6" transform="rotate(-90 150 150)"/>
+          <circle class="dot" cx="152.2" cy="22" r="4.5" fill="#b9925a"/>
+        </svg>
         <div class="deg"><div><strong>361°</strong><span>Mais do que imóveis,<br>soluções.</span></div></div>
       </div>
     </div>
@@ -52,68 +56,86 @@
     </form>
   </div>
 
-  <section class="sec" style="padding-top:8px">
-    <div class="wrap">
-      <div class="sec-head">
-        <div><p class="kicker">Em destaque</p><h2>Imóveis à venda</h2><p>Alguns dos imóveis que temos à venda neste momento.</p></div>
-        <a class="btn btn-line" href="imoveis.html">Ver todos os imóveis</a>
-      </div>
-      <div class="mq" style="margin-bottom:24px"><b>Ligação ao Casafari</b>Estes imóveis vêm do Casafari CRM, sozinhos. Continua a inserir e a gerir os imóveis só no Casafari: preço novo, fotografias, reservado ou vendido aparecem aqui no máximo 20 minutos depois, sem trabalho duplicado.</div>
-      <div class="grid" id="featured"></div>
-    </div>
+  <section class="sec" style="padding-top:24px">
+    <div class="wrap spot" id="spot"></div>
   </section>
 
   <section class="sec stone">
     <div class="wrap">
-      <div class="sec-head"><div><p class="kicker">Vender</p><h2>Duas formas de vender a sua casa</h2><p>Pelo melhor preço, com tempo, ou com uma proposta de compra em menos de 48 horas após a avaliação. Diga-nos o que precisa.</p></div></div>
-      <div class="split">
-        <article class="route">
-          <h3>Vender com a Casa 361</h3>
-          <p>Mediação completa para chegar ao melhor comprador.</p>
-          <ul><li>Avaliação gratuita, com comparação de imóveis semelhantes na zona</li><li>Fotografia profissional e home staging</li><li>Divulgação no Idealista, Imovirtual, Casa Sapo e redes sociais</li><li>Visitas, negociação, contrato-promessa e escritura</li></ul>
-          <a class="btn btn-ink" href="vender.html#avaliacao">Pedir avaliação gratuita</a>
-        </article>
-        <article class="route ink">
-          <h3>Venda rápida em 4 passos</h3>
-          <p>Temos investidores que compram o seu imóvel. Proposta após avaliação presencial em menos de 48 horas.</p>
-          <ul><li>Contacte-nos e indicamos o que é preciso</li><li>Avaliação e proposta, com prazos ajustados a si</li><li>Assina o contrato-promessa e recebe o sinal</li><li>Escritura em poucos dias</li></ul>
-          <a class="btn btn-gold" href="vender.html#rapida">Quero vender rápido</a>
-        </article>
+      <div class="sec-head reveal">
+        <div><p class="kicker">Em destaque</p><h2>Imóveis à venda</h2><p>Alguns dos imóveis que temos à venda neste momento.</p></div>
+        <a class="btn btn-line" href="imoveis.html">Ver todos, no mapa <span class="arr" aria-hidden="true">→</span></a>
       </div>
+      <div class="mq reveal" style="margin-bottom:28px"><b>Ligação ao Casafari</b>Estes imóveis vêm do Casafari CRM, sozinhos. Continua a inserir e a gerir os imóveis só no Casafari: preço novo, fotografias, reservado ou vendido aparecem aqui no máximo 20 minutos depois, sem trabalho duplicado.</div>
+      <div class="grid" id="featured"></div>
     </div>
   </section>
 
   <section class="sec">
     <div class="wrap">
-      <div class="sec-head"><div><p class="kicker">Serviços</p><h2>Do primeiro contacto ao pós-venda</h2></div><a class="btn btn-line" href="servicos.html">Todos os serviços</a></div>
-      <div class="svc">
-        <article><h3>Compra e venda</h3><p>Ajudamos a encontrar o imóvel certo e a vender o seu com segurança.</p></article>
-        <article><h3>Avaliação de imóveis</h3><p>Estudo de mercado gratuito para quem quer vender, com o preço certo para vender bem.</p></article>
-        <article id="credito"><h3>Crédito habitação</h3><p>Simulação e acompanhamento do pedido, com os nossos bancos e intermediários parceiros.</p></article>
+      <div class="sec-head reveal"><div><p class="kicker">Vender</p><h2>Duas formas de vender a sua casa</h2><p>Pelo melhor preço, com tempo, ou com uma proposta de compra em menos de 48 horas após a avaliação. Diga-nos o que precisa.</p></div></div>
+      <div class="split">
+        <article class="route reveal">
+          <h3>Vender com a Casa 361</h3>
+          <p>Mediação completa para chegar ao melhor comprador.</p>
+          <ul><li>Avaliação gratuita, com comparação de imóveis semelhantes na zona</li><li>Fotografia profissional e home staging</li><li>Divulgação no Idealista, Imovirtual, Casa Sapo e redes sociais</li><li>Visitas, negociação, contrato-promessa e escritura</li></ul>
+          <a class="btn btn-ink" href="vender.html#avaliacao">Pedir avaliação gratuita <span class="arr" aria-hidden="true">→</span></a>
+        </article>
+        <article class="route ink reveal">
+          <h3>Venda rápida em 4 passos</h3>
+          <p>Temos investidores que compram o seu imóvel. Proposta após avaliação presencial em menos de 48 horas.</p>
+          <ul><li>Contacte-nos e indicamos o que é preciso</li><li>Avaliação e proposta, com prazos ajustados a si</li><li>Assina o contrato-promessa e recebe o sinal</li><li>Escritura em poucos dias</li></ul>
+          <a class="btn btn-gold" href="vender.html#rapida">Quero vender rápido <span class="arr" aria-hidden="true">→</span></a>
+        </article>
       </div>
     </div>
   </section>
 
   <section class="sec dark">
     <div class="wrap">
-      <div class="sec-head"><div><p class="kicker">Onde estamos</p><h2>Conhecemos estas ruas</h2><p>Trabalhamos todos os dias na zona norte de Lisboa e na margem do Tejo.</p></div></div>
-      <div class="zones">
-        <a href="imoveis.html?zona=Vila+Franca+de+Xira">Vila Franca de Xira</a><a href="imoveis.html?zona=Castanheira+do+Ribatejo">Castanheira do Ribatejo</a><a href="imoveis.html">Alverca do Ribatejo</a><a href="imoveis.html?zona=Forte+da+Casa">Póvoa de Santa Iria e Forte da Casa</a><a href="imoveis.html?zona=S%C3%A3o+Jo%C3%A3o+dos+Montes">Alhandra e São João dos Montes</a>
+      <div class="sec-head reveal"><div><p class="kicker" style="color:var(--gold)">Onde estamos</p><h2>Conhecemos estas ruas</h2><p>Trabalhamos todos os dias na zona norte de Lisboa e na margem do Tejo.</p></div><a class="btn btn-line" href="imoveis.html" style="color:#fff">Ver no mapa <span class="arr" aria-hidden="true">→</span></a></div>
+    </div>
+    <div class="marquee" aria-label="Zonas onde trabalhamos">
+      <div class="marquee-track"><span>Vila Franca de Xira</span><span>Castanheira do Ribatejo</span><span>Alverca do Ribatejo</span><span>Póvoa de Santa Iria</span><span>Forte da Casa</span><span>Alhandra</span><span>São João dos Montes</span><span aria-hidden="true">Vila Franca de Xira</span><span aria-hidden="true">Castanheira do Ribatejo</span><span aria-hidden="true">Alverca do Ribatejo</span><span aria-hidden="true">Póvoa de Santa Iria</span><span aria-hidden="true">Forte da Casa</span><span aria-hidden="true">Alhandra</span><span aria-hidden="true">São João dos Montes</span></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head reveal"><div><p class="kicker">Serviços</p><h2>Do primeiro contacto ao pós-venda</h2></div><a class="btn btn-line" href="servicos.html">Todos os serviços <span class="arr" aria-hidden="true">→</span></a></div>
+      <div class="svc reveal">
+        <article><h3>Compra e venda</h3><p>Ajudamos a encontrar o imóvel certo e a vender o seu com segurança.</p></article>
+        <article><h3>Avaliação de imóveis</h3><p>Estudo de mercado gratuito para quem quer vender, com o preço certo para vender bem.</p></article>
+        <article id="credito"><h3>Crédito habitação</h3><p>Simulação e acompanhamento do pedido, com os nossos bancos e intermediários parceiros.</p></article>
+      </div>
+      <div class="alert-box reveal" style="margin-top:56px">
+        <div><p class="kicker" style="color:var(--gold)">Alertas</p><h2>Ainda não encontrou a casa certa?</h2><p>Diga-nos o que procura. Quando entrar um imóvel assim, é o primeiro a saber.</p></div>
+        <form class="form" novalidate>
+          <div class="hide-sent" style="display:grid;gap:14px">
+            <div class="row"><label>Zona<select name="zona"><option>Qualquer zona</option><option>Vila Franca de Xira</option><option>Alverca do Ribatejo</option><option>Póvoa de Santa Iria</option><option>Castanheira do Ribatejo</option></select></label>
+              <label>Tipologia<select name="tip"><option>T1</option><option selected>T2</option><option>T3</option><option>T4 ou mais</option><option>Moradia</option></select></label></div>
+            <div class="row"><label>Preço até<select name="max"><option>200 000 €</option><option selected>300 000 €</option><option>400 000 €</option><option>Sem limite</option></select></label><label>Email<input name="email" type="email" required autocomplete="email"></label></div>
+            <label class="check"><input type="checkbox" required> Quero receber estes alertas da Casa 361 por email. Posso cancelar quando quiser.</label>
+            <button class="btn btn-gold" type="submit">Criar alerta</button>
+          </div>
+          <p class="ok" role="status">Alerta criado. Avisamos quando entrar um imóvel assim.</p>
+          <div class="mq"><b>No Casafari</b>Entra no Casafari CRM como contacto comprador, com a procura na mensagem, para cruzar com os imóveis novos.</div>
+        </form>
       </div>
     </div>
   </section>
 
   <section class="sec stone" id="contactos">
     <div class="wrap two">
-      <div>
+      <div class="reveal">
         <p class="kicker">Contactos</p>
-        <h2 style="font-size:clamp(32px,4vw,48px);margin:8px 0 14px">Fale connosco</h2>
+        <h2 style="font-size:clamp(36px,4.6vw,58px);font-weight:500;margin:8px 0 14px">Fale connosco</h2>
         <p style="color:var(--muted);max-width:30em">Diga-nos o que procura ou o que quer vender. Respondemos o mais depressa possível.</p>
-        <p style="margin-top:22px;font-size:18px"><a href="tel:+351913613005" class="num" style="text-decoration:none;font-weight:700">913 613 005</a><br><small style="color:var(--muted)">Chamada para rede móvel nacional</small></p>
+        <p style="margin-top:26px;font-size:20px"><a href="tel:+351913613005" class="num" style="text-decoration:none;font-weight:700">913 613 005</a><br><small style="color:var(--muted);font-size:13px">Chamada para rede móvel nacional</small></p>
         <p style="margin-top:10px"><a href="mailto:geral@casa361.com">geral@casa361.com</a></p>
-        <p style="margin-top:22px"><a class="btn btn-wa" href="https://wa.me/351913613005" target="_blank" rel="noopener">Escrever no WhatsApp</a></p>
+        <p style="margin-top:26px"><a class="btn btn-wa" href="https://wa.me/351913613005" target="_blank" rel="noopener">Escrever no WhatsApp</a></p>
       </div>
-      <div class="panel">
+      <div class="panel reveal">
         <form class="form" novalidate>
           <div class="hide-sent" style="display:grid;gap:14px">
             <div class="row"><label>Nome<input name="name" required autocomplete="name"></label><label>Telefone<input name="phone" type="tel" required autocomplete="tel"></label></div>
@@ -132,12 +154,18 @@
 
 <footer id="foot"></footer>
 <script src="listings.js"></script>
-<script src="chrome.js"></script>
 <script>
   (function () {
-    var refs = ['0076', '0066', '0053', '0047', '0075', '0068'];
+    var l = C361.find('0076'), e = C361.esc;
+    document.getElementById('spot').innerHTML =
+      '<a class="spot-img reveal-img reveal" href="imovel.html?ref=0076"><img data-parallax="0.08" src="' + e(l.photos[5]) + '" alt="Sala do T3 na Castanheira do Ribatejo"><span class="spot-badge">' + C361.price(l) + '</span></a>' +
+      '<div class="reveal"><p class="kicker">Imóvel do mês</p><h2>' + e(l.title) + '</h2><p style="color:var(--muted)">' + e(l.summary) + '</p>' +
+      '<dl><div><dt>Tipologia</dt><dd>' + e(l.typology) + '</dd></div><div><dt>Área</dt><dd>' + C361.area(l.area) + '</dd></div><div><dt>Terraço</dt><dd>49 m²</dd></div><div><dt>Certificado</dt><dd>' + e(l.energy) + '</dd></div></dl>' +
+      '<p style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><a class="btn btn-ink" href="imovel.html?ref=0076">Ver o imóvel <span class="arr" aria-hidden="true">→</span></a>' + C361.favButton('0076', 'big') + '</p></div>';
+    var refs = ['0066', '0053', '0047', '0075', '0068', '0071'];
     document.getElementById('featured').innerHTML = refs.map(function (r) { return C361.card(C361.find(r)); }).join('');
   })();
 </script>
+<script src="chrome.js"></script>
 </body>
 </html>

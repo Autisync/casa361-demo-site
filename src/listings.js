@@ -92,25 +92,64 @@
     },
   ];
 
+  // Onde fica cada zona (aproximado: o centro da freguesia). No site final,
+  // as coordenadas vêm da ficha do imóvel no Casafari.
+  var ZONES = {
+    'Castanheira do Ribatejo': [38.9935, -8.9725], 'Vila Franca de Xira': [38.9553, -8.9897], 'Povos': [38.9655, -8.9930],
+    'Forte da Casa': [38.8735, -9.0585], 'São João dos Montes': [38.9300, -9.0330], 'Amadora': [38.7620, -9.2310], 'Sobreda': [38.6480, -9.1920],
+  };
+  window.CASA361_LISTINGS.forEach(function (l) { if (!l.lat && ZONES[l.area_name]) { l.lat = ZONES[l.area_name][0]; l.lng = ZONES[l.area_name][1]; } });
+
   var eur = new Intl.NumberFormat('pt-PT', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
   var num = new Intl.NumberFormat('pt-PT', { maximumFractionDigits: 2 });
+
+  // Guardados: os imóveis que o visitante marcou, neste browser.
+  var FAV_KEY = 'c361-fav';
+  function favs() { try { return JSON.parse(localStorage.getItem(FAV_KEY) || '[]'); } catch (e) { return []; } }
+  function setFavs(a) { try { localStorage.setItem(FAV_KEY, JSON.stringify(a)); } catch (e) { /* sem memória: fica só nesta visita */ } }
+  var heart = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-9.3-9.2C1.4 8 3.4 4.5 6.9 4.5c2 0 3.4 1.1 4.1 2.3.7-1.2 2.1-2.3 4.1-2.3 3.5 0 5.5 3.5 4.2 6.8-1.8 4.6-9.3 9.2-9.3 9.2z"/></svg>';
+
   window.C361 = {
     price: function (l) { return l.price ? eur.format(l.price) : 'Sob consulta'; },
+    eur: function (n) { return eur.format(n); },
     area: function (n) { return num.format(n) + ' m²'; },
     find: function (ref) { return window.CASA361_LISTINGS.filter(function (l) { return l.ref === ref; })[0]; },
     esc: function (s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); },
+    favs: favs,
+    isFav: function (ref) { return favs().indexOf(ref) >= 0; },
+    toggleFav: function (ref) { var a = favs(), i = a.indexOf(ref); if (i >= 0) a.splice(i, 1); else a.push(ref); setFavs(a); document.dispatchEvent(new CustomEvent('c361:favs')); return i < 0; },
+    heart: heart,
+    favButton: function (ref, extra) {
+      var on = window.C361.isFav(ref);
+      return '<button type="button" class="fav' + (extra ? ' ' + extra : '') + '" data-fav="' + ref + '" aria-pressed="' + on + '" aria-label="' + (on ? 'Retirar dos guardados' : 'Guardar este imóvel') + '">' + heart + '</button>';
+    },
     card: function (l) {
       var e = window.C361.esc, facts = [];
       if (l.beds) facts.push('<span>' + l.beds + ' quartos</span>');
       if (l.baths) facts.push('<span>' + l.baths + ' WC</span>');
       if (l.area) facts.push('<span>' + window.C361.area(l.area) + '</span>');
-      return '<a class="card" href="imovel.html?ref=' + e(l.ref) + '">' +
+      var tag = l.typology === 'Rústico' || l.typology === 'Urbano' ? l.type + ' ' + l.typology.toLowerCase() : l.typology;
+      return '<article class="card reveal">' +
+        '<a class="card-link" href="imovel.html?ref=' + e(l.ref) + '">' +
         '<div class="card-img"><img loading="lazy" src="' + e(l.photos[0]) + '" alt="' + e(l.type + ' ' + l.typology + ' em ' + l.area_name) + '">' +
-        '<span class="card-tag">' + e(l.typology === 'Rústico' || l.typology === 'Urbano' ? l.type + ' ' + l.typology.toLowerCase() : l.typology) + '</span></div>' +
+        '<span class="card-tag">' + e(tag) + '</span>' + (l.isNew ? '<span class="card-tag new">Construção nova</span>' : '') + '</div>' +
         '<div class="card-body"><p class="card-place">' + e(l.area_name) + ' · ' + e(l.county) + '</p>' +
         '<h3>' + e(l.title) + '</h3>' +
         '<p class="card-facts">' + facts.join('') + '</p>' +
-        '<p class="card-price">' + window.C361.price(l) + '<span>Ref. ' + e(l.ref) + '</span></p></div></a>';
+        '<p class="card-price">' + window.C361.price(l) + '<span>Ref. ' + e(l.ref) + '</span></p></div></a>' +
+        window.C361.favButton(l.ref) + '</article>';
     },
   };
+
+  // Um clique num coração, em qualquer página.
+  document.addEventListener('click', function (ev) {
+    var b = ev.target.closest && ev.target.closest('[data-fav]');
+    if (!b) return;
+    ev.preventDefault();
+    var on = window.C361.toggleFav(b.getAttribute('data-fav'));
+    document.querySelectorAll('[data-fav="' + b.getAttribute('data-fav') + '"]').forEach(function (x) {
+      x.setAttribute('aria-pressed', String(on)); x.setAttribute('aria-label', on ? 'Retirar dos guardados' : 'Guardar este imóvel');
+      x.classList.remove('pop'); void x.offsetWidth; x.classList.add('pop');
+    });
+  });
 })();

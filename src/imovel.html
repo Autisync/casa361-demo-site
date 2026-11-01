@@ -6,7 +6,7 @@
 <title>Imóvel · Casa 361</title>
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Manrope:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body data-page="imoveis">
@@ -26,27 +26,41 @@
 
       <div class="mq"><b>Ligação ao Casafari</b>Tudo nesta página (título, preço, fotografias, descrição, características, certificado energético) vem da ficha do imóvel no Casafari CRM. Altera no Casafari e a página muda sozinha.</div>
 
-      <section class="block" id="desc-block"><h2>Sobre este imóvel</h2><div id="desc"></div></section>
-      <section class="block" id="rooms-block"><h2>Divisões</h2><table class="rooms"><tbody id="rooms"></tbody></table></section>
-      <section class="block" id="feat-block"><h2>Características</h2><ul class="feats" id="feats"></ul></section>
+      <section class="block reveal" id="desc-block"><h2>Sobre este imóvel</h2><div id="desc"></div></section>
+      <section class="block reveal" id="rooms-block"><h2>Divisões</h2><table class="rooms"><tbody id="rooms"></tbody></table></section>
+      <section class="block reveal" id="feat-block"><h2>Características</h2><ul class="feats" id="feats"></ul></section>
       <section class="block" id="plans-block" hidden><h2>Plantas</h2><div class="grid" id="plans" style="grid-template-columns:repeat(2,minmax(0,1fr))"></div></section>
-      <section class="block"><h2>Localização</h2>
+      <section class="block reveal" id="credito"><h2>Simulador de crédito</h2>
+        <div class="sim">
+          <div class="sim-grid">
+            <label>Preço do imóvel <span class="v num" id="s-price-v"></span><input type="range" id="s-price" step="500"></label>
+            <label>Entrada <span class="v num" id="s-down-v"></span><input type="range" id="s-down" min="10" max="50" step="1" value="10"></label>
+            <label>Prazo <span class="v num" id="s-years-v"></span><input type="range" id="s-years" min="10" max="40" step="1" value="35"></label>
+            <label>Taxa de juro anual (TAN) <span class="v num" id="s-rate-v"></span><input type="range" id="s-rate" min="1" max="6" step="0.05" value="3.2"></label>
+          </div>
+          <div class="sim-out"><div class="main"><small>Prestação mensal</small><strong class="num" id="s-pay"></strong></div><div><small>A financiar</small><strong class="num" id="s-loan"></strong></div><div><small>Entrada</small><strong class="num" id="s-cash"></strong></div></div>
+          <p class="sim-note">Simulação indicativa, sem seguros nem impostos (IMT e imposto do selo). A TAEG e as condições finais são dadas pelo banco. <a href="#visita">Peça-nos uma simulação com os nossos parceiros.</a></p>
+        </div>
+        <div class="mq" style="margin-top:14px"><b>Vantagem sobre a concorrência</b>A Century 21 e os portais têm simulador; o site atual da Casa 361 não. Quem faz a simulação e pede ajuda entra no Casafari como contacto com interesse em crédito.</div>
+      </section>
+      <section class="block reveal"><h2>Localização</h2>
         <div class="mapbox"><div><strong id="loc-name"></strong><br><span style="color:var(--muted);font-size:14px" id="loc-sub"></span></div>
           <a class="btn btn-line" id="map-link" target="_blank" rel="noopener">Ver no mapa</a></div>
       </section>
-      <section class="block"><h2>Imóveis semelhantes</h2><div class="grid" id="similar" style="grid-template-columns:repeat(2,minmax(0,1fr))"></div></section>
+      <section class="block reveal"><h2>Imóveis semelhantes</h2><div class="grid" id="similar" style="grid-template-columns:repeat(2,minmax(0,1fr))"></div></section>
     </div>
 
     <aside class="side" aria-label="Marcar visita">
       <div class="panel">
         <p class="price" id="price"></p>
         <p class="ref" id="ref"></p>
-        <div class="actions" style="margin-top:18px">
+        <div style="margin-top:14px">FAVBTN</div>
+        <div class="actions" style="margin-top:12px">
           <a class="btn btn-wa" id="wa" target="_blank" rel="noopener">WhatsApp</a>
           <a class="btn btn-line" href="tel:+351913613005">Ligar</a>
         </div>
       </div>
-      <div class="panel">
+      <div class="panel" id="visita">
         <h2 style="font-size:28px;margin-bottom:14px">Marcar visita</h2>
         <form class="form" novalidate>
           <div class="hide-sent" style="display:grid;gap:14px">
@@ -84,6 +98,7 @@
     $('title').textContent = l.title;
     $('where').textContent = l.parish + ', ' + l.county + ' · ' + l.district;
     $('price').textContent = C361.price(l);
+    document.querySelector('.side .panel').innerHTML = document.querySelector('.side .panel').innerHTML.replace('FAVBTN', C361.favButton(l.ref, 'big'));
     $('ref').textContent = 'Referência ' + l.ref;
     Array.prototype.forEach.call(document.querySelectorAll('.mq-ref'), function (s) { s.textContent = 'ref. ' + l.ref; });
     $('msg').placeholder = 'Gostava de visitar o ' + l.typology + ' (ref. ' + l.ref + ').';
@@ -116,6 +131,21 @@
     $('loc-sub').textContent = l.parish + ', ' + l.county;
     $('map-link').href = 'https://www.openstreetmap.org/search?query=' + encodeURIComponent(l.area_name + ', ' + l.county + ', Portugal');
     $('similar').innerHTML = CASA361_LISTINGS.filter(function (x) { return x.ref !== l.ref && x.type === l.type; }).slice(0, 2).map(C361.card).join('');
+
+    // Simulador de crédito: prestação de um empréstimo a taxa fixa (indicativa).
+    var sp = $('s-price'), sd = $('s-down'), sy = $('s-years'), sr = $('s-rate');
+    if (!l.price) $('credito').hidden = true;
+    else {
+      sp.min = Math.round(l.price * 0.6 / 500) * 500; sp.max = Math.round(l.price * 1.2 / 500) * 500; sp.value = l.price;
+      var calc = function () {
+        var price = +sp.value, down = +sd.value / 100, n = +sy.value * 12, i = +sr.value / 100 / 12, loan = price * (1 - down);
+        var pay = i ? loan * i / (1 - Math.pow(1 + i, -n)) : loan / n;
+        $('s-price-v').textContent = C361.eur(price); $('s-down-v').textContent = sd.value + '%'; $('s-years-v').textContent = sy.value + ' anos';
+        $('s-rate-v').textContent = (+sr.value).toLocaleString('pt-PT', { minimumFractionDigits: 2 }) + '%';
+        $('s-pay').textContent = C361.eur(Math.round(pay)); $('s-loan').textContent = C361.eur(Math.round(loan)); $('s-cash').textContent = C361.eur(Math.round(price * down));
+      };
+      [sp, sd, sy, sr].forEach(function (x) { x.addEventListener('input', calc); }); calc();
+    }
 
     // Fotografias em ecrã inteiro
     var lb = $('lb'), img = lb.querySelector('img'), cur = 0, last = null;

@@ -19,6 +19,20 @@ Plain HTML, CSS and JavaScript in `src/`. No framework, no install, no build.
 | Serviços | `src/servicos.html` |
 | Empresa | `src/empresa.html` |
 
+## What the mock-up does that competitors' sites do (and the current site doesn't)
+
+Checked against RE/MAX, ERA and Century 21 in Nov 2026:
+
+- **Map search** (ERA): `imoveis.html` shows the list beside a map (Leaflet + OpenStreetMap/CARTO tiles); hovering a card lights its pin.
+- **Saved homes** (ERA, RE/MAX accounts): a heart on every home, kept in the visitor's browser, with a count in the menu and "Só guardados".
+- **Credit simulator** (Century 21): on each property page; price, deposit, term and rate.
+- **Alerts**: "Ainda não encontrou a casa certa?" sends the search into Casafari as a buyer lead.
+- **WhatsApp** always one tap away.
+
+Motion: the home page opens with the photo easing in, the headline rising line by line and the gold 361° ring drawing a full turn and one degree more; sections come in once as they reach the screen; the zones run as a slow band. All of it is off for visitors who ask their device for less motion.
+
+The footer keeps everything the current site has: Recrutamento, Mapa do site, Livro de Reclamações (link and logo), Resolução alternativa de litígios, privacy, cookies, terms, cookie preferences, the IMPIC logo, AMI 24691, the company name and Facebook and Instagram. In the mock-up the legal pages and the two logos come from casa361.com; at launch they are copied into this site.
+
 ## Casafari stays where listings and leads live
 
 - **Listings** come from Casafari CRM: its property feed (refreshed every 20
