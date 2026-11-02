@@ -15,33 +15,53 @@
 <header id="top"></header>
 
 <main id="main">
-  <!-- Hero: fotografias dos imóveis em sequência, título, e a pesquisa dentro da imagem -->
-  <section class="hero hero-x">
+  <!-- Hero: o desenho aprovado (título, texto, botões, anel 361°) sobre as fotografias em sequência -->
+  <section class="hero">
     <div class="slides" id="slides" aria-hidden="true"></div>
     <div class="wrap">
-      <p class="kicker">Casa 361 · Zona norte de Lisboa</p>
-      <h1><span class="ln"><span>A sua próxima casa,</span></span><span class="ln"><span><em>entre Lisboa e o Tejo.</em></span></span></h1>
-      <div class="hsearch">
-        <div class="tabs" role="tablist" aria-label="O que procura">
-          <button type="button" role="tab" aria-selected="true" data-deal="venda">Comprar</button>
-          <button type="button" role="tab" aria-selected="false" data-deal="arrendamento">Arrendar</button>
-          <a href="vender.html" role="tab" aria-selected="false">Vender</a>
-        </div>
-        <form action="imoveis.html" method="get" class="hsearch-row" aria-label="Pesquisar imóveis">
-          <input type="hidden" name="deal" value="venda" id="deal">
-          <label class="sr" for="zona">Zona</label>
-          <select name="zona" id="zona"><option value="">Todas as zonas</option><option>Vila Franca de Xira</option><option>Castanheira do Ribatejo</option><option>Forte da Casa</option><option>São João dos Montes</option><option>Amadora</option><option>Sobreda</option></select>
-          <label class="sr" for="tipo">Tipo</label>
-          <select name="tipo" id="tipo"><option value="">Qualquer tipo</option><option>Apartamento</option><option>Moradia</option><option>Terreno</option></select>
-          <label class="sr" for="max">Preço até</label>
-          <select name="max" id="max"><option value="">Qualquer preço</option><option value="150000">Até 150 000 €</option><option value="250000">Até 250 000 €</option><option value="350000">Até 350 000 €</option><option value="500000">Até 500 000 €</option></select>
-          <button class="btn btn-gold" type="submit">Pesquisar</button>
-        </form>
-        <a class="explore" href="imoveis.html">Explorar todos os imóveis, no mapa <span class="arr" aria-hidden="true">→</span></a>
+      <div>
+        <p class="kicker">Imobiliária · Zona norte de Lisboa</p>
+        <h1><span class="ln"><span>A sua próxima casa,</span></span><span class="ln"><span>entre Lisboa</span></span><span class="ln"><span>e o Tejo.</span></span></h1>
+        <p class="lead">Compramos, vendemos e arrendamos casas em Vila Franca de Xira, Alverca, Póvoa de Santa Iria e Alhandra. Acompanhamos cada passo, da primeira visita à escritura.</p>
+        <p class="cta-row" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:30px">
+          <a class="btn btn-gold" href="imoveis.html">Ver imóveis à venda <span class="arr" aria-hidden="true">→</span></a>
+          <a class="btn btn-line" href="vender.html" style="color:#fff">Quanto vale a minha casa?</a>
+        </p>
+        <div class="meta"><div><strong>Avaliação gratuita</strong>para quem quer vender</div><div><strong>Proposta em 48 h</strong>na venda rápida</div><div><strong>AMI 24691</strong>mediação licenciada</div></div>
+      </div>
+      <div class="ring" aria-hidden="true">
+        <svg viewBox="0 0 300 300">
+          <g class="orbit"><circle cx="150" cy="150" r="142" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="1" stroke-dasharray="2 9"/></g>
+          <circle cx="150" cy="150" r="128" fill="none" stroke="rgba(255,255,255,.16)" stroke-width="1"/>
+          <circle class="draw" cx="150" cy="150" r="128" fill="none" stroke="#b9925a" stroke-width="1.6" transform="rotate(-90 150 150)"/>
+          <circle class="dot" cx="152.2" cy="22" r="4.5" fill="#b9925a"/>
+        </svg>
+        <div class="deg"><div><strong>361°</strong><span>Mais do que imóveis,<br>soluções.</span></div></div>
       </div>
     </div>
     <div class="slide-dots" id="dots" aria-hidden="true"></div>
   </section>
+
+  <!-- Pesquisa, encostada ao fundo da fotografia -->
+  <div class="hdock wrap">
+    <div class="hsearch">
+      <div class="tabs" role="tablist" aria-label="O que procura">
+        <button type="button" role="tab" aria-selected="true" data-deal="venda">Comprar</button>
+        <button type="button" role="tab" aria-selected="false" data-deal="arrendamento">Arrendar</button>
+        <a href="vender.html" role="tab" aria-selected="false">Vender</a>
+      </div>
+      <form action="imoveis.html" method="get" class="hsearch-row" aria-label="Pesquisar imóveis">
+        <input type="hidden" name="deal" value="venda" id="deal">
+        <label class="sr" for="zona">Zona</label>
+        <select name="zona" id="zona"><option value="">Todas as zonas</option><option>Vila Franca de Xira</option><option>Castanheira do Ribatejo</option><option>Forte da Casa</option><option>São João dos Montes</option><option>Amadora</option><option>Sobreda</option></select>
+        <label class="sr" for="tipo">Tipo</label>
+        <select name="tipo" id="tipo"><option value="">Qualquer tipo</option><option>Apartamento</option><option>Moradia</option><option>Terreno</option></select>
+        <label class="sr" for="max">Preço até</label>
+        <select name="max" id="max"><option value="">Qualquer preço</option><option value="150000">Até 150 000 €</option><option value="250000">Até 250 000 €</option><option value="350000">Até 350 000 €</option><option value="500000">Até 500 000 €</option></select>
+        <button class="btn btn-ink" type="submit">Pesquisar</button>
+      </form>
+    </div>
+  </div>
 
   <!-- Três portas: comprar, vender, arrendar -->
   <section class="doors wrap">
@@ -50,15 +70,19 @@
     <a class="door reveal" href="imoveis.html?deal=arrendamento"><img loading="lazy" src="https://cdn.proppy.app/propertyfiles/5369/909762/59ff7d17-a810-41a7-9c5a-fdd0e9b92d23.jpeg" alt=""><span><small>Arrendar</small>Casas para arrendar</span></a>
   </section>
 
-  <!-- Explorar por zona: fotografias altas, em carrossel -->
+  <!-- Explorar por zona: carrossel centrado, que roda sozinho (pára com o rato ou o dedo em cima) -->
   <section class="sec" style="padding-top:clamp(56px,7vw,96px)">
     <div class="wrap">
-      <div class="sec-head reveal">
-        <div><p class="kicker">Explorar por zona</p><h2>Onde quer viver?</h2><p>Da beira do Tejo às colinas de São João dos Montes. Conhecemos cada rua.</p></div>
-        <div class="car-nav"><button type="button" data-car="-1" aria-label="Zonas anteriores">←</button><button type="button" data-car="1" aria-label="Zonas seguintes">→</button></div>
+      <div class="sec-head reveal" style="justify-content:center;text-align:center">
+        <div style="display:grid;justify-items:center"><p class="kicker">Explorar por zona</p><h2>Onde quer viver?</h2><p>Da beira do Tejo às colinas de São João dos Montes. Conhecemos cada rua.</p></div>
+      </div>
+      <div class="zcar reveal" id="zcar" role="region" aria-roledescription="carrossel" aria-label="Zonas">
+        <button type="button" class="zarrow prev" aria-label="Zona anterior">←</button>
+        <div class="zview"><div class="ztrack" id="ztrack"></div></div>
+        <button type="button" class="zarrow next" aria-label="Zona seguinte">→</button>
+        <div class="zdots" id="zdots"></div>
       </div>
     </div>
-    <div class="zones-car" id="zones" tabindex="0" aria-label="Zonas"></div>
   </section>
 
   <section class="sec stone" style="padding-top:clamp(64px,8vw,104px)">
@@ -180,12 +204,37 @@
       ['Sobreda', '808953/e491fd36-4cb6-4e00-8f00-19d4cff60d3e.jpg', 'Entre Lisboa e as praias'],
       ['Amadora', '897813/f4633ca4-fc1f-4ea6-baf4-5448d8a23976.jpg', 'Encosta do Sol'],
     ];
-    document.getElementById('zones').innerHTML = zones.map(function (z) {
+    var tiles = zones.map(function (z) {
       var n = L.filter(function (l) { return l.area_name === z[0]; }).length;
-      return '<a class="ztile reveal" href="imoveis.html?zona=' + encodeURIComponent(z[0]) + '"><img loading="lazy" src="' + C + z[1] + '" alt=""><span class="zt"><b>' + e(z[0]) + '</b><small>' + e(z[2]) + '</small><em>' + (n === 1 ? '1 imóvel' : n + ' imóveis') + ' <span aria-hidden="true">→</span></em></span></a>';
-    }).join('');
-    var car = document.getElementById('zones');
-    document.querySelectorAll('[data-car]').forEach(function (b) { b.addEventListener('click', function () { car.scrollBy({ left: +b.getAttribute('data-car') * car.clientWidth * 0.8, behavior: still ? 'auto' : 'smooth' }); }); });
+      return '<a class="ztile" href="imoveis.html?zona=' + encodeURIComponent(z[0]) + '"><img loading="lazy" src="' + C + z[1] + '" alt=""><span class="zt"><b>' + e(z[0]) + '</b><small>' + e(z[2]) + '</small><em>' + (n === 1 ? '1 imóvel' : n + ' imóveis') + ' <span aria-hidden="true">→</span></em></span></a>';
+    });
+    // Carrossel: as zonas repetidas dos dois lados, para rodar sem fim.
+    var track = document.getElementById('ztrack'), zc = document.getElementById('zcar'), zd = document.getElementById('zdots'), N = tiles.length;
+    track.innerHTML = tiles.concat(tiles, tiles).join('');
+    zd.innerHTML = tiles.map(function (t, i) { return '<button type="button" aria-label="Zona ' + (i + 1) + '"></button>'; }).join('');
+    var pos = N, timer = null, paused = false;
+    function perView() { var w = window.innerWidth; return w >= 1100 ? 4 : w >= 820 ? 3 : w >= 560 ? 2 : 1; }
+    function place(anim) {
+      var item = track.children[0], gap = parseFloat(getComputedStyle(track).columnGap) || 18;
+      var step = item.getBoundingClientRect().width + gap;
+      track.style.transition = anim && !still ? 'transform .8s cubic-bezier(.65,0,.25,1)' : 'none';
+      track.style.transform = 'translate3d(' + (-pos * step) + 'px,0,0)';
+      Array.prototype.forEach.call(zd.children, function (d, i) { d.classList.toggle('on', i === ((pos % N) + N) % N); });
+      Array.prototype.forEach.call(track.children, function (t, i) { var vis = i >= pos && i < pos + perView(); t.tabIndex = vis ? 0 : -1; t.setAttribute('aria-hidden', String(!vis)); });
+    }
+    function go(d) { pos += d; place(true); }
+    track.addEventListener('transitionend', function () { if (pos >= 2 * N) { pos -= N; place(false); } if (pos < N) { pos += N; place(false); } });
+    zc.querySelector('.prev').onclick = function () { go(-1); restart(); };
+    zc.querySelector('.next').onclick = function () { go(1); restart(); };
+    Array.prototype.forEach.call(zd.children, function (d, i) { d.onclick = function () { pos = N + i; place(true); restart(); }; });
+    function restart() { clearInterval(timer); if (!still) timer = setInterval(function () { if (!paused && !document.hidden) go(1); }, 4200); }
+    zc.addEventListener('mouseenter', function () { paused = true; }); zc.addEventListener('mouseleave', function () { paused = false; });
+    zc.addEventListener('focusin', function () { paused = true; }); zc.addEventListener('focusout', function () { paused = false; });
+    var tx = null;
+    zc.addEventListener('touchstart', function (ev) { tx = ev.touches[0].clientX; paused = true; }, { passive: true });
+    zc.addEventListener('touchend', function (ev) { if (tx !== null) { var dx = ev.changedTouches[0].clientX - tx; if (Math.abs(dx) > 40) { go(dx < 0 ? 1 : -1); restart(); } } tx = null; paused = false; }, { passive: true });
+    window.addEventListener('resize', function () { place(false); });
+    place(false); restart();
 
     // Imóvel do mês
     var l = C361.find('0076');
