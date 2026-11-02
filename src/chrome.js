@@ -28,7 +28,7 @@
       '<button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav">Menu</button>' +
       '<nav class="nav" id="nav" aria-label="Principal">' + links.map(function (l) {
         return '<a href="' + l[0] + '"' + (l[2] === page ? ' aria-current="page"' : '') + '>' + l[1] + '</a>';
-      }).join('') + '<a href="imoveis.html?guardados=1" class="saved" aria-label="Imóveis guardados"><span class="ico">' + C361.heart + '</span><span class="n" id="fav-n"></span></a></nav>' +
+      }).join('') + '<a href="imoveis.html?guardados=1" class="saved" aria-label="Imóveis guardados"><span class="ico">' + C361.heart + '</span><span class="n" id="fav-n"></span></a><a class="nav-call" href="tel:' + TEL + '">☏ Ligar ' + PHONE + '</a></nav>' +
       '<a class="call" href="tel:' + TEL + '"><span aria-hidden="true">☏</span> ' + PHONE + '</a></div>';
     var btn = top.querySelector('.menu-btn'), nav = top.querySelector('.nav');
     btn.addEventListener('click', function () { var o = nav.classList.toggle('open'); btn.setAttribute('aria-expanded', String(o)); top.classList.toggle('menu-open', o); });

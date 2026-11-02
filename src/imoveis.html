@@ -27,7 +27,7 @@
         <select id="f-max" aria-label="Preço máximo"><option value="">Qualquer preço</option><option value="150000">Até 150 000 €</option><option value="250000">Até 250 000 €</option><option value="350000">Até 350 000 €</option><option value="500000">Até 500 000 €</option></select>
         <select id="f-sort" aria-label="Ordenar"><option value="new">Mais recentes</option><option value="asc">Preço: mais baixo</option><option value="desc">Preço: mais alto</option></select>
         <label style="display:inline-flex;gap:8px;align-items:center;font-size:14px;font-weight:600"><input type="checkbox" id="f-fav"> Só guardados</label>
-        <span class="view" role="group" aria-label="Vista"><button type="button" id="v-map" aria-pressed="true">Lista e mapa</button><button type="button" id="v-list" aria-pressed="false">Só lista</button></span>
+        <span class="view" role="group" aria-label="Vista"><button type="button" id="v-map" aria-pressed="true">Ver no mapa</button><button type="button" id="v-list" aria-pressed="false">Só a lista</button></span>
         <span class="count" id="count" aria-live="polite"></span>
       </div>
       <div class="mq" style="margin-bottom:24px"><b>Ligação ao Casafari</b>A lista completa vem do Casafari CRM. Um imóvel novo publicado no Casafari aparece aqui sozinho; um imóvel vendido ou retirado sai sozinho. No mapa, cada imóvel aparece pela localização da ficha no Casafari (na maquete, o centro da freguesia).</div>
@@ -49,6 +49,8 @@
     if (q.get('tipo')) $('f-type').value = q.get('tipo');
     if (q.get('zona')) $('f-zona').value = q.get('zona');
     if (q.get('max')) $('f-max').value = q.get('max');
+    var col = (window.CASA361_COLLECTIONS || []).filter(function (c) { return c.id === q.get('colecao'); })[0];
+    if (col) $('h1').textContent = col.title;
     if (q.get('guardados')) { $('f-fav').checked = true; $('h1').textContent = 'Os seus imóveis guardados'; }
 
     // Mapa (OpenStreetMap, com o estilo claro da CARTO).
@@ -62,7 +64,7 @@
     function short(l) { return l.price ? (l.price >= 1e6 ? (l.price / 1e6).toFixed(1).replace('.', ',') + ' M€' : Math.round(l.price / 1000) + ' mil €') : 'Consulta'; }
     function render() {
       var d = $('f-deal').value, t = $('f-type').value, z = $('f-zona').value, m = +$('f-max').value || Infinity, s = $('f-sort').value, onlyFav = $('f-fav').checked, fav = C361.favs();
-      var rows = CASA361_LISTINGS.filter(function (l) { return (onlyFav || l.deal === d) && (!t || l.type === t) && (!z || l.area_name === z) && (!l.price || l.price <= m) && (!onlyFav || fav.indexOf(l.ref) >= 0); });
+      var rows = CASA361_LISTINGS.filter(function (l) { return (onlyFav || l.deal === d) && (!t || l.type === t) && (!z || l.area_name === z) && (!l.price || l.price <= m) && (!onlyFav || fav.indexOf(l.ref) >= 0) && (!col || l.tags.some(function (t) { return col.tags.indexOf(t) >= 0; })); });
       if (s === 'asc') rows.sort(function (a, b) { return a.price - b.price; });
       if (s === 'desc') rows.sort(function (a, b) { return b.price - a.price; });
       $('count').textContent = rows.length === 1 ? '1 imóvel' : rows.length + ' imóveis';
@@ -95,6 +97,7 @@
       if (map && withMap) setTimeout(function () { map.invalidateSize(); render(); }, 50);
     }
     $('v-map').onclick = function () { view(true); }; $('v-list').onclick = function () { view(false); };
+    if (window.matchMedia('(max-width: 1000px)').matches) view(false); // no telemóvel, primeiro a lista; o mapa está a um toque
     ['f-deal', 'f-type', 'f-zona', 'f-max', 'f-sort', 'f-fav'].forEach(function (id) { $(id).addEventListener('change', render); });
     document.addEventListener('c361:favs', function () { if ($('f-fav').checked) render(); });
     render();

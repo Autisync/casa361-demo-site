@@ -33,6 +33,14 @@ Motion: the home page opens with the photo easing in, the headline rising line b
 
 The footer keeps everything the current site has: Recrutamento, Mapa do site, Livro de Reclamações (link and logo), Resolução alternativa de litígios, privacy, cookies, terms, cookie preferences, the IMPIC logo, AMI 24691, the company name and Facebook and Instagram. In the mock-up the legal pages and the two logos come from casa361.com; at launch they are copied into this site.
 
+## Exploring, as on the sites Luís sent (Zome, Engel & Völkers, The Agency)
+
+The home page opens on a full-width slideshow of the agency's own photos with the search inside it (Comprar / Arrendar / Vender), then three image "doors" (comprar, vender, arrendar), a carousel of tall zone tiles ("Onde quer viver?"), the property of the month, featured homes, and collections (remodelados, com terraço ou varanda, terrenos), each opening a filtered list.
+
+## Phones and tablets
+
+Checked at 360, 390, 768, 1024 and 1440 px: no sideways scrolling, touch targets of 44 px, 16 px form fields (no iPhone zoom), a full-size menu with a call button, list first and map one tap away on phones, a price/WhatsApp/visit bar fixed at the bottom of property pages, and swipe between photos.
+
 ## Casafari stays where listings and leads live
 
 - **Listings** come from Casafari CRM: its property feed (refreshed every 20

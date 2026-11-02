@@ -15,65 +15,78 @@
 <header id="top"></header>
 
 <main id="main">
-  <section class="hero">
-    <div class="hero-img" style="background-image:url('https://cdn.proppy.app/propertyfiles/5369/896724/b602f393-59a8-4782-a657-56f05e15ad83.jpg');background-position:center 70%"></div>
+  <!-- Hero: fotografias dos imóveis em sequência, título, e a pesquisa dentro da imagem -->
+  <section class="hero hero-x">
+    <div class="slides" id="slides" aria-hidden="true"></div>
     <div class="wrap">
-      <div>
-        <p class="kicker">Imobiliária · Zona norte de Lisboa</p>
-        <h1><span class="ln"><span>A sua próxima casa,</span></span><span class="ln"><span>entre Lisboa</span></span><span class="ln"><span>e o Tejo.</span></span></h1>
-        <p class="lead">Compramos, vendemos e arrendamos casas em Vila Franca de Xira, Alverca, Póvoa de Santa Iria e Alhandra. Acompanhamos cada passo, da primeira visita à escritura.</p>
-        <p class="cta-row" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:30px">
-          <a class="btn btn-gold" href="imoveis.html">Ver imóveis à venda <span class="arr" aria-hidden="true">→</span></a>
-          <a class="btn btn-line" href="vender.html" style="color:#fff">Quanto vale a minha casa?</a>
-        </p>
-        <div class="meta"><div><strong>Avaliação gratuita</strong>para quem quer vender</div><div><strong>Proposta em 48 h</strong>na venda rápida</div><div><strong>AMI 24691</strong>mediação licenciada</div></div>
-      </div>
-      <div class="ring" aria-hidden="true">
-        <svg viewBox="0 0 300 300">
-          <g class="orbit"><circle cx="150" cy="150" r="142" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="1" stroke-dasharray="2 9"/></g>
-          <circle cx="150" cy="150" r="128" fill="none" stroke="rgba(255,255,255,.16)" stroke-width="1"/>
-          <circle class="draw" cx="150" cy="150" r="128" fill="none" stroke="#b9925a" stroke-width="1.6" transform="rotate(-90 150 150)"/>
-          <circle class="dot" cx="152.2" cy="22" r="4.5" fill="#b9925a"/>
-        </svg>
-        <div class="deg"><div><strong>361°</strong><span>Mais do que imóveis,<br>soluções.</span></div></div>
+      <p class="kicker">Casa 361 · Zona norte de Lisboa</p>
+      <h1><span class="ln"><span>A sua próxima casa,</span></span><span class="ln"><span><em>entre Lisboa e o Tejo.</em></span></span></h1>
+      <div class="hsearch">
+        <div class="tabs" role="tablist" aria-label="O que procura">
+          <button type="button" role="tab" aria-selected="true" data-deal="venda">Comprar</button>
+          <button type="button" role="tab" aria-selected="false" data-deal="arrendamento">Arrendar</button>
+          <a href="vender.html" role="tab" aria-selected="false">Vender</a>
+        </div>
+        <form action="imoveis.html" method="get" class="hsearch-row" aria-label="Pesquisar imóveis">
+          <input type="hidden" name="deal" value="venda" id="deal">
+          <label class="sr" for="zona">Zona</label>
+          <select name="zona" id="zona"><option value="">Todas as zonas</option><option>Vila Franca de Xira</option><option>Castanheira do Ribatejo</option><option>Forte da Casa</option><option>São João dos Montes</option><option>Amadora</option><option>Sobreda</option></select>
+          <label class="sr" for="tipo">Tipo</label>
+          <select name="tipo" id="tipo"><option value="">Qualquer tipo</option><option>Apartamento</option><option>Moradia</option><option>Terreno</option></select>
+          <label class="sr" for="max">Preço até</label>
+          <select name="max" id="max"><option value="">Qualquer preço</option><option value="150000">Até 150 000 €</option><option value="250000">Até 250 000 €</option><option value="350000">Até 350 000 €</option><option value="500000">Até 500 000 €</option></select>
+          <button class="btn btn-gold" type="submit">Pesquisar</button>
+        </form>
+        <a class="explore" href="imoveis.html">Explorar todos os imóveis, no mapa <span class="arr" aria-hidden="true">→</span></a>
       </div>
     </div>
+    <div class="slide-dots" id="dots" aria-hidden="true"></div>
   </section>
 
-  <div class="search wrap">
-    <form action="imoveis.html" method="get" aria-label="Pesquisar imóveis">
-      <div class="seg" role="radiogroup" aria-label="Negócio">
-        <label><input type="radio" name="deal" value="venda" checked><span>Comprar</span></label>
-        <label><input type="radio" name="deal" value="arrendamento"><span>Arrendar</span></label>
-      </div>
-      <label class="fld"><small>Zona</small>
-        <select name="zona"><option value="">Todas as zonas</option><option>Vila Franca de Xira</option><option>Castanheira do Ribatejo</option><option>Forte da Casa</option><option>São João dos Montes</option><option>Amadora</option><option>Sobreda</option></select></label>
-      <label class="fld"><small>Tipo</small>
-        <select name="tipo"><option value="">Qualquer</option><option>Apartamento</option><option>Moradia</option><option>Terreno</option></select></label>
-      <label class="fld"><small>Preço até</small>
-        <select name="max"><option value="">Sem limite</option><option value="150000">150 000 €</option><option value="250000">250 000 €</option><option value="350000">350 000 €</option><option value="500000">500 000 €</option></select></label>
-      <button class="btn btn-ink" type="submit">Pesquisar</button>
-    </form>
-  </div>
+  <!-- Três portas: comprar, vender, arrendar -->
+  <section class="doors wrap">
+    <a class="door reveal" href="imoveis.html"><img loading="lazy" src="https://cdn.proppy.app/propertyfiles/5369/897497/0ad40a6d-7c08-4c71-84cc-31441ce7a9ec.jpg" alt=""><span><small>Comprar</small>Encontre a sua casa</span></a>
+    <a class="door reveal" href="vender.html"><img loading="lazy" src="https://cdn.proppy.app/propertyfiles/5369/808953/e491fd36-4cb6-4e00-8f00-19d4cff60d3e.jpg" alt=""><span><small>Vender</small>Quanto vale a sua casa?</span></a>
+    <a class="door reveal" href="imoveis.html?deal=arrendamento"><img loading="lazy" src="https://cdn.proppy.app/propertyfiles/5369/909762/59ff7d17-a810-41a7-9c5a-fdd0e9b92d23.jpeg" alt=""><span><small>Arrendar</small>Casas para arrendar</span></a>
+  </section>
 
-  <section class="sec" style="padding-top:24px">
+  <!-- Explorar por zona: fotografias altas, em carrossel -->
+  <section class="sec" style="padding-top:clamp(56px,7vw,96px)">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div><p class="kicker">Explorar por zona</p><h2>Onde quer viver?</h2><p>Da beira do Tejo às colinas de São João dos Montes. Conhecemos cada rua.</p></div>
+        <div class="car-nav"><button type="button" data-car="-1" aria-label="Zonas anteriores">←</button><button type="button" data-car="1" aria-label="Zonas seguintes">→</button></div>
+      </div>
+    </div>
+    <div class="zones-car" id="zones" tabindex="0" aria-label="Zonas"></div>
+  </section>
+
+  <section class="sec stone" style="padding-top:clamp(64px,8vw,104px)">
     <div class="wrap spot" id="spot"></div>
   </section>
 
-  <section class="sec stone">
+  <section class="sec">
     <div class="wrap">
       <div class="sec-head reveal">
-        <div><p class="kicker">Em destaque</p><h2>Imóveis à venda</h2><p>Alguns dos imóveis que temos à venda neste momento.</p></div>
-        <a class="btn btn-line" href="imoveis.html">Ver todos, no mapa <span class="arr" aria-hidden="true">→</span></a>
+        <div><p class="kicker">Em destaque</p><h2>Encontramos a casa. <em class="gold-i">A história é sua.</em></h2></div>
+        <a class="btn btn-line" href="imoveis.html">Ver todos os imóveis <span class="arr" aria-hidden="true">→</span></a>
       </div>
       <div class="mq reveal" style="margin-bottom:28px"><b>Ligação ao Casafari</b>Estes imóveis vêm do Casafari CRM, sozinhos. Continua a inserir e a gerir os imóveis só no Casafari: preço novo, fotografias, reservado ou vendido aparecem aqui no máximo 20 minutos depois, sem trabalho duplicado.</div>
       <div class="grid" id="featured"></div>
     </div>
   </section>
 
+  <!-- Coleções: outra forma de explorar -->
+  <section class="sec dark">
+    <div class="wrap">
+      <div class="sec-head reveal"><div><p class="kicker" style="color:var(--gold)">Coleções</p><h2>Para cada maneira de viver</h2><p>Escolha pelo que importa: pronta a habitar, com exterior, ou para construir de raiz.</p></div></div>
+      <div class="cols3" id="collections"></div>
+    </div>
+  </section>
+
   <section class="sec">
     <div class="wrap">
-      <div class="sec-head reveal"><div><p class="kicker">Vender</p><h2>Duas formas de vender a sua casa</h2><p>Pelo melhor preço, com tempo, ou com uma proposta de compra em menos de 48 horas após a avaliação. Diga-nos o que precisa.</p></div></div>
+      <div class="sec-head reveal"><div><p class="kicker">Vender</p><h2>Duas formas de vender a sua casa</h2><p>Pelo melhor preço, com tempo, ou com uma proposta de compra em menos de 48 horas após a avaliação.</p></div></div>
       <div class="split">
         <article class="route reveal">
           <h3>Vender com a Casa 361</h3>
@@ -87,26 +100,6 @@
           <ul><li>Contacte-nos e indicamos o que é preciso</li><li>Avaliação e proposta, com prazos ajustados a si</li><li>Assina o contrato-promessa e recebe o sinal</li><li>Escritura em poucos dias</li></ul>
           <a class="btn btn-gold" href="vender.html#rapida">Quero vender rápido <span class="arr" aria-hidden="true">→</span></a>
         </article>
-      </div>
-    </div>
-  </section>
-
-  <section class="sec dark">
-    <div class="wrap">
-      <div class="sec-head reveal"><div><p class="kicker" style="color:var(--gold)">Onde estamos</p><h2>Conhecemos estas ruas</h2><p>Trabalhamos todos os dias na zona norte de Lisboa e na margem do Tejo.</p></div><a class="btn btn-line" href="imoveis.html" style="color:#fff">Ver no mapa <span class="arr" aria-hidden="true">→</span></a></div>
-    </div>
-    <div class="marquee" aria-label="Zonas onde trabalhamos">
-      <div class="marquee-track"><span>Vila Franca de Xira</span><span>Castanheira do Ribatejo</span><span>Alverca do Ribatejo</span><span>Póvoa de Santa Iria</span><span>Forte da Casa</span><span>Alhandra</span><span>São João dos Montes</span><span aria-hidden="true">Vila Franca de Xira</span><span aria-hidden="true">Castanheira do Ribatejo</span><span aria-hidden="true">Alverca do Ribatejo</span><span aria-hidden="true">Póvoa de Santa Iria</span><span aria-hidden="true">Forte da Casa</span><span aria-hidden="true">Alhandra</span><span aria-hidden="true">São João dos Montes</span></div>
-    </div>
-  </section>
-
-  <section class="sec">
-    <div class="wrap">
-      <div class="sec-head reveal"><div><p class="kicker">Serviços</p><h2>Do primeiro contacto ao pós-venda</h2></div><a class="btn btn-line" href="servicos.html">Todos os serviços <span class="arr" aria-hidden="true">→</span></a></div>
-      <div class="svc reveal">
-        <article><h3>Compra e venda</h3><p>Ajudamos a encontrar o imóvel certo e a vender o seu com segurança.</p></article>
-        <article><h3>Avaliação de imóveis</h3><p>Estudo de mercado gratuito para quem quer vender, com o preço certo para vender bem.</p></article>
-        <article id="credito"><h3>Crédito habitação</h3><p>Simulação e acompanhamento do pedido, com os nossos bancos e intermediários parceiros.</p></article>
       </div>
       <div class="alert-box reveal" style="margin-top:56px">
         <div><p class="kicker" style="color:var(--gold)">Alertas</p><h2>Ainda não encontrou a casa certa?</h2><p>Diga-nos o que procura. Quando entrar um imóvel assim, é o primeiro a saber.</p></div>
@@ -156,14 +149,61 @@
 <script src="listings.js"></script>
 <script>
   (function () {
-    var l = C361.find('0076'), e = C361.esc;
+    var e = C361.esc, L = CASA361_LISTINGS, C = 'https://cdn.proppy.app/propertyfiles/5369/';
+    var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Hero: as melhores fotografias dos imóveis, em sequência lenta.
+    var slides = [C + '896724/b602f393-59a8-4782-a657-56f05e15ad83.jpg', C + '808953/e491fd36-4cb6-4e00-8f00-19d4cff60d3e.jpg', C + '909238/1bdd0ebc-eb12-4baa-a31c-3a21b5af2077.jpg', C + '897497/0ad40a6d-7c08-4c71-84cc-31441ce7a9ec.jpg'];
+    var box = document.getElementById('slides'), dots = document.getElementById('dots');
+    box.innerHTML = slides.map(function (s, i) { return '<div class="slide' + (i ? '' : ' on') + '" style="background-image:url(\'' + s + '\')"></div>'; }).join('');
+    dots.innerHTML = slides.map(function (s, i) { return '<span' + (i ? '' : ' class="on"') + '></span>'; }).join('');
+    var cur = 0;
+    if (!still) setInterval(function () {
+      var all = box.children, d = dots.children; all[cur].classList.remove('on'); d[cur].classList.remove('on');
+      cur = (cur + 1) % all.length; all[cur].classList.add('on'); d[cur].classList.add('on');
+    }, 6500);
+
+    // Separadores da pesquisa
+    document.querySelectorAll('.hsearch [data-deal]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        document.querySelectorAll('.hsearch [role="tab"]').forEach(function (x) { x.setAttribute('aria-selected', 'false'); });
+        b.setAttribute('aria-selected', 'true'); document.getElementById('deal').value = b.getAttribute('data-deal');
+      });
+    });
+
+    // Explorar por zona
+    var zones = [
+      ['Castanheira do Ribatejo', '909238/1bdd0ebc-eb12-4baa-a31c-3a21b5af2077.jpg', 'Junto à estação, a 26 minutos de Lisboa'],
+      ['Vila Franca de Xira', '897497/0ad40a6d-7c08-4c71-84cc-31441ce7a9ec.jpg', 'A cidade à beira do Tejo'],
+      ['São João dos Montes', '896724/b602f393-59a8-4782-a657-56f05e15ad83.jpg', 'Terrenos com vista para o rio'],
+      ['Forte da Casa', '830737/c7be5ec8-7929-49fe-929f-3e46c1d0c377.jpg', 'Póvoa de Santa Iria e Forte da Casa'],
+      ['Sobreda', '808953/e491fd36-4cb6-4e00-8f00-19d4cff60d3e.jpg', 'Entre Lisboa e as praias'],
+      ['Amadora', '897813/f4633ca4-fc1f-4ea6-baf4-5448d8a23976.jpg', 'Encosta do Sol'],
+    ];
+    document.getElementById('zones').innerHTML = zones.map(function (z) {
+      var n = L.filter(function (l) { return l.area_name === z[0]; }).length;
+      return '<a class="ztile reveal" href="imoveis.html?zona=' + encodeURIComponent(z[0]) + '"><img loading="lazy" src="' + C + z[1] + '" alt=""><span class="zt"><b>' + e(z[0]) + '</b><small>' + e(z[2]) + '</small><em>' + (n === 1 ? '1 imóvel' : n + ' imóveis') + ' <span aria-hidden="true">→</span></em></span></a>';
+    }).join('');
+    var car = document.getElementById('zones');
+    document.querySelectorAll('[data-car]').forEach(function (b) { b.addEventListener('click', function () { car.scrollBy({ left: +b.getAttribute('data-car') * car.clientWidth * 0.8, behavior: still ? 'auto' : 'smooth' }); }); });
+
+    // Imóvel do mês
+    var l = C361.find('0076');
     document.getElementById('spot').innerHTML =
       '<a class="spot-img reveal-img reveal" href="imovel.html?ref=0076"><img data-parallax="0.08" src="' + e(l.photos[5]) + '" alt="Sala do T3 na Castanheira do Ribatejo"><span class="spot-badge">' + C361.price(l) + '</span></a>' +
       '<div class="reveal"><p class="kicker">Imóvel do mês</p><h2>' + e(l.title) + '</h2><p style="color:var(--muted)">' + e(l.summary) + '</p>' +
       '<dl><div><dt>Tipologia</dt><dd>' + e(l.typology) + '</dd></div><div><dt>Área</dt><dd>' + C361.area(l.area) + '</dd></div><div><dt>Terraço</dt><dd>49 m²</dd></div><div><dt>Certificado</dt><dd>' + e(l.energy) + '</dd></div></dl>' +
       '<p style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><a class="btn btn-ink" href="imovel.html?ref=0076">Ver o imóvel <span class="arr" aria-hidden="true">→</span></a>' + C361.favButton('0076', 'big') + '</p></div>';
-    var refs = ['0066', '0053', '0047', '0075', '0068', '0071'];
-    document.getElementById('featured').innerHTML = refs.map(function (r) { return C361.card(C361.find(r)); }).join('');
+
+    document.getElementById('featured').innerHTML = ['0066', '0053', '0047', '0075', '0068', '0071'].map(function (r) { return C361.card(C361.find(r)); }).join('');
+
+    // Coleções
+    document.getElementById('collections').innerHTML = CASA361_COLLECTIONS.map(function (c) {
+      var rows = L.filter(function (x) { return x.tags.some(function (t) { return c.tags.indexOf(t) >= 0; }); });
+      var cover = C361.find(rows.filter(function (x) { return String(x.id) === c.photo; })[0] ? rows.filter(function (x) { return String(x.id) === c.photo; })[0].ref : rows[0].ref);
+      return '<a class="coll reveal" href="imoveis.html?colecao=' + c.id + '"><span class="coll-img"><img loading="lazy" src="' + e(cover.photos[0]) + '" alt=""></span>' +
+        '<span class="coll-t"><b>' + e(c.title) + '</b><small>' + e(c.line) + '</small><em>' + rows.length + ' imóveis · Descobrir <span aria-hidden="true">→</span></em></span></a>';
+    }).join('');
   })();
 </script>
 <script src="chrome.js"></script>
