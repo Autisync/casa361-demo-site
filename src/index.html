@@ -15,19 +15,31 @@
 <header id="top"></header>
 
 <main id="main">
-  <!-- Hero: o desenho aprovado (título, texto, botões, anel 361°) sobre as fotografias em sequência -->
-  <section class="hero">
+  <!-- Hero: título e pesquisa sobre as fotografias, gradiente escuro, e o anel 361° a desenhar-se -->
+  <section class="hero hero-s">
     <div class="slides" id="slides" aria-hidden="true"></div>
     <div class="wrap">
       <div>
-        <p class="kicker">Imobiliária · Zona norte de Lisboa</p>
-        <h1><span class="ln"><span>A sua próxima casa,</span></span><span class="ln"><span>entre Lisboa</span></span><span class="ln"><span>e o Tejo.</span></span></h1>
-        <p class="lead">Compramos, vendemos e arrendamos casas em Vila Franca de Xira, Alverca, Póvoa de Santa Iria e Alhandra. Acompanhamos cada passo, da primeira visita à escritura.</p>
-        <p class="cta-row" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:30px">
-          <a class="btn btn-gold" href="imoveis.html">Ver imóveis à venda <span class="arr" aria-hidden="true">→</span></a>
-          <a class="btn btn-line" href="vender.html" style="color:#fff">Quanto vale a minha casa?</a>
-        </p>
-        <div class="meta"><div><strong>Avaliação gratuita</strong>para quem quer vender</div><div><strong>Proposta em 48 h</strong>na venda rápida</div><div><strong>AMI 24691</strong>mediação licenciada</div></div>
+        <p class="kicker">Casa 361 · Zona norte de Lisboa</p>
+        <h1><span class="ln"><span>A sua próxima casa,</span></span><span class="ln"><span><em>entre Lisboa e o Tejo.</em></span></span></h1>
+        <div class="hsearch">
+          <div class="tabs" role="tablist" aria-label="O que procura">
+            <button type="button" role="tab" aria-selected="true" data-deal="venda">Comprar</button>
+            <button type="button" role="tab" aria-selected="false" data-deal="arrendamento">Arrendar</button>
+            <a href="vender.html" role="tab" aria-selected="false">Vender</a>
+          </div>
+          <form action="imoveis.html" method="get" class="hsearch-row" aria-label="Pesquisar imóveis">
+            <input type="hidden" name="deal" value="venda" id="deal">
+            <label class="sr" for="zona">Zona</label>
+            <select name="zona" id="zona"><option value="">Todas as zonas</option><option>Vila Franca de Xira</option><option>Castanheira do Ribatejo</option><option>Forte da Casa</option><option>São João dos Montes</option><option>Amadora</option><option>Sobreda</option></select>
+            <label class="sr" for="tipo">Tipo</label>
+            <select name="tipo" id="tipo"><option value="">Qualquer tipo</option><option>Apartamento</option><option>Moradia</option><option>Terreno</option></select>
+            <label class="sr" for="max">Preço até</label>
+            <select name="max" id="max"><option value="">Qualquer preço</option><option value="150000">Até 150 000 €</option><option value="250000">Até 250 000 €</option><option value="350000">Até 350 000 €</option><option value="500000">Até 500 000 €</option></select>
+            <button class="btn btn-gold" type="submit">Pesquisar</button>
+          </form>
+          <a class="explore" href="imoveis.html">Explorar todos os imóveis, no mapa <span class="arr" aria-hidden="true">→</span></a>
+        </div>
       </div>
       <div class="ring" aria-hidden="true">
         <svg viewBox="0 0 300 300">
@@ -41,27 +53,6 @@
     </div>
     <div class="slide-dots" id="dots" aria-hidden="true"></div>
   </section>
-
-  <!-- Pesquisa, encostada ao fundo da fotografia -->
-  <div class="hdock wrap">
-    <div class="hsearch">
-      <div class="tabs" role="tablist" aria-label="O que procura">
-        <button type="button" role="tab" aria-selected="true" data-deal="venda">Comprar</button>
-        <button type="button" role="tab" aria-selected="false" data-deal="arrendamento">Arrendar</button>
-        <a href="vender.html" role="tab" aria-selected="false">Vender</a>
-      </div>
-      <form action="imoveis.html" method="get" class="hsearch-row" aria-label="Pesquisar imóveis">
-        <input type="hidden" name="deal" value="venda" id="deal">
-        <label class="sr" for="zona">Zona</label>
-        <select name="zona" id="zona"><option value="">Todas as zonas</option><option>Vila Franca de Xira</option><option>Castanheira do Ribatejo</option><option>Forte da Casa</option><option>São João dos Montes</option><option>Amadora</option><option>Sobreda</option></select>
-        <label class="sr" for="tipo">Tipo</label>
-        <select name="tipo" id="tipo"><option value="">Qualquer tipo</option><option>Apartamento</option><option>Moradia</option><option>Terreno</option></select>
-        <label class="sr" for="max">Preço até</label>
-        <select name="max" id="max"><option value="">Qualquer preço</option><option value="150000">Até 150 000 €</option><option value="250000">Até 250 000 €</option><option value="350000">Até 350 000 €</option><option value="500000">Até 500 000 €</option></select>
-        <button class="btn btn-ink" type="submit">Pesquisar</button>
-      </form>
-    </div>
-  </div>
 
   <!-- Três portas: comprar, vender, arrendar -->
   <section class="doors wrap">

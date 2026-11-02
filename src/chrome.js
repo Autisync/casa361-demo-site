@@ -14,7 +14,7 @@
   var PHONE = '913 613 005', TEL = '+351913613005', MAIL = 'geral@casa361.com';
   var page = document.body.getAttribute('data-page') || '';
   var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var links = [['imoveis.html', 'Imóveis', 'imoveis'], ['vender.html', 'Vender', 'vender'], ['servicos.html', 'Serviços', 'servicos'], ['empresa.html', 'Empresa', 'empresa'], ['index.html#contactos', 'Contactos', 'contactos']];
+  var links = [['imoveis.html', 'Imóveis', 'imoveis'], ['vender.html', 'Vender', 'vender'], ['servicos.html', 'Serviços', 'servicos'], ['empresa.html', 'Empresa', 'empresa'], ['contactos.html', 'Contactos', 'contactos']];
 
   var bar = document.createElement('div');
   bar.className = 'mq-bar';

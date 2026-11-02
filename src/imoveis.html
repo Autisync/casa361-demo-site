@@ -69,7 +69,7 @@
       if (s === 'desc') rows.sort(function (a, b) { return b.price - a.price; });
       $('count').textContent = rows.length === 1 ? '1 imóvel' : rows.length + ' imóveis';
       $('list').innerHTML = rows.length ? rows.map(C361.card).join('') :
-        '<p class="empty" style="grid-column:1/-1">' + (onlyFav ? 'Ainda não guardou nenhum imóvel. Toque no coração de um imóvel para o guardar aqui.' : 'Não temos imóveis com estes filtros neste momento. <a href="index.html#contactos">Diga-nos o que procura</a> e avisamos quando entrar um.') + '</p>';
+        '<p class="empty" style="grid-column:1/-1">' + (onlyFav ? 'Ainda não guardou nenhum imóvel. Toque no coração de um imóvel para o guardar aqui.' : 'Não temos imóveis com estes filtros neste momento. <a href="contactos.html">Diga-nos o que procura</a> e avisamos quando entrar um.') + '</p>';
       window.C361Reveal($('list'));
       if (map) {
         layer.clearLayers(); pins = {};
