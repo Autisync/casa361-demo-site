@@ -98,7 +98,13 @@
     'Castanheira do Ribatejo': [38.9935, -8.9725], 'Vila Franca de Xira': [38.9553, -8.9897], 'Povos': [38.9655, -8.9930],
     'Forte da Casa': [38.8735, -9.0585], 'São João dos Montes': [38.9300, -9.0330], 'Amadora': [38.7620, -9.2310], 'Sobreda': [38.6480, -9.1920],
   };
-  window.CASA361_LISTINGS.forEach(function (l) { if (!l.lat && ZONES[l.area_name]) { l.lat = ZONES[l.area_name][0]; l.lng = ZONES[l.area_name][1]; } });
+  function placeAll(rows) { rows.forEach(function (l) { l.tags = l.tags || []; if (!l.lat && ZONES[l.area_name]) { l.lat = ZONES[l.area_name][0]; l.lng = ZONES[l.area_name][1]; } }); }
+  placeAll(window.CASA361_LISTINGS);
+  // Com a API ligada, os imóveis vêm do Casafari (pela casa361-api); sem ela, ficam os de cima.
+  var API = String(window.C361_API || '').replace(/\/+$/, '');
+  var ready = !API ? Promise.resolve() : fetch(API + '/listings').then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+    .then(function (j) { if (j && j.listings && j.listings.length) { placeAll(j.listings); window.CASA361_LISTINGS = j.listings; } })
+    .catch(function () { /* a API não respondeu: mostra os imóveis da maquete */ });
 
   // Coleções: formas de explorar para além da zona e do preço.
   window.CASA361_COLLECTIONS = [
@@ -117,6 +123,8 @@
   var heart = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-9.3-9.2C1.4 8 3.4 4.5 6.9 4.5c2 0 3.4 1.1 4.1 2.3.7-1.2 2.1-2.3 4.1-2.3 3.5 0 5.5 3.5 4.2 6.8-1.8 4.6-9.3 9.2-9.3 9.2z"/></svg>';
 
   window.C361 = {
+    api: API,
+    ready: ready,
     price: function (l) { return l.price ? eur.format(l.price) : 'Sob consulta'; },
     eur: function (n) { return eur.format(n); },
     area: function (n) { return num.format(n) + ' m²'; },

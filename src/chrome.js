@@ -85,14 +85,38 @@
     try { localStorage.setItem('c361-mq', off ? 'off' : 'on'); } catch (e) { /* ignore */ }
   });
 
-  // Formulários: validação e a confirmação, sem enviar nada na maquete.
+  // Formulários. Com a API ligada (config.js), o pedido vai para a casa361-api, que o põe
+  // no Casafari CRM e envia um email para geral@casa361.com. Sem API (maquete), só confirma.
   Array.prototype.forEach.call(document.querySelectorAll('form.form'), function (f) {
+    var hp = document.createElement('input'); // armadilha para robôs: invisível para pessoas
+    hp.type = 'text'; hp.name = 'website'; hp.tabIndex = -1; hp.autocomplete = 'off'; hp.setAttribute('aria-hidden', 'true');
+    hp.style.cssText = 'position:absolute;left:-9999px;width:1px;height:1px;opacity:0';
+    f.appendChild(hp);
     f.addEventListener('submit', function (e) {
       e.preventDefault();
       if (!f.reportValidity()) return;
-      f.classList.add('sent');
-      var ok = f.querySelector('.ok');
-      if (ok) { ok.setAttribute('tabindex', '-1'); ok.focus(); }
+      var btn = f.querySelector('button[type="submit"]'), err = f.querySelector('.form-err');
+      function done() { f.classList.add('sent'); var ok = f.querySelector('.ok'); if (ok) { ok.setAttribute('tabindex', '-1'); ok.focus(); } }
+      if (!C361.api) { done(); return; }
+      var data = { kind: f.getAttribute('data-lead') || 'contacto', consent: true, page: location.pathname, ref: document.body.getAttribute('data-ref') || '', details: {} };
+      Array.prototype.forEach.call(f.elements, function (el) {
+        if (!el.name || el.type === 'submit' || el.type === 'checkbox' || (el.type === 'radio' && !el.checked)) return;
+        var v = String(el.value || '').trim(); if (!v) return;
+        if (['name', 'email', 'phone', 'message', 'website'].indexOf(el.name) >= 0) { data[el.name] = v; return; }
+        var lab = el.closest('label'), legend = el.closest('fieldset') && el.closest('fieldset').querySelector('legend');
+        var key = el.type === 'radio' && legend ? legend.textContent.trim() : lab ? (lab.firstChild && lab.firstChild.nodeType === 3 ? lab.firstChild.textContent.trim() : el.name) : el.name;
+        data.details[key || el.name] = v;
+      });
+      if (btn) { btn.disabled = true; btn.dataset.t = btn.textContent; btn.textContent = 'A enviar…'; }
+      if (err) err.remove();
+      fetch(C361.api + '/leads', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) })
+        .then(function (r) { if (!r.ok) throw r.status; done(); })
+        .catch(function () {
+          var m = document.createElement('p'); m.className = 'form-err'; m.setAttribute('role', 'alert');
+          m.innerHTML = 'Não conseguimos enviar agora. Ligue-nos para o <a href="tel:' + TEL + '">' + PHONE + '</a> ou escreva para <a href="mailto:' + MAIL + '">' + MAIL + '</a>.';
+          (btn ? btn.parentNode : f).appendChild(m);
+        })
+        .then(function () { if (btn) { btn.disabled = false; btn.textContent = btn.dataset.t; } });
     });
   });
 

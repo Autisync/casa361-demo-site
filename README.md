@@ -54,6 +54,13 @@ Checked at 360, 390, 768, 1024 and 1440 px: no sideways scrolling, touch targets
 
 Source: https://helpcenter.casafari.com/en/crm/integracao-website-e-plataformas-externas
 
+## Live listings and forms (casa361-api)
+
+`src/config.js` sets `window.C361_API`. Empty (now): the mock-up shows the homes written in
+`src/listings.js` and the forms send nothing. With the address of the `casa361-api` service
+(on our mail server, see that repo), the homes come from CASAFARI CRM and every form goes into
+CASAFARI and to geral@casa361.com. Tested end to end against a fake CASAFARI.
+
 ## Put it online (Vercel)
 
 1. Create the GitHub repository `Autisync/casa361-demo-site` and push this folder.

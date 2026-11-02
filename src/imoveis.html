@@ -38,10 +38,11 @@
 
 <footer id="foot"></footer>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="config.js"></script>
 <script src="listings.js"></script>
 <script src="chrome.js"></script>
 <script>
-  (function () {
+  C361.ready.then(function () {
     var q = new URLSearchParams(location.search), $ = function (id) { return document.getElementById(id); }, e = C361.esc;
     var zonas = Array.from(new Set(CASA361_LISTINGS.map(function (l) { return l.area_name; }))).sort();
     $('f-zona').innerHTML += zonas.map(function (z) { return '<option>' + e(z) + '</option>'; }).join('');
@@ -101,7 +102,8 @@
     ['f-deal', 'f-type', 'f-zona', 'f-max', 'f-sort', 'f-fav'].forEach(function (id) { $(id).addEventListener('change', render); });
     document.addEventListener('c361:favs', function () { if ($('f-fav').checked) render(); });
     render();
-  })();
+    if (window.C361Reveal) window.C361Reveal();
+  });
 </script>
 </body>
 </html>

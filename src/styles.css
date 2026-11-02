@@ -754,3 +754,4 @@ a.ct-way:hover { transform: translateY(-4px); border-color: var(--gold); }
 .faq summary::after { content: '+'; position: absolute; right: 4px; top: 18px; font: 300 30px var(--sans); color: var(--gold); transition: transform .3s; }
 .faq details[open] summary::after { transform: rotate(45deg); }
 .faq details p { padding: 0 0 22px; color: var(--muted); max-width: 46em; }
+.form-err { color: #9b2c2c; background: #fbeeee; border: 1px solid #ecc5c5; border-radius: 4px; padding: 10px 12px; font-size: 14px; }

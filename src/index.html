@@ -118,7 +118,7 @@
       </div>
       <div class="alert-box reveal" style="margin-top:56px">
         <div><p class="kicker" style="color:var(--gold)">Alertas</p><h2>Ainda não encontrou a casa certa?</h2><p>Diga-nos o que procura. Quando entrar um imóvel assim, é o primeiro a saber.</p></div>
-        <form class="form" novalidate>
+        <form class="form" novalidate data-lead="alerta">
           <div class="hide-sent" style="display:grid;gap:14px">
             <div class="row"><label>Zona<select name="zona"><option>Qualquer zona</option><option>Vila Franca de Xira</option><option>Alverca do Ribatejo</option><option>Póvoa de Santa Iria</option><option>Castanheira do Ribatejo</option></select></label>
               <label>Tipologia<select name="tip"><option>T1</option><option selected>T2</option><option>T3</option><option>T4 ou mais</option><option>Moradia</option></select></label></div>
@@ -144,7 +144,7 @@
         <p style="margin-top:26px"><a class="btn btn-wa" href="https://wa.me/351913613005" target="_blank" rel="noopener">Escrever no WhatsApp</a></p>
       </div>
       <div class="panel reveal">
-        <form class="form" novalidate>
+        <form class="form" novalidate data-lead="contacto">
           <div class="hide-sent" style="display:grid;gap:14px">
             <div class="row"><label>Nome<input name="name" required autocomplete="name"></label><label>Telefone<input name="phone" type="tel" required autocomplete="tel"></label></div>
             <label>Email<input name="email" type="email" required autocomplete="email"></label>
@@ -161,9 +161,10 @@
 </main>
 
 <footer id="foot"></footer>
+<script src="config.js"></script>
 <script src="listings.js"></script>
 <script>
-  (function () {
+  C361.ready.then(function () {
     var e = C361.esc, L = CASA361_LISTINGS, C = 'https://cdn.proppy.app/propertyfiles/5369/';
     var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -228,23 +229,29 @@
     place(false); restart();
 
     // Imóvel do mês
-    var l = C361.find('0076');
+    // Imóvel do mês: o 0076 enquanto existir; senão, o primeiro à venda com fotografias.
+    var forSale = L.filter(function (x) { return x.deal === 'venda' && x.photos && x.photos.length; });
+    var l = C361.find('0076') || forSale[0] || L[0];
     document.getElementById('spot').innerHTML =
-      '<a class="spot-img reveal-img reveal" href="imovel.html?ref=0076"><img data-parallax="0.08" src="' + e(l.photos[5]) + '" alt="Sala do T3 na Castanheira do Ribatejo"><span class="spot-badge">' + C361.price(l) + '</span></a>' +
+      '<a class="spot-img reveal-img reveal" href="imovel.html?ref=' + e(l.ref) + '"><img data-parallax="0.08" src="' + e(l.photos[5] || l.photos[0]) + '" alt="' + e(l.title) + '"><span class="spot-badge">' + C361.price(l) + '</span></a>' +
       '<div class="reveal"><p class="kicker">Imóvel do mês</p><h2>' + e(l.title) + '</h2><p style="color:var(--muted)">' + e(l.summary) + '</p>' +
-      '<dl><div><dt>Tipologia</dt><dd>' + e(l.typology) + '</dd></div><div><dt>Área</dt><dd>' + C361.area(l.area) + '</dd></div><div><dt>Terraço</dt><dd>49 m²</dd></div><div><dt>Certificado</dt><dd>' + e(l.energy) + '</dd></div></dl>' +
-      '<p style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><a class="btn btn-ink" href="imovel.html?ref=0076">Ver o imóvel <span class="arr" aria-hidden="true">→</span></a>' + C361.favButton('0076', 'big') + '</p></div>';
+      '<dl>' + [['Tipologia', l.typology], ['Área', l.area ? C361.area(l.area) : ''], ['Quartos', l.beds], ['Certificado', l.energy]].filter(function (x) { return x[1]; }).map(function (x) { return '<div><dt>' + x[0] + '</dt><dd>' + e(x[1]) + '</dd></div>'; }).join('') + '</dl>' +
+      '<p style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><a class="btn btn-ink" href="imovel.html?ref=' + e(l.ref) + '">Ver o imóvel <span class="arr" aria-hidden="true">→</span></a>' + C361.favButton(l.ref, 'big') + '</p></div>';
 
-    document.getElementById('featured').innerHTML = ['0066', '0053', '0047', '0075', '0068', '0071'].map(function (r) { return C361.card(C361.find(r)); }).join('');
+    var picks = ['0066', '0053', '0047', '0075', '0068', '0071'].map(C361.find).filter(Boolean);
+    if (picks.length < 6) picks = forSale.filter(function (x) { return x !== l; }).slice(0, 6);
+    document.getElementById('featured').innerHTML = picks.map(C361.card).join('');
 
     // Coleções
     document.getElementById('collections').innerHTML = CASA361_COLLECTIONS.map(function (c) {
       var rows = L.filter(function (x) { return x.tags.some(function (t) { return c.tags.indexOf(t) >= 0; }); });
-      var cover = C361.find(rows.filter(function (x) { return String(x.id) === c.photo; })[0] ? rows.filter(function (x) { return String(x.id) === c.photo; })[0].ref : rows[0].ref);
+      if (!rows.length) return '';
+      var cover = rows.filter(function (x) { return String(x.id) === c.photo; })[0] || rows[0];
       return '<a class="coll reveal" href="imoveis.html?colecao=' + c.id + '"><span class="coll-img"><img loading="lazy" src="' + e(cover.photos[0]) + '" alt=""></span>' +
         '<span class="coll-t"><b>' + e(c.title) + '</b><small>' + e(c.line) + '</small><em>' + rows.length + ' imóveis · Descobrir <span aria-hidden="true">→</span></em></span></a>';
     }).join('');
-  })();
+    if (window.C361Reveal) window.C361Reveal();
+  });
 </script>
 <script src="chrome.js"></script>
 </body>

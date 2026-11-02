@@ -62,7 +62,7 @@
       </div>
       <div class="panel" id="visita">
         <h2 style="font-size:28px;margin-bottom:14px">Marcar visita</h2>
-        <form class="form" novalidate>
+        <form class="form" novalidate data-lead="visita">
           <div class="hide-sent" style="display:grid;gap:14px">
             <label>Nome<input name="name" required autocomplete="name"></label>
             <div class="row"><label>Telefone<input name="phone" type="tel" required autocomplete="tel"></label><label>Email<input name="email" type="email" required autocomplete="email"></label></div>
@@ -87,9 +87,10 @@
 
 <div class="mbar" id="mbar"><div class="p"><span id="mb-price"></span><small id="mb-ref"></small></div><a class="btn btn-wa" id="mb-wa" target="_blank" rel="noopener" aria-label="WhatsApp">WhatsApp</a><a class="btn btn-ink" href="#visita">Visitar</a></div>
 <footer id="foot"></footer>
+<script src="config.js"></script>
 <script src="listings.js"></script>
 <script>
-  (function () {
+  C361.ready.then(function () {
     var q = new URLSearchParams(location.search);
     var ref = q.get('ref') || (location.pathname.match(/imovel\/(\w+)/) || [])[1] || '0076';
     var l = C361.find(ref) || C361.find('0076'), e = C361.esc, $ = function (id) { return document.getElementById(id); };
@@ -102,6 +103,7 @@
     document.querySelector('.side .panel').innerHTML = document.querySelector('.side .panel').innerHTML.replace('FAVBTN', C361.favButton(l.ref, 'big'));
     $('ref').textContent = 'Referência ' + l.ref;
     document.body.classList.add('has-mbar');
+    document.body.setAttribute('data-ref', l.ref);
     $('mb-price').textContent = C361.price(l); $('mb-ref').textContent = l.typology + ' · ' + l.area_name;
     Array.prototype.forEach.call(document.querySelectorAll('.mq-ref'), function (s) { s.textContent = 'ref. ' + l.ref; });
     $('msg').placeholder = 'Gostava de visitar o ' + l.typology + ' (ref. ' + l.ref + ').';
@@ -163,7 +165,8 @@
     lb.addEventListener('touchstart', function (ev) { x0 = ev.touches[0].clientX; }, { passive: true });
     lb.addEventListener('touchend', function (ev) { if (x0 === null) return; var dx = ev.changedTouches[0].clientX - x0; if (Math.abs(dx) > 40) show(cur + (dx < 0 ? 1 : -1)); x0 = null; }, { passive: true });
     document.addEventListener('keydown', function (ev) { if (lb.hidden) return; if (ev.key === 'Escape') close(); if (ev.key === 'ArrowLeft') show(cur - 1); if (ev.key === 'ArrowRight') show(cur + 1); });
-  })();
+    if (window.C361Reveal) window.C361Reveal();
+  });
 </script>
 <script src="chrome.js"></script>
 </body>

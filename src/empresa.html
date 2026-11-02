@@ -56,7 +56,7 @@
       <div class="panel" id="recrutamento">
         <h3 style="font-size:28px;margin-bottom:8px">Recrutamento</h3>
         <p style="color:var(--muted);margin-bottom:16px">Quer trabalhar connosco como consultor imobiliário? Deixe-nos o seu contacto.</p>
-        <form class="form" novalidate>
+        <form class="form" novalidate data-lead="recrutamento">
           <div class="hide-sent" style="display:grid;gap:14px">
             <div class="row"><label>Nome<input name="name" required autocomplete="name"></label><label>Telefone<input name="phone" type="tel" required autocomplete="tel"></label></div>
             <label>Email<input name="email" type="email" required autocomplete="email"></label>
@@ -72,6 +72,7 @@
 </main>
 
 <footer id="foot"></footer>
+<script src="config.js"></script>
 <script src="listings.js"></script>
 <script src="chrome.js"></script>
 </body>
