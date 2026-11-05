@@ -8,8 +8,8 @@
  * logo uma resposta automática. Não entra em nenhum CRM.
  */
 (function () {
-  var LOGO = 'https://admin.casafaricrm.com/UserFiles/2739/Images/13af704e-4424-4d3e-884a-40ab1a831be7.png';
-  var OLD = 'https://www.casa361.com/';
+  // O logótipo, guardado na biblioteca da Autisync (já não no Casafari).
+  var LOGO = 'https://api.autisync.com/uploads/media/571e72b2-fb2e-4af5-9a75-cac27ef70d6d/4bfe729e-92ec-4733-9d8a-cb8552e5f4d1.png';
   var PHONE = '913 613 005', TEL = '+351913613005', MAIL = 'geral@casa361.com';
   var page = document.body.getAttribute('data-page') || '';
   var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -52,14 +52,14 @@
       // Reclamações e o IMPIC (obrigatórios para uma imobiliária), a licença AMI e as redes sociais.
       // As páginas legais apontam, na maquete, para as do site atual; no site final passam para cá.
       '<div class="legal-links"><ul>' + [
-        ['empresa.html#recrutamento', 'Recrutamento'], [OLD + 'mapa-do-site', 'Mapa do site'], ['https://www.livroreclamacoes.pt/inicio', 'Livro de reclamações'],
-        [OLD + 'resolucao-de-litigios', 'Resolução alternativa de litígios'], [OLD + 'politica-de-privacidade', 'Política de privacidade'], [OLD + 'politica-de-cookies', 'Política de cookies'],
-        [OLD + 'termos-e-condicoes', 'Termos de uso'], ['#cookies', 'Preferências de cookies'],
+        ['empresa.html#recrutamento', 'Recrutamento'], ['mapa-do-site.html', 'Mapa do site'], ['https://www.livroreclamacoes.pt/inicio', 'Livro de reclamações'],
+        ['litigios.html', 'Resolução alternativa de litígios'], ['privacidade.html', 'Política de privacidade'], ['cookies.html', 'Política de cookies'],
+        ['termos.html', 'Termos de uso'], ['#cookies', 'Preferências de cookies'],
       ].map(function (l) { var ext = /^https?:/.test(l[0]); return '<li><a href="' + l[0] + '"' + (ext ? ' target="_blank" rel="noopener"' : '') + '>' + l[1] + '</a></li>'; }).join('') +
       '<li class="ami">Licença AMI 24691</li></ul></div>' +
       '<div class="badges">' +
-      '<a href="https://www.livroreclamacoes.pt/inicio" target="_blank" rel="noopener" aria-label="Livro de Reclamações Eletrónico"><img src="' + OLD + 'Assets/Images/livro-reclamacoes_sm.png" alt="Livro de Reclamações" height="64"></a>' +
-      '<a href="https://www.impic.pt/" target="_blank" rel="noopener" aria-label="IMPIC, Instituto dos Mercados Públicos, do Imobiliário e da Construção"><img src="' + OLD + 'Assets/Images/impic-logo_sm.png" alt="IMPIC" height="64"></a>' +
+      '<a href="https://www.livroreclamacoes.pt/inicio" target="_blank" rel="noopener" aria-label="Livro de Reclamações Eletrónico"><img src="img/livro-reclamacoes.png" alt="Livro de Reclamações" height="48"></a>' +
+      '<a href="https://www.impic.pt/" target="_blank" rel="noopener" aria-label="IMPIC, Instituto dos Mercados Públicos, do Imobiliário e da Construção"><span class="badge-text"><b>IMPIC</b><small>Mediação imobiliária · AMI 24691</small></span></a>' +
       '</div>' +
       '<div class="legal"><span>® Casa 361, Unipessoal Lda. Todos os direitos reservados.</span>' +
       '<span class="social"><a href="https://www.facebook.com/Casa.361com" target="_blank" rel="noopener" aria-label="Casa 361 no Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 21v-7.5H16l.4-3h-2.9V8.6c0-.9.3-1.5 1.5-1.5h1.5V4.4c-.3 0-1.2-.1-2.2-.1-2.2 0-3.7 1.3-3.7 3.8v2.4H8.1v3h2.5V21h2.9z" fill="currentColor"/></svg></a>' +

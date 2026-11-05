@@ -4,10 +4,119 @@
   "outputDirectory": "src",
   "cleanUrls": true,
   "headers": [
-    { "source": "/(.*)", "headers": [
-      { "key": "X-Robots-Tag", "value": "noindex" },
-      { "key": "X-Content-Type-Options", "value": "nosniff" },
-      { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
-    ] }
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        }
+      ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/:lang(pt|en|es)/politica-de-privacidade",
+      "destination": "/privacidade",
+      "permanent": true
+    },
+    {
+      "source": "/politica-de-privacidade",
+      "destination": "/privacidade",
+      "permanent": true
+    },
+    {
+      "source": "/politica-de-cookies",
+      "destination": "/cookies",
+      "permanent": true
+    },
+    {
+      "source": "/termos-e-condicoes",
+      "destination": "/termos",
+      "permanent": true
+    },
+    {
+      "source": "/resolucao-de-litigios",
+      "destination": "/litigios",
+      "permanent": true
+    },
+    {
+      "source": "/lista-propriedades",
+      "destination": "/imoveis",
+      "permanent": true
+    },
+    {
+      "source": "/detalhe-propriedade/:zona/909371",
+      "destination": "/imovel?ref=0076",
+      "permanent": true
+    },
+    {
+      "source": "/detalhe-propriedade/:zona/908216",
+      "destination": "/imovel?ref=0071",
+      "permanent": true
+    },
+    {
+      "source": "/detalhe-propriedade/:zona/897497",
+      "destination": "/imovel?ref=0066",
+      "permanent": true
+    },
+    {
+      "source": "/detalhe-propriedade/:zona/897813",
+      "destination": "/imovel?ref=0068",
+      "permanent": true
+    },
+    {
+      "source": "/detalhe-propriedade/:zona/909238",
+      "destination": "/imovel?ref=0075",
+      "permanent": true
+    },
+    {
+      "source": "/detalhe-propriedade/:zona/830737",
+      "destination": "/imovel?ref=0053",
+      "permanent": true
+    },
+    {
+      "source": "/detalhe-propriedade/:zona/808953",
+      "destination": "/imovel?ref=0047",
+      "permanent": true
+    },
+    {
+      "source": "/detalhe-propriedade/:zona/909762",
+      "destination": "/imovel?ref=0077",
+      "permanent": true
+    },
+    {
+      "source": "/detalhe-propriedade/:zona/908217",
+      "destination": "/imovel?ref=0072",
+      "permanent": true
+    },
+    {
+      "source": "/detalhe-propriedade/:zona/718311",
+      "destination": "/imovel?ref=0018",
+      "permanent": true
+    },
+    {
+      "source": "/detalhe-propriedade/:zona/896724",
+      "destination": "/imovel?ref=0065",
+      "permanent": true
+    },
+    {
+      "source": "/detalhe-propriedade/:path*",
+      "destination": "/imoveis",
+      "permanent": false
+    },
+    {
+      "source": "/detalhe/:path*",
+      "destination": "/imoveis",
+      "permanent": false
+    }
   ]
 }
