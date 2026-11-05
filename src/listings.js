@@ -135,13 +135,13 @@
     isFav: function (ref) { return favs().indexOf(ref) >= 0; },
     toggleFav: function (ref) { var a = favs(), i = a.indexOf(ref); if (i >= 0) a.splice(i, 1); else a.push(ref); setFavs(a); document.dispatchEvent(new CustomEvent('c361:favs')); return i < 0; },
     heart: heart,
-    // O mapa: OpenStreetMap com o estilo detalhado da CARTO (ruas, nomes, parques, comboio)
-    // e, à escolha, a vista de satélite da Esri. Usado na lista de imóveis, na página de
-    // cada imóvel e nos contactos.
+    // O mapa: OpenStreetMap (ruas, nomes, escolas, comboio, parques; os mosaicos da CARTO
+    // passaram a pedir chave) e, à escolha, a vista de satélite da Esri com os nomes por
+    // cima. Usado na lista de imóveis, na página de cada imóvel e nos contactos.
     mapLayers: function (map) {
-      var ruas = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', { maxZoom: 19, subdomains: 'abcd', attribution: '© OpenStreetMap · © CARTO' });
+      var ruas = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>' });
       var sat = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { maxZoom: 19, attribution: 'Imagens © Esri, Maxar, Earthstar Geographics' });
-      var nomes = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.png', { maxZoom: 19, subdomains: 'abcd', pane: 'shadowPane' });
+      var nomes = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', { maxZoom: 19, pane: 'shadowPane' });
       ruas.addTo(map);
       L.control.layers({ 'Mapa': ruas, 'Satélite': L.layerGroup([sat, nomes]) }, null, { position: 'topright' }).addTo(map);
       L.control.scale({ imperial: false, position: 'bottomleft' }).addTo(map);
