@@ -96,7 +96,7 @@
             .bindPopup('<a class="pop-card" href="imovel.html?ref=' + e(l.ref) + '"><img src="' + e(l.photos[0]) + '" alt=""><div><b>' + C361.price(l) + '</b>' + e([l.typology, l.area ? C361.area(l.area) : '', l.area_name].filter(Boolean).join(' · ')) + (l.status ? '<span class="pop-st">' + e(l.status) + '</span>' : '') + '</div></a>');
           mk.addTo(layer); pins[l.ref] = mk;
         });
-        if (pts.length && !fromMap) { byMap = true; map.fitBounds(pts, { padding: [40, 40], maxZoom: 14 }); }
+        if (pts.length && !fromMap) { byMap = true; map.fitBounds(pts, { padding: [70, 70], maxZoom: 14 }); }
       }
     }
     // Passar o rato num cartão acende o imóvel no mapa.

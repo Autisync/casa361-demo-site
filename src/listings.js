@@ -156,11 +156,11 @@
       if (l.beds) facts.push('<span>' + l.beds + ' quartos</span>');
       if (l.baths) facts.push('<span>' + l.baths + ' WC</span>');
       if (l.area) facts.push('<span>' + window.C361.area(l.area) + '</span>');
-      var tag = l.typology === 'Rústico' || l.typology === 'Urbano' ? l.type + ' ' + l.typology.toLowerCase() : l.typology;
+      var tag = l.typology === 'Rústico' || l.typology === 'Urbano' ? l.type + ' ' + l.typology.toLowerCase() : (l.typology || l.type || '');
       return '<article class="card reveal">' +
         '<a class="card-link" href="imovel.html?ref=' + e(l.ref) + '">' +
         '<div class="card-img"><img loading="lazy" src="' + e(l.photos[0]) + '" alt="' + e(l.type + ' ' + l.typology + ' em ' + l.area_name) + '">' +
-        '<span class="card-tag">' + e(tag) + '</span>' + (l.isNew ? '<span class="card-tag new">Construção nova</span>' : '') + '</div>' +
+        (tag ? '<span class="card-tag">' + e(tag) + '</span>' : '') + (l.status ? '<span class="card-tag new">' + e(l.status.replace(/^\w/, function (c) { return c.toUpperCase(); })) + '</span>' : l.isNew ? '<span class="card-tag new">Construção nova</span>' : '') + '</div>' +
         '<div class="card-body"><p class="card-place">' + e(l.area_name) + ' · ' + e(l.county) + '</p>' +
         '<h3>' + e(l.title) + '</h3>' +
         '<p class="card-facts">' + facts.join('') + '</p>' +

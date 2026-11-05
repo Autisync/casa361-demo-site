@@ -146,6 +146,7 @@
       pm.on('click', function () { pm.scrollWheelZoom.enable(); });
     } else $('pmap').hidden = true;
     $('similar').innerHTML = CASA361_LISTINGS.filter(function (x) { return x.ref !== l.ref && x.type === l.type; }).slice(0, 2).map(C361.card).join('');
+    if (!$('similar').innerHTML) $('similar').closest('section').hidden = true;
 
     // Simulador de crédito: prestação de um empréstimo a taxa fixa (indicativa).
     var sp = $('s-price'), sd = $('s-down'), sy = $('s-years'), sr = $('s-rate');
