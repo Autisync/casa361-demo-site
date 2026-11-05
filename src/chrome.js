@@ -2,11 +2,10 @@
  * Casa 361 — o que todas as páginas partilham: a faixa da maquete, o
  * cabeçalho, o rodapé, os formulários, os guardados e o movimento.
  *
- * Formulários: na maquete, nada é enviado. No site final, cada pedido
- * (contacto, visita, avaliação, alerta) segue pelo servidor da Autisync para
- * o Casafari CRM (API do Casafari, operação Leads_Insert), com nome, email,
- * telefone, mensagem, origem "Website" e a referência do imóvel, e aparece
- * no Casafari como um contacto novo, como hoje.
+ * Formulários: com a API ligada (config.js), cada pedido (contacto, visita,
+ * avaliação, alerta) segue pela casa361-api para geral@casa361.com, com nome,
+ * email, telefone, mensagem e a referência do imóvel, e quem o enviou recebe
+ * logo uma resposta automática. Não entra em nenhum CRM.
  */
 (function () {
   var LOGO = 'https://admin.casafaricrm.com/UserFiles/2739/Images/13af704e-4424-4d3e-884a-40ab1a831be7.png';
@@ -18,7 +17,7 @@
 
   var bar = document.createElement('div');
   bar.className = 'mq-bar';
-  bar.innerHTML = '<div class="wrap"><span>Maquete para apreciação · proposta Autisync para a Casa 361. Imóveis e contactos ligados ao Casafari CRM.</span><button type="button" id="mq-toggle">Esconder notas</button></div>';
+  bar.innerHTML = '<div class="wrap"><span>Maquete para apreciação · proposta Autisync para a Casa 361. Imóveis da conta UrbanFocus no CRM Autisync · pedidos para geral@casa361.com.</span><button type="button" id="mq-toggle">Esconder notas</button></div>';
   document.body.insertBefore(bar, document.body.firstChild);
 
   var top = document.getElementById('top');
@@ -65,7 +64,7 @@
       '<div class="legal"><span>® Casa 361, Unipessoal Lda. Todos os direitos reservados.</span>' +
       '<span class="social"><a href="https://www.facebook.com/Casa.361com" target="_blank" rel="noopener" aria-label="Casa 361 no Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 21v-7.5H16l.4-3h-2.9V8.6c0-.9.3-1.5 1.5-1.5h1.5V4.4c-.3 0-1.2-.1-2.2-.1-2.2 0-3.7 1.3-3.7 3.8v2.4H8.1v3h2.5V21h2.9z" fill="currentColor"/></svg></a>' +
       '<a href="https://www.instagram.com/casa.361com/" target="_blank" rel="noopener" aria-label="Casa 361 no Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.3" cy="6.7" r="1.2" fill="currentColor"/></svg></a></span>' +
-      '<span>Imóveis geridos com Casafari CRM</span></div></div>';
+      '</div></div>';
   }
 
   // WhatsApp sempre à mão.
@@ -85,8 +84,8 @@
     try { localStorage.setItem('c361-mq', off ? 'off' : 'on'); } catch (e) { /* ignore */ }
   });
 
-  // Formulários. Com a API ligada (config.js), o pedido vai para a casa361-api, que o põe
-  // no Casafari CRM e envia um email para geral@casa361.com. Sem API (maquete), só confirma.
+  // Formulários. Com a API ligada (config.js), o pedido vai para a casa361-api, que envia
+  // um email para geral@casa361.com e a resposta automática à pessoa. Sem API, só confirma.
   Array.prototype.forEach.call(document.querySelectorAll('form.form'), function (f) {
     var hp = document.createElement('input'); // armadilha para robôs: invisível para pessoas
     hp.type = 'text'; hp.name = 'website'; hp.tabIndex = -1; hp.autocomplete = 'off'; hp.setAttribute('aria-hidden', 'true');

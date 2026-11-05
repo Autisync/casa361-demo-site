@@ -1,12 +1,11 @@
 /*
  * Casa 361 — os imóveis.
  *
- * Na maquete, os imóveis estão escritos aqui (copiados de casa361.com, com as
- * fotografias servidas pelo próprio Casafari, cdn.proppy.app). No site final
- * esta lista vem do Casafari CRM: o feed de imóveis do Casafari (atualizado a
- * cada 20 minutos) ou a API do Casafari CRM, lida pelo servidor da Autisync e
- * guardada em cache. Os imóveis continuam a ser inseridos e geridos só no
- * Casafari; o site mostra-os sozinho.
+ * Com a API ligada (config.js), os imóveis vêm da conta UrbanFocus no CRM
+ * Autisync, pela casa361-api: os que estiverem publicados no site, com as
+ * fotografias guardadas no CRM. Inserir, alterar, reservar ou vender um imóvel
+ * faz-se no CRM; o site muda sozinho. Sem API, ficam os imóveis escritos aqui
+ * (os da maquete, copiados de casa361.com).
  */
 (function () {
   var CDN = 'https://cdn.proppy.app/propertyfiles/5369/';
@@ -92,19 +91,21 @@
     },
   ];
 
-  // Onde fica cada zona (aproximado: o centro da freguesia). No site final,
-  // as coordenadas vêm da ficha do imóvel no Casafari.
+  // Onde fica cada zona (aproximado: o centro da freguesia), para um imóvel
+  // que ainda não tenha coordenadas na ficha do CRM.
   var ZONES = {
     'Castanheira do Ribatejo': [38.9935, -8.9725], 'Vila Franca de Xira': [38.9553, -8.9897], 'Povos': [38.9655, -8.9930],
     'Forte da Casa': [38.8735, -9.0585], 'São João dos Montes': [38.9300, -9.0330], 'Amadora': [38.7620, -9.2310], 'Sobreda': [38.6480, -9.1920],
   };
   function placeAll(rows) { rows.forEach(function (l) { l.tags = l.tags || []; if (!l.lat && ZONES[l.area_name]) { l.lat = ZONES[l.area_name][0]; l.lng = ZONES[l.area_name][1]; } }); }
   placeAll(window.CASA361_LISTINGS);
-  // Com a API ligada, os imóveis vêm do Casafari (pela casa361-api); sem ela, ficam os de cima.
+  // Com a API ligada, os imóveis vêm do CRM (pela casa361-api) e só esses: nunca os da
+  // maquete, que podem já estar vendidos. Se a API não responder, a lista fica vazia e as
+  // páginas convidam a contactar.
   var API = String(window.C361_API || '').replace(/\/+$/, '');
   var ready = !API ? Promise.resolve() : fetch(API + '/listings').then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
-    .then(function (j) { if (j && j.listings && j.listings.length) { placeAll(j.listings); window.CASA361_LISTINGS = j.listings; } })
-    .catch(function () { /* a API não respondeu: mostra os imóveis da maquete */ });
+    .then(function (j) { var rows = (j && j.listings) || []; placeAll(rows); window.CASA361_LISTINGS = rows; })
+    .catch(function () { window.CASA361_LISTINGS = []; window.C361_OFFLINE = true; });
 
   // Coleções: formas de explorar para além da zona e do preço.
   window.CASA361_COLLECTIONS = [
@@ -134,6 +135,18 @@
     isFav: function (ref) { return favs().indexOf(ref) >= 0; },
     toggleFav: function (ref) { var a = favs(), i = a.indexOf(ref); if (i >= 0) a.splice(i, 1); else a.push(ref); setFavs(a); document.dispatchEvent(new CustomEvent('c361:favs')); return i < 0; },
     heart: heart,
+    // O mapa: OpenStreetMap com o estilo detalhado da CARTO (ruas, nomes, parques, comboio)
+    // e, à escolha, a vista de satélite da Esri. Usado na lista de imóveis, na página de
+    // cada imóvel e nos contactos.
+    mapLayers: function (map) {
+      var ruas = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', { maxZoom: 19, subdomains: 'abcd', attribution: '© OpenStreetMap · © CARTO' });
+      var sat = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { maxZoom: 19, attribution: 'Imagens © Esri, Maxar, Earthstar Geographics' });
+      var nomes = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.png', { maxZoom: 19, subdomains: 'abcd', pane: 'shadowPane' });
+      ruas.addTo(map);
+      L.control.layers({ 'Mapa': ruas, 'Satélite': L.layerGroup([sat, nomes]) }, null, { position: 'topright' }).addTo(map);
+      L.control.scale({ imperial: false, position: 'bottomleft' }).addTo(map);
+      return map;
+    },
     favButton: function (ref, extra) {
       var on = window.C361.isFav(ref);
       return '<button type="button" class="fav' + (extra ? ' ' + extra : '') + '" data-fav="' + ref + '" aria-pressed="' + on + '" aria-label="' + (on ? 'Retirar dos guardados' : 'Guardar este imóvel') + '">' + heart + '</button>';

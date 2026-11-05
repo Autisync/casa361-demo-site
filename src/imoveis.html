@@ -30,7 +30,7 @@
         <span class="view" role="group" aria-label="Vista"><button type="button" id="v-map" aria-pressed="true">Ver no mapa</button><button type="button" id="v-list" aria-pressed="false">Só a lista</button></span>
         <span class="count" id="count" aria-live="polite"></span>
       </div>
-      <div class="mq" style="margin-bottom:24px"><b>Ligação ao Casafari</b>A lista completa vem do Casafari CRM. Um imóvel novo publicado no Casafari aparece aqui sozinho; um imóvel vendido ou retirado sai sozinho. No mapa, cada imóvel aparece pela localização da ficha no Casafari (na maquete, o centro da freguesia).</div>
+      <div class="mq" style="margin-bottom:24px"><b>Ligação ao CRM</b>A lista vem da conta UrbanFocus no CRM Autisync (só a parte de Imóveis). Um imóvel publicado no CRM aparece aqui sozinho; um imóvel vendido ou retirado sai sozinho. No mapa, cada imóvel aparece pela localização da ficha no CRM (sem a morada exata, só a zona).</div>
       <div class="list-wrap with-map" id="wrap"><div class="grid" id="list"></div><div id="map" role="region" aria-label="Mapa dos imóveis"></div></div>
     </div>
   </section>
@@ -54,36 +54,49 @@
     if (col) $('h1').textContent = col.title;
     if (q.get('guardados')) { $('f-fav').checked = true; $('h1').textContent = 'Os seus imóveis guardados'; }
 
-    // Mapa (OpenStreetMap, com o estilo claro da CARTO).
-    var map = null, layer = null, pins = {};
+    // Mapa detalhado (ruas ou satélite). Com "Atualizar ao mover o mapa", a lista mostra só
+    // os imóveis da zona à vista: arraste e aproxime para procurar numa rua ou freguesia.
+    var map = null, layer = null, pins = {}, follow = false, byMap = false, area = null;
     if (window.L) {
       map = L.map('map', { scrollWheelZoom: false, zoomControl: true }).setView([38.9, -9.05], 10);
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { maxZoom: 18, attribution: '© OpenStreetMap · © CARTO' }).addTo(map);
+      C361.mapLayers(map);
       layer = L.layerGroup().addTo(map);
+      var Follow = L.Control.extend({ options: { position: 'bottomright' }, onAdd: function () {
+        var d = L.DomUtil.create('label', 'map-follow');
+        d.innerHTML = '<input type="checkbox" id="m-follow"> Atualizar a lista ao mover o mapa';
+        L.DomEvent.disableClickPropagation(d);
+        d.querySelector('input').addEventListener('change', function (ev) { follow = ev.target.checked; area = follow ? map.getBounds() : null; render(true); });
+        return d;
+      } });
+      map.addControl(new Follow());
+      map.on('click', function () { map.scrollWheelZoom.enable(); });
+      map.on('moveend', function () { if (follow && !byMap) { area = map.getBounds(); render(true); } byMap = false; });
     } else { $('wrap').classList.remove('with-map'); $('map').hidden = true; }
 
     function short(l) { return l.price ? (l.price >= 1e6 ? (l.price / 1e6).toFixed(1).replace('.', ',') + ' M€' : Math.round(l.price / 1000) + ' mil €') : 'Consulta'; }
-    function render() {
+    function render(fromMap) {
       var d = $('f-deal').value, t = $('f-type').value, z = $('f-zona').value, m = +$('f-max').value || Infinity, s = $('f-sort').value, onlyFav = $('f-fav').checked, fav = C361.favs();
       var rows = CASA361_LISTINGS.filter(function (l) { return (onlyFav || l.deal === d) && (!t || l.type === t) && (!z || l.area_name === z) && (!l.price || l.price <= m) && (!onlyFav || fav.indexOf(l.ref) >= 0) && (!col || l.tags.some(function (t) { return col.tags.indexOf(t) >= 0; })); });
+      var inZone = rows;
+      if (area) rows = rows.filter(function (l) { return l.lat && area.contains([l.lat, l.lng]); });
       if (s === 'asc') rows.sort(function (a, b) { return a.price - b.price; });
       if (s === 'desc') rows.sort(function (a, b) { return b.price - a.price; });
       $('count').textContent = rows.length === 1 ? '1 imóvel' : rows.length + ' imóveis';
       $('list').innerHTML = rows.length ? rows.map(C361.card).join('') :
-        '<p class="empty" style="grid-column:1/-1">' + (onlyFav ? 'Ainda não guardou nenhum imóvel. Toque no coração de um imóvel para o guardar aqui.' : 'Não temos imóveis com estes filtros neste momento. <a href="contactos.html">Diga-nos o que procura</a> e avisamos quando entrar um.') + '</p>';
+        '<p class="empty" style="grid-column:1/-1">' + (area && inZone.length ? 'Nenhum imóvel nesta parte do mapa. Afaste o mapa ou desligue "Atualizar a lista ao mover o mapa".' : window.C361_OFFLINE ? 'Não conseguimos carregar os imóveis neste momento. <a href="contactos.html">Fale connosco</a> ou ligue 913 613 005.' : onlyFav ? 'Ainda não guardou nenhum imóvel. Toque no coração de um imóvel para o guardar aqui.' : 'Não temos imóveis com estes filtros neste momento. <a href="contactos.html">Diga-nos o que procura</a> e avisamos quando entrar um.') + '</p>';
       window.C361Reveal($('list'));
       if (map) {
         layer.clearLayers(); pins = {};
         var seen = {}, pts = [];
-        rows.forEach(function (l) {
+        (area ? inZone : rows).forEach(function (l) {
           if (!l.lat) return;
           var k = l.lat + ',' + l.lng, n = seen[k] = (seen[k] || 0) + 1, off = (n - 1) * 0.006;
           var ll = [l.lat + off * Math.cos(n * 2.1), l.lng + off * Math.sin(n * 2.1)]; pts.push(ll);
           var mk = L.marker(ll, { icon: L.divIcon({ className: '', html: '<span class="pin" data-pin="' + e(l.ref) + '">' + short(l) + '</span>', iconSize: [0, 0] }) })
-            .bindPopup('<a class="pop-card" href="imovel.html?ref=' + e(l.ref) + '"><img src="' + e(l.photos[0]) + '" alt=""><div><b>' + C361.price(l) + '</b>' + e(l.typology + ' · ' + l.area_name) + '</div></a>');
+            .bindPopup('<a class="pop-card" href="imovel.html?ref=' + e(l.ref) + '"><img src="' + e(l.photos[0]) + '" alt=""><div><b>' + C361.price(l) + '</b>' + e([l.typology, l.area ? C361.area(l.area) : '', l.area_name].filter(Boolean).join(' · ')) + (l.status ? '<span class="pop-st">' + e(l.status) + '</span>' : '') + '</div></a>');
           mk.addTo(layer); pins[l.ref] = mk;
         });
-        if (pts.length) map.fitBounds(pts, { padding: [40, 40], maxZoom: 13 });
+        if (pts.length && !fromMap) { byMap = true; map.fitBounds(pts, { padding: [40, 40], maxZoom: 14 }); }
       }
     }
     // Passar o rato num cartão acende o imóvel no mapa.
@@ -99,8 +112,8 @@
     }
     $('v-map').onclick = function () { view(true); }; $('v-list').onclick = function () { view(false); };
     if (window.matchMedia('(max-width: 1000px)').matches) view(false); // no telemóvel, primeiro a lista; o mapa está a um toque
-    ['f-deal', 'f-type', 'f-zona', 'f-max', 'f-sort', 'f-fav'].forEach(function (id) { $(id).addEventListener('change', render); });
-    document.addEventListener('c361:favs', function () { if ($('f-fav').checked) render(); });
+    ['f-deal', 'f-type', 'f-zona', 'f-max', 'f-sort', 'f-fav'].forEach(function (id) { $(id).addEventListener('change', function () { render(); }); });
+    document.addEventListener('c361:favs', function () { if ($('f-fav').checked) render(true); });
     render();
     if (window.C361Reveal) window.C361Reveal();
   });

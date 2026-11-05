@@ -17,7 +17,7 @@
 
 <main id="main">
   <section class="hero svc-hero ct-hero">
-    <div class="hero-img" style="background-image:url('https://cdn.proppy.app/propertyfiles/5369/896724/b602f393-59a8-4782-a657-56f05e15ad83.jpg');background-position:center 70%"></div>
+    <div class="hero-img" style="background-image:url('https://api.autisync.com/uploads/media/5bb51851-12f5-4c63-a256-b9ffa95a51c4/properties/81b0ac6b-c5f0-4f5a-8357-57a6e7da56c8.jpg');background-position:center 70%"></div>
     <div class="wrap">
       <div>
         <p class="kicker">Contactos</p>
@@ -69,7 +69,7 @@
             <button class="btn btn-ink" type="submit">Enviar mensagem <span class="arr" aria-hidden="true">→</span></button>
           </div>
           <p class="ok" role="status">Obrigado! Recebemos a sua mensagem e entramos em contacto consigo em breve, pela forma que escolheu.</p>
-          <div class="mq"><b>Para onde vai este pedido</b>Entra no Casafari CRM como contacto novo, com o assunto, a forma e a altura preferidas na mensagem, origem "Website · Contactos". É no Casafari que o vê e responde, como hoje.</div>
+          <div class="mq"><b>Para onde vai este pedido</b>Chega ao geral@casa361.com com o assunto, a forma e a altura preferidas para o contacto, e a pessoa recebe logo uma resposta automática. Responde diretamente desse email.</div>
         </form>
       </div>
     </div>
@@ -112,7 +112,7 @@
     // Mapa das zonas
     if (window.L) {
       var map = L.map('ct-map', { scrollWheelZoom: false }).setView([38.9, -9.05], 10);
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { maxZoom: 18, attribution: '© OpenStreetMap · © CARTO' }).addTo(map);
+      C361.mapLayers(map);
       var zs = [['Vila Franca de Xira', 38.9553, -8.9897], ['Alverca do Ribatejo', 38.8956, -9.0390], ['Póvoa de Santa Iria', 38.8610, -9.0640], ['Alhandra', 38.9270, -9.0090], ['Castanheira do Ribatejo', 38.9935, -8.9725], ['Forte da Casa', 38.8735, -9.0585]];
       L.polygon([[39.03, -8.93], [38.98, -9.07], [38.85, -9.10], [38.84, -9.03], [38.93, -8.96]], { color: '#b9925a', weight: 1.5, fillColor: '#b9925a', fillOpacity: .12 }).addTo(map);
       zs.forEach(function (z) { L.marker([z[1], z[2]], { icon: L.divIcon({ className: '', html: '<span class="pin">' + z[0] + '</span>', iconSize: [0, 0] }) }).addTo(map); });

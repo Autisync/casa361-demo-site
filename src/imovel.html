@@ -7,6 +7,7 @@
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Manrope:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body data-page="imoveis">
@@ -24,7 +25,7 @@
       <p class="where" id="where"></p>
       <div class="facts" id="facts"></div>
 
-      <div class="mq"><b>Ligação ao Casafari</b>Tudo nesta página (título, preço, fotografias, descrição, características, certificado energético) vem da ficha do imóvel no Casafari CRM. Altera no Casafari e a página muda sozinha.</div>
+      <div class="mq"><b>Ligação ao CRM</b>Tudo nesta página (título, preço, fotografias, descrição, características, certificado energético) vem da ficha do imóvel no CRM. Altera no CRM e a página muda sozinha.</div>
 
       <section class="block reveal" id="desc-block"><h2>Sobre este imóvel</h2><div id="desc"></div></section>
       <section class="block reveal" id="rooms-block"><h2>Divisões</h2><table class="rooms"><tbody id="rooms"></tbody></table></section>
@@ -41,11 +42,12 @@
           <div class="sim-out"><div class="main"><small>Prestação mensal</small><strong class="num" id="s-pay"></strong></div><div><small>A financiar</small><strong class="num" id="s-loan"></strong></div><div><small>Entrada</small><strong class="num" id="s-cash"></strong></div></div>
           <p class="sim-note">Simulação indicativa, sem seguros nem impostos (IMT e imposto do selo). A TAEG e as condições finais são dadas pelo banco. <a href="#visita">Peça-nos uma simulação com os nossos parceiros.</a></p>
         </div>
-        <div class="mq" style="margin-top:14px"><b>Vantagem sobre a concorrência</b>A Century 21 e os portais têm simulador; o site atual da Casa 361 não. Quem faz a simulação e pede ajuda entra no Casafari como contacto com interesse em crédito.</div>
+        <div class="mq" style="margin-top:14px"><b>Vantagem sobre a concorrência</b>A Century 21 e os portais têm simulador; o site atual da Casa 361 não. Quem faz a simulação e pede ajuda chega ao geral@casa361.com como pedido de crédito, com o imóvel e os valores.</div>
       </section>
       <section class="block reveal"><h2>Localização</h2>
-        <div class="mapbox"><div><strong id="loc-name"></strong><br><span style="color:var(--muted);font-size:14px" id="loc-sub"></span></div>
-          <a class="btn btn-line" id="map-link" target="_blank" rel="noopener">Ver no mapa</a></div>
+        <div id="pmap" class="pmap" role="img" aria-label="Mapa da zona do imóvel"></div>
+        <div class="mapbox"><div><strong id="loc-name"></strong><br><span style="color:var(--muted);font-size:14px" id="loc-sub"></span><br><small style="color:var(--muted)">Localização aproximada: a morada exata é dada na visita.</small></div>
+          <a class="btn btn-line" id="map-link" target="_blank" rel="noopener">Abrir no Google Maps</a></div>
       </section>
       <section class="block reveal"><h2>Imóveis semelhantes</h2><div class="grid" id="similar" style="grid-template-columns:repeat(2,minmax(0,1fr))"></div></section>
     </div>
@@ -75,7 +77,7 @@
           <p class="ok" role="status">Pedido de visita recebido. Ligamos-lhe para combinar o dia e a hora.</p>
         </form>
       </div>
-      <div class="mq"><b>Para onde vai este pedido</b>Entra no Casafari CRM como pedido de visita, já com a referência do imóvel (<span class="mq-ref"></span>), origem "Website", e fica ligado ao imóvel certo. É no Casafari que o vê e responde, como hoje.</div>
+      <div class="mq"><b>Para onde vai este pedido</b>Chega ao geral@casa361.com como pedido de visita, já com a referência do imóvel (<span class="mq-ref"></span>), e a pessoa recebe logo uma resposta automática. Responde diretamente desse email.</div>
     </aside>
   </div>
 </main>
@@ -87,6 +89,7 @@
 
 <div class="mbar" id="mbar"><div class="p"><span id="mb-price"></span><small id="mb-ref"></small></div><a class="btn btn-wa" id="mb-wa" target="_blank" rel="noopener" aria-label="WhatsApp">WhatsApp</a><a class="btn btn-ink" href="#visita">Visitar</a></div>
 <footer id="foot"></footer>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="config.js"></script>
 <script src="listings.js"></script>
 <script>
@@ -134,7 +137,14 @@
     if (l.plans) { $('plans-block').hidden = false; $('plans').innerHTML = l.plans.map(function (src, i) { return '<img src="' + e(src) + '" alt="Planta ' + (i + 1) + '" loading="lazy" style="border:1px solid var(--line);border-radius:6px;background:#fff">'; }).join(''); }
     $('loc-name').textContent = l.area_name;
     $('loc-sub').textContent = l.parish + ', ' + l.county;
-    $('map-link').href = 'https://www.openstreetmap.org/search?query=' + encodeURIComponent(l.area_name + ', ' + l.county + ', Portugal');
+    $('map-link').href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(l.area_name + ', ' + l.county + ', Portugal');
+    // A zona num mapa detalhado: um círculo de ~400 m, nunca o ponto exato da casa.
+    if (window.L && l.lat) {
+      var pm = L.map('pmap', { scrollWheelZoom: false }).setView([l.lat, l.lng], 15);
+      C361.mapLayers(pm);
+      L.circle([l.lat, l.lng], { radius: 400, color: '#b9925a', weight: 2, fillColor: '#b9925a', fillOpacity: .18 }).addTo(pm);
+      pm.on('click', function () { pm.scrollWheelZoom.enable(); });
+    } else $('pmap').hidden = true;
     $('similar').innerHTML = CASA361_LISTINGS.filter(function (x) { return x.ref !== l.ref && x.type === l.type; }).slice(0, 2).map(C361.card).join('');
 
     // Simulador de crédito: prestação de um empréstimo a taxa fixa (indicativa).

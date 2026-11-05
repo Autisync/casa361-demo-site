@@ -56,9 +56,9 @@
 
   <!-- Três portas: comprar, vender, arrendar -->
   <section class="doors wrap">
-    <a class="door reveal" href="imoveis.html"><img loading="lazy" src="https://cdn.proppy.app/propertyfiles/5369/897497/0ad40a6d-7c08-4c71-84cc-31441ce7a9ec.jpg" alt=""><span><small>Comprar</small>Encontre a sua casa</span></a>
-    <a class="door reveal" href="vender.html"><img loading="lazy" src="https://cdn.proppy.app/propertyfiles/5369/808953/e491fd36-4cb6-4e00-8f00-19d4cff60d3e.jpg" alt=""><span><small>Vender</small>Quanto vale a sua casa?</span></a>
-    <a class="door reveal" href="imoveis.html?deal=arrendamento"><img loading="lazy" src="https://cdn.proppy.app/propertyfiles/5369/909762/59ff7d17-a810-41a7-9c5a-fdd0e9b92d23.jpeg" alt=""><span><small>Arrendar</small>Casas para arrendar</span></a>
+    <a class="door reveal" href="imoveis.html"><img loading="lazy" src="https://api.autisync.com/uploads/media/5bb51851-12f5-4c63-a256-b9ffa95a51c4/properties/eebea4b8-9b38-4060-9cdd-605c61705de1.jpg" alt=""><span><small>Comprar</small>Encontre a sua casa</span></a>
+    <a class="door reveal" href="vender.html"><img loading="lazy" src="https://api.autisync.com/uploads/media/5bb51851-12f5-4c63-a256-b9ffa95a51c4/properties/86e56652-2d2a-4422-9a47-c080573ed7a9.jpg" alt=""><span><small>Vender</small>Quanto vale a sua casa?</span></a>
+    <a class="door reveal" href="imoveis.html?deal=arrendamento"><img loading="lazy" src="https://api.autisync.com/uploads/media/5bb51851-12f5-4c63-a256-b9ffa95a51c4/properties/da635993-1ec1-4921-ac16-9d65ec6cc975.jpg" alt=""><span><small>Arrendar</small>Casas para arrendar</span></a>
   </section>
 
   <!-- Explorar por zona: carrossel centrado, que roda sozinho (pára com o rato ou o dedo em cima) -->
@@ -86,7 +86,7 @@
         <div><p class="kicker">Em destaque</p><h2>Encontramos a casa. <em class="gold-i">A história é sua.</em></h2></div>
         <a class="btn btn-line" href="imoveis.html">Ver todos os imóveis <span class="arr" aria-hidden="true">→</span></a>
       </div>
-      <div class="mq reveal" style="margin-bottom:28px"><b>Ligação ao Casafari</b>Estes imóveis vêm do Casafari CRM, sozinhos. Continua a inserir e a gerir os imóveis só no Casafari: preço novo, fotografias, reservado ou vendido aparecem aqui no máximo 20 minutos depois, sem trabalho duplicado.</div>
+      <div class="mq reveal" style="margin-bottom:28px"><b>Ligação ao CRM</b>Estes imóveis vêm da conta UrbanFocus no CRM Autisync, sozinhos. Preço novo, fotografias, reservado ou vendido: altera no CRM e aparece aqui no máximo 10 minutos depois, sem trabalho duplicado.</div>
       <div class="grid" id="featured"></div>
     </div>
   </section>
@@ -127,7 +127,7 @@
             <button class="btn btn-gold" type="submit">Criar alerta</button>
           </div>
           <p class="ok" role="status">Alerta criado. Avisamos quando entrar um imóvel assim.</p>
-          <div class="mq"><b>No Casafari</b>Entra no Casafari CRM como contacto comprador, com a procura na mensagem, para cruzar com os imóveis novos.</div>
+          <div class="mq"><b>Para onde vai</b>Chega ao geral@casa361.com com o que a pessoa procura, para a avisar quando entrar um imóvel assim. Ela recebe logo uma resposta automática.</div>
         </form>
       </div>
     </div>
@@ -153,7 +153,7 @@
             <button class="btn btn-ink" type="submit">Enviar</button>
           </div>
           <p class="ok" role="status">Obrigado! Recebemos o seu pedido e entramos em contacto consigo em breve.</p>
-          <div class="mq"><b>Para onde vai este pedido</b>Entra no Casafari CRM como contacto novo (nome, email, telefone, mensagem, origem "Website"), como os pedidos do site atual. Nada fica de fora do Casafari.</div>
+          <div class="mq"><b>Para onde vai este pedido</b>Chega ao geral@casa361.com no momento (nome, email, telefone, mensagem), e a pessoa recebe logo uma resposta automática. Responde diretamente desse email.</div>
         </form>
       </div>
     </div>
@@ -165,11 +165,11 @@
 <script src="listings.js"></script>
 <script>
   C361.ready.then(function () {
-    var e = C361.esc, L = CASA361_LISTINGS, C = 'https://cdn.proppy.app/propertyfiles/5369/';
+    var e = C361.esc, L = CASA361_LISTINGS, C = 'https://api.autisync.com/uploads/media/5bb51851-12f5-4c63-a256-b9ffa95a51c4/properties/';
     var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     // Hero: as melhores fotografias dos imóveis, em sequência lenta.
-    var slides = [C + '896724/b602f393-59a8-4782-a657-56f05e15ad83.jpg', C + '808953/e491fd36-4cb6-4e00-8f00-19d4cff60d3e.jpg', C + '909238/1bdd0ebc-eb12-4baa-a31c-3a21b5af2077.jpg', C + '897497/0ad40a6d-7c08-4c71-84cc-31441ce7a9ec.jpg'];
+    var slides = [C + '81b0ac6b-c5f0-4f5a-8357-57a6e7da56c8.jpg', C + '86e56652-2d2a-4422-9a47-c080573ed7a9.jpg', C + '4188d621-9cf5-4b4d-8258-400ac40ab2c7.jpg', C + 'eebea4b8-9b38-4060-9cdd-605c61705de1.jpg'];
     var box = document.getElementById('slides'), dots = document.getElementById('dots');
     box.innerHTML = slides.map(function (s, i) { return '<div class="slide' + (i ? '' : ' on') + '" style="background-image:url(\'' + s + '\')"></div>'; }).join('');
     dots.innerHTML = slides.map(function (s, i) { return '<span' + (i ? '' : ' class="on"') + '></span>'; }).join('');
@@ -187,18 +187,24 @@
       });
     });
 
-    // Explorar por zona
-    var zones = [
-      ['Castanheira do Ribatejo', '909238/1bdd0ebc-eb12-4baa-a31c-3a21b5af2077.jpg', 'Junto à estação, a 26 minutos de Lisboa'],
-      ['Vila Franca de Xira', '897497/0ad40a6d-7c08-4c71-84cc-31441ce7a9ec.jpg', 'A cidade à beira do Tejo'],
-      ['São João dos Montes', '896724/b602f393-59a8-4782-a657-56f05e15ad83.jpg', 'Terrenos com vista para o rio'],
-      ['Forte da Casa', '830737/c7be5ec8-7929-49fe-929f-3e46c1d0c377.jpg', 'Póvoa de Santa Iria e Forte da Casa'],
-      ['Sobreda', '808953/e491fd36-4cb6-4e00-8f00-19d4cff60d3e.jpg', 'Entre Lisboa e as praias'],
-      ['Amadora', '897813/f4633ca4-fc1f-4ea6-baf4-5448d8a23976.jpg', 'Encosta do Sol'],
-    ];
+    // Explorar por zona: as zonas onde há imóveis agora, cada uma com a fotografia de um deles.
+    var ZT = {
+      'Castanheira do Ribatejo': 'Junto à estação, a 26 minutos de Lisboa',
+      'Vila Franca de Xira': 'A cidade à beira do Tejo',
+      'São João dos Montes': 'Terrenos com vista para o rio',
+      'Forte da Casa': 'Póvoa de Santa Iria e Forte da Casa',
+      'Sobreda': 'Entre Lisboa e as praias',
+      'Amadora': 'Encosta do Sol',
+    };
+    var byZone = {};
+    L.forEach(function (l) { if (l.area_name && l.photos && l.photos.length) (byZone[l.area_name] = byZone[l.area_name] || []).push(l); });
+    var zones = Object.keys(byZone).sort(function (a, b) { return byZone[b].length - byZone[a].length || a.localeCompare(b); })
+      .map(function (z) { return [z, byZone[z][0].photos[0], ZT[z] || byZone[z][0].county || '']; });
+    if (!zones.length) document.getElementById('zcar').closest('section').hidden = true;
+    else {
     var tiles = zones.map(function (z) {
-      var n = L.filter(function (l) { return l.area_name === z[0]; }).length;
-      return '<a class="ztile" href="imoveis.html?zona=' + encodeURIComponent(z[0]) + '"><img loading="lazy" src="' + C + z[1] + '" alt=""><span class="zt"><b>' + e(z[0]) + '</b><small>' + e(z[2]) + '</small><em>' + (n === 1 ? '1 imóvel' : n + ' imóveis') + ' <span aria-hidden="true">→</span></em></span></a>';
+      var n = byZone[z[0]].length;
+      return '<a class="ztile" href="imoveis.html?zona=' + encodeURIComponent(z[0]) + '"><img loading="lazy" src="' + e(z[1]) + '" alt=""><span class="zt"><b>' + e(z[0]) + '</b><small>' + e(z[2]) + '</small><em>' + (n === 1 ? '1 imóvel' : n + ' imóveis') + ' <span aria-hidden="true">→</span></em></span></a>';
     });
     // Carrossel: as zonas repetidas dos dois lados, para rodar sem fim.
     var track = document.getElementById('ztrack'), zc = document.getElementById('zcar'), zd = document.getElementById('zdots'), N = tiles.length;
@@ -227,14 +233,16 @@
     zc.addEventListener('touchend', function (ev) { if (tx !== null) { var dx = ev.changedTouches[0].clientX - tx; if (Math.abs(dx) > 40) { go(dx < 0 ? 1 : -1); restart(); } } tx = null; paused = false; }, { passive: true });
     window.addEventListener('resize', function () { place(false); });
     place(false); restart();
+    }
 
     // Imóvel do mês
     // Imóvel do mês: o 0076 enquanto existir; senão, o primeiro à venda com fotografias.
     var forSale = L.filter(function (x) { return x.deal === 'venda' && x.photos && x.photos.length; });
     var l = C361.find('0076') || forSale[0] || L[0];
-    document.getElementById('spot').innerHTML =
+    if (!l) document.getElementById('spot').closest('section').hidden = true;
+    else document.getElementById('spot').innerHTML =
       '<a class="spot-img reveal-img reveal" href="imovel.html?ref=' + e(l.ref) + '"><img data-parallax="0.08" src="' + e(l.photos[5] || l.photos[0]) + '" alt="' + e(l.title) + '"><span class="spot-badge">' + C361.price(l) + '</span></a>' +
-      '<div class="reveal"><p class="kicker">Imóvel do mês</p><h2>' + e(l.title) + '</h2><p style="color:var(--muted)">' + e(l.summary) + '</p>' +
+      '<div class="reveal"><p class="kicker">Imóvel do mês</p><h2>' + e(l.title) + '</h2><p style="color:var(--muted)">' + e(l.summary || (l.description || [])[0] || '') + '</p>' +
       '<dl>' + [['Tipologia', l.typology], ['Área', l.area ? C361.area(l.area) : ''], ['Quartos', l.beds], ['Certificado', l.energy]].filter(function (x) { return x[1]; }).map(function (x) { return '<div><dt>' + x[0] + '</dt><dd>' + e(x[1]) + '</dd></div>'; }).join('') + '</dl>' +
       '<p style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><a class="btn btn-ink" href="imovel.html?ref=' + e(l.ref) + '">Ver o imóvel <span class="arr" aria-hidden="true">→</span></a>' + C361.favButton(l.ref, 'big') + '</p></div>';
 
