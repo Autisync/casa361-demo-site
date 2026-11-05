@@ -28,6 +28,7 @@
       <div class="mq"><b>Ligação ao CRM</b>Tudo nesta página (título, preço, fotografias, descrição, características, certificado energético) vem da ficha do imóvel no CRM. Altera no CRM e a página muda sozinha.</div>
 
       <section class="block reveal" id="desc-block"><h2>Sobre este imóvel</h2><div id="desc"></div></section>
+      <section class="block reveal" id="video-block" hidden><h2>Vídeo</h2><div class="video-frame" id="video"></div></section>
       <section class="block reveal" id="rooms-block"><h2>Divisões</h2><table class="rooms"><tbody id="rooms"></tbody></table></section>
       <section class="block reveal" id="feat-block"><h2>Características</h2><ul class="feats" id="feats"></ul></section>
       <section class="block" id="plans-block" hidden><h2>Plantas</h2><div class="grid" id="plans" style="grid-template-columns:repeat(2,minmax(0,1fr))"></div></section>
@@ -134,7 +135,11 @@
       $('feats').innerHTML = l.features.map(function (f) { return '<li>' + e(f) + '</li>'; }).join('') +
         (l.energy ? '<li class="energy" style="padding-left:0">Certificado energético <b>' + e(l.energy) + '</b></li>' : '') + (l.year ? '<li>Ano de construção: ' + l.year + '</li>' : '');
     } else $('feat-block').hidden = true;
-    if (l.plans) { $('plans-block').hidden = false; $('plans').innerHTML = l.plans.map(function (src, i) { return '<img src="' + e(src) + '" alt="Planta ' + (i + 1) + '" loading="lazy" style="border:1px solid var(--line);border-radius:6px;background:#fff">'; }).join(''); }
+    // O vídeo do imóvel (YouTube ou Vimeo), quando a ficha no CRM o tem.
+    var yt = String(l.video || '').match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{6,})/), vm = String(l.video || '').match(/vimeo\.com\/(?:video\/)?(\d+)/);
+    var vsrc = yt ? 'https://www.youtube-nocookie.com/embed/' + yt[1] + '?rel=0' : vm ? 'https://player.vimeo.com/video/' + vm[1] : '';
+    if (vsrc) { $('video-block').hidden = false; $('video').innerHTML = '<iframe src="' + e(vsrc) + '" title="Vídeo do imóvel ref. ' + e(l.ref) + '" loading="lazy" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>'; }
+    if (l.plans && l.plans.length) { $('plans-block').hidden = false; $('plans').innerHTML = l.plans.map(function (src, i) { return '<img src="' + e(src) + '" alt="Planta ' + (i + 1) + '" loading="lazy" style="border:1px solid var(--line);border-radius:6px;background:#fff">'; }).join(''); }
     $('loc-name').textContent = l.area_name;
     $('loc-sub').textContent = l.parish + ', ' + l.county;
     $('map-link').href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(l.area_name + ', ' + l.county + ', Portugal');
