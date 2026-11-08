@@ -153,6 +153,85 @@
       L.control.scale({ imperial: false, position: 'bottomleft' }).addTo(map);
       return map;
     },
+    // Botão de ecrã inteiro no mapa (funciona também no iPhone: o mapa ocupa a janela).
+    mapFull: function (map) {
+      var C = L.Control.extend({ options: { position: 'topleft' }, onAdd: function () {
+        var b = L.DomUtil.create('button', 'map-full-btn'); b.type = 'button'; b.title = 'Ecrã inteiro'; b.setAttribute('aria-label', 'Ver o mapa em ecrã inteiro');
+        b.innerHTML = window.C361.icon('expand');
+        L.DomEvent.disableClickPropagation(b);
+        b.addEventListener('click', function () {
+          var el = map.getContainer(), on = !el.classList.contains('map-full');
+          el.classList.toggle('map-full', on); document.documentElement.classList.toggle('map-lock', on);
+          b.setAttribute('aria-label', on ? 'Sair do ecrã inteiro' : 'Ver o mapa em ecrã inteiro'); b.classList.toggle('on', on);
+          if (on) map.scrollWheelZoom.enable();
+          setTimeout(function () { map.invalidateSize(); }, 60);
+        });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && map.getContainer().classList.contains('map-full')) b.click(); });
+        return b;
+      } });
+      map.addControl(new C());
+    },
+    // "Perto daqui": escolas, transportes, supermercados, farmácias, saúde e parques
+    // perto da zona do imóvel, a partir do OpenStreetMap (serviço Overpass, sem chave).
+    nearby: function (map, lat, lng, box, grid) {
+      var R = 1500, q = '[out:json][timeout:20];(' +
+        'nwr(around:' + R + ',' + lat + ',' + lng + ')[amenity~"^(school|kindergarten|college|university)$"];' +
+        'nwr(around:' + R + ',' + lat + ',' + lng + ')[railway~"^(station|halt)$"];' +
+        'node(around:' + R + ',' + lat + ',' + lng + ')[highway=bus_stop];' +
+        'nwr(around:' + R + ',' + lat + ',' + lng + ')[shop~"^(supermarket|convenience)$"];' +
+        'nwr(around:' + R + ',' + lat + ',' + lng + ')[amenity~"^(pharmacy|hospital|clinic|doctors)$"];' +
+        'nwr(around:' + R + ',' + lat + ',' + lng + ')[leisure~"^(park|playground|sports_centre)$"];' +
+        ');out center 200;';
+      var CAT = [
+        ['escolas', 'Escolas', '<path d="M3 9.5 12 5l9 4.5-9 4.5z"/><path d="M7 11.5V16c1.5 1.3 3.2 2 5 2s3.5-.7 5-2v-4.5M21 9.5V15"/>', function (t) { return /school|kindergarten|college|university/.test(t.amenity || ''); }],
+        ['comboio', 'Comboio', '<rect x="6" y="3.5" width="12" height="13" rx="3"/><path d="M6 11h12M9 20l-2 1.5M15 20l2 1.5M9 16.5 7.5 20M15 16.5l1.5 3.5"/><circle cx="9.5" cy="13.8" r=".8"/><circle cx="14.5" cy="13.8" r=".8"/>', function (t) { return /station|halt/.test(t.railway || ''); }],
+        ['autocarro', 'Autocarro', '<rect x="5" y="3.5" width="14" height="14" rx="2.5"/><path d="M5 11h14M8 17.5V20M16 17.5V20"/><circle cx="8.5" cy="14.3" r=".8"/><circle cx="15.5" cy="14.3" r=".8"/>', function (t) { return t.highway === 'bus_stop'; }],
+        ['compras', 'Supermercados', '<path d="M3.5 4.5h2l2 10.5h10l2-7.5H7"/><circle cx="9.5" cy="19" r="1.4"/><circle cx="16.5" cy="19" r="1.4"/>', function (t) { return /supermarket|convenience/.test(t.shop || ''); }],
+        ['saude', 'Farmácias e saúde', '<rect x="4" y="4" width="16" height="16" rx="4"/><path d="M12 8v8M8 12h8"/>', function (t) { return /pharmacy|hospital|clinic|doctors/.test(t.amenity || ''); }],
+        ['lazer', 'Parques e desporto', '<path d="M12 21v-6M12 15c-3.5 0-6-2.3-6-5.5S8.5 3 12 3s6 3.3 6 6.5S15.5 15 12 15z"/><path d="M8 21h8"/>', function (t) { return /park|playground|sports_centre/.test(t.leisure || ''); }]
+      ];
+      function dist(a, b) { var r = Math.PI / 180, x = (b[1] - a[1]) * r * Math.cos((a[0] + b[0]) * r / 2), y = (b[0] - a[0]) * r; return Math.round(Math.sqrt(x * x + y * y) * 6371000); }
+      function fmt(m) { return m < 1000 ? (Math.round(m / 10) * 10) + ' m' : (m / 1000).toFixed(1).replace('.', ',') + ' km'; }
+      var esc = window.C361.esc, layer = L.layerGroup();
+      fetch('https://overpass-api.de/api/interpreter', { method: 'POST', body: 'data=' + encodeURIComponent(q), headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
+        .then(function (r) { if (!r.ok) throw r.status; return r.json(); })
+        .then(function (d) {
+          var groups = CAT.map(function (c) { return { c: c, items: [] }; });
+          (d.elements || []).forEach(function (el) {
+            var t = el.tags || {}, p = el.center ? [el.center.lat, el.center.lon] : [el.lat, el.lon];
+            if (!p[0]) return;
+            for (var i = 0; i < CAT.length; i++) if (CAT[i][3](t)) { groups[i].items.push({ n: t.name || '', p: p, d: dist([lat, lng], p) }); break; }
+          });
+          groups.forEach(function (g) { g.items.sort(function (a, b) { return a.d - b.d; }); });
+          var any = groups.some(function (g) { return g.items.length; });
+          if (!any) return;
+          grid.innerHTML = groups.filter(function (g) { return g.items.length; }).map(function (g) {
+            var near = g.items[0], named = g.items.filter(function (x) { return x.n; })[0];
+            return '<button type="button" class="near-c" data-k="' + g.c[0] + '"><span class="near-i"><svg viewBox="0 0 24 24" aria-hidden="true">' + g.c[2] + '</svg></span>' +
+              '<span class="near-t"><b>' + g.c[1] + '</b><small>' + g.items.length + (g.items.length === 1 ? ' perto' : ' perto') + ' · a mais próxima a ' + fmt(near.d) + '</small>' +
+              (named ? '<em>' + esc(named.n) + ' (' + fmt(named.d) + ')</em>' : '') + '</span></button>';
+          }).join('');
+          box.hidden = false;
+          // Tocar numa categoria mostra esses locais no mapa.
+          grid.addEventListener('click', function (e) {
+            var b = e.target.closest('.near-c'); if (!b) return;
+            var on = !b.classList.contains('on');
+            grid.querySelectorAll('.near-c').forEach(function (x) { x.classList.remove('on'); });
+            layer.clearLayers();
+            if (!on) { map.removeLayer(layer); map.setView([lat, lng], 15); return; }
+            b.classList.add('on');
+            var g = groups.filter(function (x) { return x.c[0] === b.getAttribute('data-k'); })[0], pts = [[lat, lng]];
+            g.items.slice(0, 25).forEach(function (it) {
+              pts.push(it.p);
+              L.marker(it.p, { icon: L.divIcon({ className: '', html: '<span class="poi"><svg viewBox="0 0 24 24">' + g.c[2] + '</svg></span>', iconSize: [0, 0] }) })
+                .bindTooltip((it.n ? esc(it.n) + ' · ' : '') + fmt(it.d), { direction: 'top', offset: [0, -16] }).addTo(layer);
+            });
+            layer.addTo(map); map.fitBounds(pts, { padding: [40, 40], maxZoom: 16 });
+            map.getContainer().scrollIntoView({ behavior: 'smooth', block: 'center' });
+          });
+        })
+        .catch(function () { /* sem dados: a secção fica escondida */ });
+    },
     // Certificado energético (o campo "energia" da ficha no CRM): A+, A, B, B-, C, D, E, F ou Isento,
     // com as cores da escala oficial, para se ver logo no cartão e na página do imóvel.
     energyClass: function (v) {
@@ -182,23 +261,92 @@
       var on = window.C361.isFav(ref);
       return '<button type="button" class="fav' + (extra ? ' ' + extra : '') + '" data-fav="' + ref + '" aria-pressed="' + on + '" aria-label="' + (on ? 'Retirar dos guardados' : 'Guardar este imóvel') + '">' + heart + '</button>';
     },
+    // Ícones de linha (os mesmos em todo o site).
+    icon: function (k, cls) {
+      var P = {
+        bed: '<path d="M3 18v-6.5A1.5 1.5 0 0 1 4.5 10h15a1.5 1.5 0 0 1 1.5 1.5V18M3 15h18M3 18v2M21 18v2"/><path d="M5.5 10V7.5A1.5 1.5 0 0 1 7 6h3.5A1.5 1.5 0 0 1 12 7.5V10M12 10V7.5A1.5 1.5 0 0 1 13.5 6H17a1.5 1.5 0 0 1 1.5 1.5V10"/>',
+        bath: '<path d="M4 12h16v2.5a4.5 4.5 0 0 1-4.5 4.5h-7A4.5 4.5 0 0 1 4 14.5zM6.5 19l-1 2M17.5 19l1 2M6 12V6a2 2 0 0 1 3.6-1.2"/><path d="M8.4 5.6 10.6 7.8"/>',
+        area: '<path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/><path d="M8 8h8v8H8z" opacity=".5"/>',
+        plot: '<path d="M3 20h18M5 20V10l4-3 4 3v10M13 14h6v6"/><path d="M17 10a2.5 2.5 0 1 0-5 0" opacity=".5"/>',
+        energy: '<path d="M13 2 4.5 13.5H11L10 22l8.5-11.5H12z"/>',
+        car: '<path d="M5 16V11.5L7 7h10l2 4.5V16M3.5 16h17v2.5H3.5zM6.5 18.5V20M17.5 18.5V20"/><circle cx="7.5" cy="13.5" r=".8"/><circle cx="16.5" cy="13.5" r=".8"/>',
+        floor: '<path d="M4 20h4v-4h4v-4h4V8h4"/><path d="M4 20V4" opacity=".4"/>',
+        year: '<rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/>',
+        balcony: '<path d="M4 12h16M5 12v8M9 12v8M15 12v8M19 12v8M4 20h16"/><path d="M7 12V5h10v7" opacity=".5"/>',
+        pool: '<path d="M3 17c1.5 1 3 1 4.5 0s3-1 4.5 0 3 1 4.5 0 3-1 4.5 0M3 20.5c1.5 1 3 1 4.5 0s3-1 4.5 0 3 1 4.5 0 3-1 4.5 0"/><path d="M8 14V5.5a2 2 0 0 1 4 0M16 14V5.5a2 2 0 0 0-4 0M8 9h8" opacity=".6"/>',
+        lift: '<rect x="5" y="3" width="14" height="18" rx="2"/><path d="m9.5 9 2.5-3 2.5 3M9.5 15l2.5 3 2.5-3"/>',
+        sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/>',
+        check: '<path d="m5 12.5 4.5 4.5L19 7.5"/>',
+        pin: '<path d="M12 21s7-6.3 7-11.5a7 7 0 0 0-14 0C5 14.7 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>',
+        phone: '<path d="M5 4h3.5l1.7 4.3-2.2 1.4a11 11 0 0 0 6.3 6.3l1.4-2.2L20 15.5V19a1.5 1.5 0 0 1-1.6 1.5C10.5 20 4 13.5 3.5 5.6A1.5 1.5 0 0 1 5 4z"/>',
+        mail: '<rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7 8 6 8-6"/>',
+        wa: '<path d="M4 20.5 5.3 16A8.5 8.5 0 1 1 8.4 19z"/><path d="M9 8.5c0 3.5 2.6 6.4 6 6.6l1.3-1.5-2-1-1 .9c-1-.4-2-1.5-2.4-2.4l.9-1-1-2z"/>',
+        user: '<circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20.5c1.2-4 4.3-5.8 7.5-5.8s6.3 1.8 7.5 5.8"/>',
+        chat: '<path d="M4 5.5h16v10H9.5L5 19.5v-4H4z"/><path d="M8 10h8M8 12.8h5" opacity=".6"/>',
+        send: '<path d="M21 3 10 14M21 3l-7 18-4-7-7-4z"/>',
+        clock: '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
+        route: '<circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="6" r="2.5"/><path d="M8.5 18H15a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h6.5"/>',
+        key: '<circle cx="8" cy="15" r="4"/><path d="m11 12 8.5-8.5M16 7l2.5 2.5M13.5 9.5l2 2"/>',
+        tag: '<path d="M3.5 12.5 11 5h7.5v7.5L11 20z"/><circle cx="15" cy="9" r="1.4"/>',
+        home: '<path d="M4 11.5 12 5l8 6.5V20a1 1 0 0 1-1 1h-4.5v-5.5h-5V21H5a1 1 0 0 1-1-1z"/>',
+        euro: '<path d="M17.5 6.5A7 7 0 1 0 17.5 17.5M4 10.5h9M4 13.5h9"/>',
+        doc: '<path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 15.5h6"/>',
+        handshake: '<path d="m3 11 4-4 3 1 2-1.5L15 8l2-1 4 4-6.5 6.5a2 2 0 0 1-2.8 0L3 11z"/><path d="m9.5 14 1.5 1.5M12 11.5l2 2" opacity=".6"/>',
+        search: '<circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.3-4.3"/>',
+        expand: '<path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/>',
+        spark: '<path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M6 18l2.5-2.5M15.5 8.5 18 6"/>'
+      };
+      return '<svg class="ico' + (cls ? ' ' + cls : '') + '" viewBox="0 0 24 24" aria-hidden="true">' + (P[k] || P.check) + '</svg>';
+    },
     card: function (l) {
       var e = window.C361.esc, facts = [];
-      if (l.beds) facts.push('<span>' + l.beds + ' quartos</span>');
-      if (l.baths) facts.push('<span>' + l.baths + ' WC</span>');
-      if (l.area) facts.push('<span>' + window.C361.area(l.area) + '</span>');
+      var I = window.C361.icon;
+      if (l.beds) facts.push('<span>' + I('bed') + l.beds + (l.beds == 1 ? ' quarto' : ' quartos') + '</span>');
+      if (l.baths) facts.push('<span>' + I('bath') + l.baths + ' WC</span>');
+      if (l.area) facts.push('<span>' + I('area') + window.C361.area(l.area) + '</span>');
       var tag = l.typology === 'Rústico' || l.typology === 'Urbano' ? l.type + ' ' + l.typology.toLowerCase() : (l.typology || l.type || '');
+      var href = 'imovel.html?ref=' + e(l.ref), alt = e(l.type + ' ' + (l.typology || '') + ' em ' + l.area_name);
+      // Fotografias no cartão: deslizar (ou setas) para ver a casa sem abrir a página.
+      var ph = (l.photos || []).filter(Boolean), shown = ph.slice(0, 6), more = ph.length - shown.length;
+      var slides = shown.map(function (src, i) {
+        var last = i === shown.length - 1 && more > 0;
+        return '<a class="cg-s" href="' + href + '" tabindex="-1" aria-hidden="' + (i ? 'true' : 'false') + '"><img ' + (i ? 'loading="lazy" ' : 'loading="lazy" ') + 'src="' + e(src) + '" alt="' + (i ? '' : alt) + '" draggable="false">' +
+          (last ? '<span class="cg-more"><b>+' + more + '</b> fotografias<em>Ver o imóvel</em></span>' : '') + '</a>';
+      }).join('');
+      var nav = shown.length > 1 ? '<button class="cg-btn cg-prev" type="button" aria-label="Fotografia anterior" tabindex="-1"><svg viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></svg></button>' +
+        '<button class="cg-btn cg-next" type="button" aria-label="Fotografia seguinte"><svg viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></svg></button>' +
+        '<span class="cg-dots" aria-hidden="true">' + shown.map(function (x, i) { return '<i' + (i ? '' : ' class="on"') + '></i>'; }).join('') + '</span>' +
+        '<span class="cg-count"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><circle cx="9" cy="10" r="1.6"/><path d="m21 16-5-5-8 8"/></svg>' + ph.length + '</span>' : '';
       return '<article class="card reveal">' +
-        '<a class="card-link" href="imovel.html?ref=' + e(l.ref) + '">' +
-        '<div class="card-img"><img loading="lazy" src="' + e(l.photos[0]) + '" alt="' + e(l.type + ' ' + l.typology + ' em ' + l.area_name) + '">' +
-        (tag ? '<span class="card-tag">' + e(tag) + '</span>' : '') + window.C361.energyBadge(l.energy, 'on-card') + (l.status ? '<span class="card-tag new">' + e(l.status.replace(/^\w/, function (c) { return c.toUpperCase(); })) + '</span>' : l.isNew ? '<span class="card-tag new">Construção nova</span>' : '') + '</div>' +
-        '<div class="card-body"><p class="card-place">' + e(l.area_name) + ' · ' + e(l.county) + '</p>' +
+        '<div class="card-img cg">' + '<div class="cg-strip">' + slides + '</div>' + nav +
+        (l.featured ? '<span class="card-star"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg>Destaque</span>' : '') + (tag ? '<span class="card-tag' + (l.featured ? ' shift' : '') + '">' + e(tag) + '</span>' : '') + window.C361.energyBadge(l.energy, 'on-card') + (l.status ? '<span class="card-tag new">' + e(l.status.replace(/^\w/, function (c) { return c.toUpperCase(); })) + '</span>' : l.isNew ? '<span class="card-tag new">Construção nova</span>' : '') + '</div>' +
+        '<a class="card-link" href="' + href + '"><div class="card-body"><p class="card-place">' + e(l.area_name) + ' · ' + e(l.county) + '</p>' +
         '<h3>' + e(l.title) + '</h3>' +
         '<p class="card-facts">' + facts.join('') + '</p>' +
         '<p class="card-price">' + window.C361.price(l) + '<span>Ref. ' + e(l.ref) + '</span></p></div></a>' +
         window.C361.favButton(l.ref) + '</article>';
     },
   };
+
+
+  // Galeria nos cartões: setas e pontos.
+  function cgUpdate(strip) {
+    var g = strip.parentNode, i = Math.round(strip.scrollLeft / Math.max(1, strip.clientWidth));
+    var dots = g.querySelectorAll('.cg-dots i'); for (var k = 0; k < dots.length; k++) dots[k].classList.toggle('on', k === i);
+    g.classList.toggle('at-start', i === 0); g.classList.toggle('at-end', i >= strip.children.length - 1);
+    var s = strip.children; for (var j = 0; j < s.length; j++) s[j].setAttribute('aria-hidden', String(j !== i));
+  }
+  document.addEventListener('click', function (ev) {
+    var b = ev.target.closest && ev.target.closest('.cg-btn'); if (!b) return;
+    ev.preventDefault(); ev.stopPropagation();
+    var strip = b.parentNode.querySelector('.cg-strip'), dir = b.classList.contains('cg-next') ? 1 : -1;
+    var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    strip.scrollBy({ left: dir * strip.clientWidth, behavior: still ? 'auto' : 'smooth' });
+  });
+  document.addEventListener('scroll', function (ev) {
+    var t = ev.target; if (!t.classList || !t.classList.contains('cg-strip')) return;
+    clearTimeout(t._cg); t._cg = setTimeout(function () { cgUpdate(t); }, 40);
+  }, true);
 
   // Um clique num coração, em qualquer página.
   document.addEventListener('click', function (ev) {

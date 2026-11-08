@@ -72,7 +72,7 @@
       ].map(function (l) { var ext = /^https?:/.test(l[0]); return '<li><a href="' + l[0] + '"' + (ext ? ' target="_blank" rel="noopener"' : '') + '>' + l[1] + '</a></li>'; }).join('') +
       '<li class="ami">Licença AMI 24691</li></ul></div>' +
       '<div class="badges">' +
-      '<a href="https://www.livroreclamacoes.pt/inicio" target="_blank" rel="noopener" aria-label="Livro de Reclamações Eletrónico"><img src="img/livro-reclamacoes.png" alt="Livro de Reclamações" height="48"></a>' +
+      '<a href="https://www.livroreclamacoes.pt/inicio" target="_blank" rel="noopener" aria-label="Livro de Reclamações Eletrónico"><span class="badge-lr"><img src="img/livro-reclamacoes-ouro.png" alt="Livro de Reclamações" width="143" height="26"></span></a>' +
       '<a href="https://www.impic.pt/" target="_blank" rel="noopener" aria-label="IMPIC, Instituto dos Mercados Públicos, do Imobiliário e da Construção"><span class="badge-text"><b>IMPIC</b><small>Mediação imobiliária · AMI 24691</small></span></a>' +
       '</div>' +
       '<div class="legal"><span>® Casa 361, Unipessoal Lda. Todos os direitos reservados.</span>' +
@@ -133,6 +133,36 @@
 
   // Formulários. Com a API ligada (config.js), o pedido vai para a casa361-api, que envia
   // um email para geral@casa361.com e a resposta automática à pessoa. Sem API, só confirma.
+  // Formulários mais claros: um ícone em cada campo, o botão de envio com ícone e,
+  // por baixo, os atalhos para quem prefere falar já (WhatsApp, telefone, email).
+  var IC = function (k) { return window.C361 && C361.icon ? C361.icon(k) : ''; };
+  // Qualquer elemento com data-ico="nome" recebe o ícone à frente.
+  Array.prototype.forEach.call(document.querySelectorAll('[data-ico]'), function (el) { el.insertAdjacentHTML('afterbegin', '<span class="li-ico">' + IC(el.getAttribute('data-ico')) + '</span>'); });
+  var WA_TXT = { contacto: 'Olá! Gostava de falar com a Casa 361.', credito: 'Olá! Gostava de ajuda com o crédito habitação.', avaliacao: 'Olá! Gostava de saber quanto vale a minha casa.',
+    visita: 'Olá! Gostava de marcar uma visita' + (document.body.getAttribute('data-ref') ? ' ao imóvel ref. ' + document.body.getAttribute('data-ref') : '') + '.', alerta: 'Olá! Procuro casa e gostava de receber sugestões.', recrutamento: 'Olá! Tenho interesse em trabalhar na Casa 361.' };
+  Array.prototype.forEach.call(document.querySelectorAll('form.form'), function (f) {
+    Array.prototype.forEach.call(f.querySelectorAll('input[name], textarea, select[name]'), function (el) {
+      if (el.type === 'radio' || el.type === 'checkbox' || el.type === 'hidden' || el.type === 'range' || el.closest('.fi')) return;
+      var n = (el.name || '').toLowerCase(), k = el.tagName === 'TEXTAREA' ? 'chat' : n === 'name' ? 'user' : n === 'phone' || el.type === 'tel' ? 'phone' : n === 'email' || el.type === 'email' ? 'mail' :
+        /when|hora|dia|day|time/.test(n) ? 'clock' : /via/.test(n) ? 'chat' : /zona|local|morada|address|area/.test(n) ? 'pin' : /pre[cç]o|price|valor|budget|renda/.test(n) ? 'euro' : el.tagName === 'SELECT' ? '' : 'spark';
+      if (!k) return;
+      var w = document.createElement('span'); w.className = 'fi' + (el.tagName === 'TEXTAREA' ? ' fi-ta' : '');
+      el.parentNode.insertBefore(w, el); w.innerHTML = IC(k); w.appendChild(el);
+    });
+    var sb = f.querySelector('button[type="submit"]');
+    if (sb && !sb.querySelector('.ico')) { var arr = sb.querySelector('.arr'); if (arr) arr.remove(); sb.insertAdjacentHTML('afterbegin', IC('send')); sb.classList.add('btn-send'); }
+    var kind = f.getAttribute('data-lead') || 'contacto';
+    if (sb && !f.hasAttribute('data-no-quick')) {
+      var q = document.createElement('div'); q.className = 'quick';
+      q.innerHTML = '<span class="quick-t">Prefere falar já?</span>' +
+        '<a class="qk qk-wa" href="https://wa.me/351913613005?text=' + encodeURIComponent(WA_TXT[kind] || WA_TXT.contacto) + '" target="_blank" rel="noopener">' + waIcon + 'WhatsApp</a>' +
+        '<a class="qk" href="tel:' + TEL + '">' + IC('phone') + 'Ligar</a>' +
+        '<a class="qk" href="mailto:' + MAIL + '">' + IC('mail') + 'Email</a>';
+      sb.insertAdjacentElement('afterend', q);
+    }
+    var okm = f.querySelector('.ok'); if (okm && !okm.querySelector('.ok-ico')) okm.insertAdjacentHTML('afterbegin', '<span class="ok-ico" aria-hidden="true"><svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="24"/><path d="m15 27 7.5 7.5L38 19"/></svg></span>');
+  });
+
   Array.prototype.forEach.call(document.querySelectorAll('form.form'), function (f) {
     var hp = document.createElement('input'); // armadilha para robôs: invisível para pessoas
     hp.type = 'text'; hp.name = 'website'; hp.tabIndex = -1; hp.autocomplete = 'off'; hp.setAttribute('aria-hidden', 'true');
@@ -155,7 +185,7 @@
         var key = el.type === 'radio' && legend ? legend.textContent.trim() : lab ? (lab.firstChild && lab.firstChild.nodeType === 3 ? lab.firstChild.textContent.trim() : el.name) : el.name;
         data.details[key || el.name] = v;
       });
-      if (btn) { btn.disabled = true; btn.dataset.t = btn.textContent; btn.textContent = 'A enviar…'; }
+      if (btn) { btn.disabled = true; btn._h = btn.innerHTML; btn.classList.add('is-busy'); btn.innerHTML = '<span class="spin" aria-hidden="true"></span>A enviar…'; }
       if (err) err.remove();
       fetch(C361.api + '/leads', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) })
         .then(function (r) { if (!r.ok) throw r.status; done(); })
@@ -164,7 +194,7 @@
           m.innerHTML = 'Não conseguimos enviar agora. Ligue-nos para o <a href="tel:' + TEL + '">' + PHONE + '</a> ou escreva para <a href="mailto:' + MAIL + '">' + MAIL + '</a>.';
           (btn ? btn.parentNode : f).appendChild(m);
         })
-        .then(function () { if (btn) { btn.disabled = false; btn.textContent = btn.dataset.t; } });
+        .then(function () { if (btn) { btn.disabled = false; btn.classList.remove('is-busy'); btn.innerHTML = btn._h; } });
     });
   });
 

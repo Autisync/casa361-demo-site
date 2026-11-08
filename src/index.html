@@ -123,12 +123,8 @@
   <!-- 8 · Testemunhos de clientes (avaliações reais do Google) -->
   <section class="sec stone" id="testemunhos">
     <div class="wrap">
-      <div class="sec-head reveal">
-        <div><p class="kicker">Testemunhos de clientes</p><h2>O que dizem de nós</h2><p>Avaliações reais, deixadas pelos nossos clientes no Google.</p></div>
-        <a class="g-badge" href="https://www.google.com/maps?cid=11429435623754313206" target="_blank" rel="noopener"><b>5,0</b><span class="stars" aria-hidden="true">★★★★★</span><small>36 avaliações no Google <span aria-hidden="true">↗</span></small></a>
-      </div>
-      <div class="reviews reveal" id="reviews" role="region" aria-label="Avaliações de clientes"></div>
-      <p class="rev-more"><a href="https://www.google.com/maps?cid=11429435623754313206" target="_blank" rel="noopener">Ler todas as avaliações no Google <span aria-hidden="true">↗</span></a></p>
+      <div class="sec-head reveal"><div><p class="kicker">Testemunhos de clientes</p><h2>Quem já fez casa connosco</h2><p>Primeiras casas, vendas e arrendamentos: o que os nossos clientes escreveram no Google, palavra por palavra.</p></div></div>
+      <div class="rv reveal" data-reviews data-chips></div>
     </div>
   </section>
 
@@ -149,6 +145,7 @@
 <footer id="foot"></footer>
 <script src="config.js"></script>
 <script src="listings.js"></script>
+<script src="reviews.js"></script>
 <script>
   // Concelhos: a fotografia aérea de cada um (as que o Luís enviou). O cartão abre os imóveis desse concelho.
   var C361_CONCELHOS = [
@@ -162,19 +159,7 @@
     ['Barreiro', 'img/zona-barreiro.jpg', 'Frente ribeirinha, a um barco de Lisboa'],
   ];
 
-  // Testemunhos: avaliações reais do Google (perfil Casa 361 - Imobiliária Vila Franca de Xira), sem alterações.
-  var C361_REVIEWS = [
-    ['Carlos D.', 'Venda', 'Obrigado por tudo: pela simpatia, transparência, profissionalismo e competência. A venda do nosso apartamento foi uma experiência perfeita graças ao acompanhamento do Luís Poças que dominava todos os detalhes do processo transmitindo-nos deste sempre confiança e tranquilidade. Recomendo vivamente a Casa 361.'],
-    ['Andreia F.', 'Arrendamento', 'Um agradecimento especial ao Sr. Luís, que foi sempre muito prestável, disponível e simpático ao longo de todo o processo de arrendamento. Sempre que precisei de alguma coisa, esteve pronto para ajudar e fez tudo o que podia para facilitar as coisas, tornando todo o processo muito mais simples e tranquilo.'],
-    ['Carolina C.', 'Compra', 'O Luís foi sempre super prestável e pronto a ajudar! Ajudou-nos imenso nesta procura de casa e apresentou-nos imensos imóveis com potencial até encontrar a nossa atual casa! Recomendamos bastante os seus serviços e agradecemos bastante pelo acompanhamento prestado ☺️'],
-    ['Diogo A.', 'Venda', 'Quero deixar um agradecimento especial à Casa 361 pelo excelente trabalho na venda da minha casa. Desde o primeiro momento mostraram profissionalismo, dedicação e um acompanhamento constante em todas as etapas do processo. Sentimo-nos sempre apoiados e acompanhados. Recomendo a 100% a quem procura um serviço de confiança e com resultados.'],
-    ['Daniel F.', 'Compra', 'Fomos muito bem acompanhados ao longo de todo o processo de compra da nossa primeira casa, com esclarecimentos para todas as nossas dúvidas durante estes longos meses. Um muito obrigado ao Luís!'],
-    ['Jorge S.', 'Várias compras', 'Trabalhar com esta agência imobiliária tem sido uma experiência verdadeiramente excepcional ao longo dos últimos anos e em várias compras realizadas. É raro encontrar um nível de profissionalismo, dedicação e confiança tão consistentes. (…) Recomendo esta agência de coração e, em particular, o trabalho do Luís Poças.'],
-    ['Madalena R.', 'Cliente', 'O profissionalismo, a simpatia e o acompanhamento, não têm preço! Não se podia pedir mais a esta empresa e ao sr. Luís Poças ☺️ desde o primeiro minuto sempre presente, atento e disponível. Recomendo a 100% para quem queira um negócio sério e sem problemas.'],
-    ['Joana S.', 'Compra', 'Comprámos um imóvel em Vialonga com o apoio do incansável Sr. Luís que muito nos apoiou para que o negócio de concretizasse da melhor forma possível. Sempre com uma postura muito profissional, transparente e com enorme sentido de prontidão para qualquer dúvida ou apoio necessário. Recomendo a 100%'],
-    ['Ermelinda P.', 'Cliente', 'Demonstra um real conhecimento do mercado imobiliário, quer na comercialização, quer nas questões técnicas inerentes ao imóvel. Linguagem simples e assertiva, transmitindo confiança em todo o processo. Apresenta soluções, elevada literacia financeira. Faz acontecer💪 Recomendo.'],
-    ['Tomás G.', 'Compra', 'Recomendo! O Sr. Luís Poças fez tudo aquilo que podia para que a compra da nossa casa corresse da melhor forma. Se alguma vez precisar de comprar ou de vender algum imóvel, sei com quem tratar! Muito obrigado.'],
-  ];
+
 
   var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
@@ -198,11 +183,7 @@
     });
   })();
 
-  // 8 · Testemunhos
-  document.getElementById('reviews').innerHTML = C361_REVIEWS.map(function (r) {
-    return '<figure class="rev"><div class="stars" aria-label="5 estrelas">★★★★★</div><blockquote>' + esc(r[2]) + '</blockquote>' +
-      '<figcaption><b>' + esc(r[0]) + '</b><span>' + esc(r[1]) + ' · Google</span></figcaption></figure>';
-  }).join('');
+
 
   C361.ready.then(function () {
     var e = C361.esc, L = CASA361_LISTINGS;
@@ -213,8 +194,9 @@
 
     // 3 · Destaques
     var forSale = L.filter(function (x) { return x.deal === 'venda' && x.photos && x.photos.length; });
-    var picks = ['0076', '0066', '0053', '0047', '0075', '0068'].map(C361.find).filter(Boolean);
-    if (picks.length < 6) picks = forSale.slice(0, 6);
+    // Os que estão marcados no CRM como "Destaque no site" vêm primeiro; o resto completa a grelha.
+    var star = forSale.filter(function (x) { return x.featured && !x.status; });
+    var picks = star.concat(forSale.filter(function (x) { return !x.featured && !x.status; }), forSale.filter(function (x) { return x.status; })).slice(0, 6);
     document.getElementById('featured').innerHTML = picks.map(C361.card).join('');
 
     // 4 · Concelhos: carrossel que roda sozinho (pára com o rato ou o dedo em cima).

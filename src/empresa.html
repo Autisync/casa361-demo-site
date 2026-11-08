@@ -71,17 +71,59 @@
     </div>
   </section>
 
-  <!-- Como trabalhamos -->
-  <section class="sec">
+  <!-- Como trabalhamos: um caminho para quem compra, arrenda ou vende -->
+  <section class="sec" id="como">
     <div class="wrap">
-      <div class="sec-head reveal"><div><p class="kicker">Como trabalhamos</p><h2>Do primeiro contacto à escritura</h2></div></div>
-      <ol class="em-line reveal">
-        <li><b>Ouvir</b><p>O que procura, o seu orçamento ou o que quer fazer com o seu imóvel.</p></li>
-        <li><b>Preparar</b><p>Avaliação, estudo de mercado, simulação de crédito e os apoios a que tem direito.</p></li>
-        <li><b>Mostrar</b><p>Visitas aos imóveis certos, ou a sua casa apresentada da melhor forma.</p></li>
-        <li><b>Negociar</b><p>O melhor acordo, com contrato-promessa e prazos claros.</p></li>
-        <li><b>Escritura e depois</b><p>Tratamos da escritura e continuamos consigo: mudanças, certificação, o que for preciso.</p></li>
-      </ol>
+      <div class="sec-head reveal"><div><p class="kicker">Como trabalhamos</p><h2>Do primeiro contacto às chaves na mão</h2><p>Escolha o que quer fazer e veja, passo a passo, o que fazemos consigo.</p></div></div>
+      <div class="jr reveal" data-jr>
+        <div class="jr-tabs" role="tablist" aria-label="O que quer fazer">
+          <button role="tab" aria-selected="true" aria-controls="jr-comprar" id="t-comprar"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11.5 12 5l8 6.5V20a1 1 0 0 1-1 1h-4.5v-5.5h-5V21H5a1 1 0 0 1-1-1z"/></svg>Comprar</button>
+          <button role="tab" aria-selected="false" aria-controls="jr-arrendar" id="t-arrendar"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="15" r="4"/><path d="m11 12 8.5-8.5M16 7l2.5 2.5M13.5 9.5l2 2"/></svg>Arrendar</button>
+          <button role="tab" aria-selected="false" aria-controls="jr-vender" id="t-vender"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 12.5 11 5h7.5v7.5L11 20z"/><circle cx="15" cy="9" r="1.4"/></svg>Vender</button>
+          <span class="jr-ink" aria-hidden="true"></span>
+        </div>
+
+        <div class="jr-panel" role="tabpanel" id="jr-comprar" aria-labelledby="t-comprar">
+          <p class="jr-intro">Primeira casa ou a próxima: tratamos da procura, do crédito e dos papéis, e explicamos cada passo sem pressa.</p>
+          <ol class="jr-steps">
+            <li><span class="jr-n">1</span><b>Conversa inicial</b><p>Zona, tipologia, orçamento e prazos. Em 20 minutos, por telefone, WhatsApp ou no escritório.</p></li>
+            <li><span class="jr-n">2</span><b>Crédito e apoios</b><p>Simulação da prestação, IMT Jovem e garantia pública para quem tem até 35 anos. Sabe logo até onde pode ir.</p></li>
+            <li><span class="jr-n">3</span><b>Visitas certas</b><p>Selecionamos imóveis que encaixam no que pediu, com alertas quando entra um novo. Vamos consigo às visitas.</p></li>
+            <li><span class="jr-n">4</span><b>Proposta e contrato-promessa</b><p>Negociamos o preço, confirmamos a documentação do imóvel e preparamos o contrato-promessa.</p></li>
+            <li><span class="jr-n">5</span><b>Escritura e chaves</b><p>Marcamos a escritura, acompanhamos no dia e continuamos disponíveis depois da mudança.</p></li>
+          </ol>
+          <p class="jr-cta"><a class="btn btn-ink" href="imoveis.html"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.3-4.3"/></svg>Ver imóveis à venda</a><a class="btn btn-line" href="credito.html"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.5 6.5A7 7 0 1 0 17.5 17.5M4 10.5h9M4 13.5h9"/></svg>Simular crédito</a></p>
+        </div>
+
+        <div class="jr-panel" role="tabpanel" id="jr-arrendar" aria-labelledby="t-arrendar" hidden>
+          <p class="jr-intro">Para quem procura casa para arrendar e para proprietários que querem arrendar com segurança.</p>
+          <ol class="jr-steps">
+            <li><span class="jr-n">1</span><b>O que procura</b><p>Zona, renda máxima, data de entrada e se precisa de mobília. Avisamos quando aparece o imóvel certo.</p></li>
+            <li><span class="jr-n">2</span><b>Visitas</b><p>Marcamos as visitas num só dia sempre que possível e respondemos a todas as dúvidas sobre a casa e o condomínio.</p></li>
+            <li><span class="jr-n">3</span><b>Documentos</b><p>Explicamos o que o senhorio vai pedir (rendimentos, fiador ou caução) e ajudamos a preparar tudo.</p></li>
+            <li><span class="jr-n">4</span><b>Contrato</b><p>Contrato de arrendamento claro, com prazo, renda e caução, e registo nas Finanças.</p></li>
+            <li><span class="jr-n">5</span><b>Entrega das chaves</b><p>Vistoria com fotografias à entrada e o nosso contacto para o que for preciso durante o contrato.</p></li>
+          </ol>
+          <p class="jr-cta"><a class="btn btn-ink" href="imoveis.html?deal=arrendamento"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.3-4.3"/></svg>Ver imóveis para arrendar</a><a class="btn btn-wa" href="https://wa.me/351913613005?text=Ol%C3%A1!%20Procuro%20casa%20para%20arrendar." target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20.5 5.3 16A8.5 8.5 0 1 1 8.4 19z"/><path d="M9 8.5c0 3.5 2.6 6.4 6 6.6l1.3-1.5-2-1-1 .9c-1-.4-2-1.5-2.4-2.4l.9-1-1-2z"/></svg>Dizer o que procuro</a></p>
+        </div>
+
+        <div class="jr-panel" role="tabpanel" id="jr-vender" aria-labelledby="t-vender" hidden>
+          <p class="jr-intro">Vender com tempo para o melhor preço, ou vender já: as duas opções, explicadas antes de decidir.</p>
+          <ol class="jr-steps">
+            <li><span class="jr-n">1</span><b>Avaliação gratuita</b><p>Estudo de mercado com os preços de imóveis semelhantes na sua zona. Sem compromisso.</p></li>
+            <li><span class="jr-n">2</span><b>Preparar a casa</b><p>Documentação em dia, certificado energético, fotografia profissional e, se ajudar, home staging.</p></li>
+            <li><span class="jr-n">3</span><b>Divulgação</b><p>Portais imobiliários, Google, Facebook, Instagram e a nossa lista de compradores à procura.</p></li>
+            <li><span class="jr-n">4</span><b>Visitas e propostas</b><p>Filtramos os interessados, acompanhamos as visitas e negociamos cada proposta consigo.</p></li>
+            <li><span class="jr-n">5</span><b>Escritura</b><p>Tratamos do contrato-promessa, dos documentos e da escritura, até receber o valor da venda.</p></li>
+          </ol>
+          <a class="jr-uf" href="https://www.urbanfocus.pt/" target="_blank" rel="noopener">
+            <span class="jr-uf-ico"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg></span>
+            <span><b>Precisa de vender já?</b> A UrbanFocus, a nossa empresa parceira, compra o seu imóvel diretamente: proposta após avaliação presencial, sem visitas e sem obras.</span>
+            <span class="jr-uf-go">Ir para a UrbanFocus <span aria-hidden="true">↗</span></span>
+          </a>
+          <p class="jr-cta"><a class="btn btn-ink" href="vender.html#avaliacao"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 15.5h6"/></svg>Pedir avaliação gratuita</a></p>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -89,8 +131,7 @@
   <section class="sec dark">
     <div class="wrap em-team reveal">
       <div class="em-photo">
-        <div class="em-mono" aria-hidden="true">LP</div>
-        <div class="mq" style="position:absolute;left:12px;right:12px;bottom:12px"><b>Fotografia</b>Aqui entra uma fotografia real do Luís (e da equipa). Não usamos fotografias de banco de imagens.</div>
+        <img src="img/luis-pocas.jpg" alt="Luís Poças, Casa 361" width="720" height="900" loading="lazy">
       </div>
       <div>
         <p class="kicker" style="color:var(--gold)">A equipa</p>
@@ -101,7 +142,7 @@
           <blockquote>"É raro encontrar um nível de profissionalismo, dedicação e confiança tão consistentes. Um agradecimento muito especial ao Luís Poças, não só por ser um profissional de excelência, mas também por ser uma pessoa extraordinária."</blockquote>
           <figcaption>Jorge S. · avaliação no Google</figcaption>
         </figure>
-        <p style="margin-top:22px;display:flex;gap:10px;flex-wrap:wrap"><a class="btn btn-gold" href="tel:+351913613005">Ligar 913 613 005</a><a class="btn btn-wa" href="https://wa.me/351913613005" target="_blank" rel="noopener">WhatsApp</a></p>
+        <p style="margin-top:22px;display:flex;gap:10px;flex-wrap:wrap"><a class="btn btn-gold" href="tel:+351913613005"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h3.5l1.7 4.3-2.2 1.4a11 11 0 0 0 6.3 6.3l1.4-2.2L20 15.5V19a1.5 1.5 0 0 1-1.6 1.5C10.5 20 4 13.5 3.5 5.6A1.5 1.5 0 0 1 5 4z"/></svg>Ligar 913 613 005</a><a class="btn btn-wa" href="https://wa.me/351913613005?text=Ol%C3%A1%20Lu%C3%ADs!" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20.5 5.3 16A8.5 8.5 0 1 1 8.4 19z"/><path d="M9 8.5c0 3.5 2.6 6.4 6 6.6l1.3-1.5-2-1-1 .9c-1-.4-2-1.5-2.4-2.4l.9-1-1-2z"/></svg>Falar no WhatsApp</a></p>
       </div>
     </div>
   </section>
@@ -123,12 +164,8 @@
   <!-- Testemunhos -->
   <section class="sec stone">
     <div class="wrap">
-      <div class="sec-head reveal"><div><p class="kicker">Testemunhos</p><h2>O que dizem de nós</h2></div><a class="g-badge" href="https://www.google.com/maps?cid=11429435623754313206" target="_blank" rel="noopener"><b>5,0</b><span class="stars" aria-hidden="true">★★★★★</span><small>36 avaliações no Google <span aria-hidden="true">↗</span></small></a></div>
-      <div class="reviews reveal">
-        <figure class="rev"><div class="stars" aria-label="5 estrelas">★★★★★</div><blockquote>Fomos muito bem acompanhados ao longo de todo o processo de compra da nossa primeira casa, com esclarecimentos para todas as nossas dúvidas durante estes longos meses. Um muito obrigado ao Luís!</blockquote><figcaption><b>Daniel F.</b><span>Compra · Google</span></figcaption></figure>
-        <figure class="rev"><div class="stars" aria-label="5 estrelas">★★★★★</div><blockquote>Um agradecimento especial ao Sr. Luís, que foi sempre muito prestável, disponível e simpático ao longo de todo o processo de arrendamento. Sempre que precisei de alguma coisa, esteve pronto para ajudar.</blockquote><figcaption><b>Andreia F.</b><span>Arrendamento · Google</span></figcaption></figure>
-        <figure class="rev"><div class="stars" aria-label="5 estrelas">★★★★★</div><blockquote>Quero deixar um agradecimento especial à Casa 361 pelo excelente trabalho na venda da minha casa. Desde o primeiro momento mostraram profissionalismo, dedicação e um acompanhamento constante em todas as etapas do processo.</blockquote><figcaption><b>Diogo A.</b><span>Venda · Google</span></figcaption></figure>
-      </div>
+      <div class="sec-head reveal"><div><p class="kicker">Testemunhos</p><h2>O que dizem de nós</h2></div></div>
+      <div class="rv reveal" data-reviews data-chips></div>
     </div>
   </section>
 
@@ -139,10 +176,10 @@
         <p class="kicker">Contactos</p>
         <h2 style="font-size:clamp(32px,3.8vw,48px);font-weight:500;margin:8px 0 6px">Fale connosco</h2>
         <ul class="contact-list">
-          <li><span>Escritório</span><a href="https://www.google.com/maps?cid=11429435623754313206" target="_blank" rel="noopener">R. Joaquim Luís Chico 3<br>2600-782 São João dos Montes</a></li>
-          <li><span>Telefone</span><a href="tel:+351913613005" class="num">913 613 005</a><small>Chamada para rede móvel nacional</small></li>
-          <li><span>Email</span><a href="mailto:geral@casa361.com">geral@casa361.com</a></li>
-          <li><span>Empresa</span><b style="font-size:16px">Casa 361, Unipessoal Lda</b><small>Mediação imobiliária · Licença AMI 24691 (IMPIC)</small></li>
+          <li data-ico="pin"><span>Escritório</span><a href="https://www.google.com/maps?cid=11429435623754313206" target="_blank" rel="noopener">R. Joaquim Luís Chico 3<br>2600-782 São João dos Montes</a></li>
+          <li data-ico="phone"><span>Telefone</span><a href="tel:+351913613005" class="num">913 613 005</a><small>Chamada para rede móvel nacional</small></li>
+          <li data-ico="mail"><span>Email</span><a href="mailto:geral@casa361.com">geral@casa361.com</a></li>
+          <li data-ico="doc"><span>Empresa</span><b style="font-size:16px">Casa 361, Unipessoal Lda</b><small>Mediação imobiliária · Licença AMI 24691 (IMPIC)</small></li>
         </ul>
         <p class="social-big">
           <a class="btn btn-wa" href="https://wa.me/351913613005" target="_blank" rel="noopener">WhatsApp</a>
@@ -172,6 +209,7 @@
 <footer id="foot"></footer>
 <script src="config.js"></script>
 <script src="listings.js"></script>
+<script src="reviews.js"></script>
 <script>
   // Números que contam até ao valor quando chegam ao ecrã (uma vez; sem movimento para quem o desligou).
   (function () {
@@ -189,6 +227,23 @@
       });
     }, { threshold: 0.6 });
     Array.prototype.forEach.call(els, function (el) { el.textContent = fmt(0, +el.getAttribute('data-dec') || 0); io.observe(el); });
+  })();
+
+  // Como trabalhamos: separadores Comprar / Arrendar / Vender.
+  (function () {
+    var box = document.querySelector('[data-jr]'); if (!box) return;
+    var tabs = box.querySelectorAll('[role="tab"]'), ink = box.querySelector('.jr-ink');
+    function place(t) { ink.style.width = t.offsetWidth + 'px'; ink.style.transform = 'translateX(' + t.offsetLeft + 'px)'; }
+    function show(t) {
+      tabs.forEach(function (x) { var on = x === t; x.setAttribute('aria-selected', String(on)); x.tabIndex = on ? 0 : -1; document.getElementById(x.getAttribute('aria-controls')).hidden = !on; });
+      place(t); var p = document.getElementById(t.getAttribute('aria-controls')); p.classList.remove('go'); void p.offsetWidth; p.classList.add('go');
+    }
+    tabs.forEach(function (t, i) {
+      t.addEventListener('click', function () { show(t); });
+      t.addEventListener('keydown', function (e) { var k = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0; if (!k) return; var n = tabs[(i + k + tabs.length) % tabs.length]; n.focus(); show(n); });
+    });
+    if (/vender/.test(location.hash)) show(tabs[2]); else if (/arrendar/.test(location.hash)) show(tabs[1]); else show(tabs[0]);
+    window.addEventListener('resize', function () { place(box.querySelector('[aria-selected="true"]')); });
   })();
 </script>
 <script src="chrome.js"></script>

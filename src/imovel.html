@@ -51,6 +51,11 @@
         <div id="pmap" class="pmap" role="img" aria-label="Mapa da zona do imóvel"></div>
         <div class="mapbox"><div><strong id="loc-name"></strong><br><span style="color:var(--muted);font-size:14px" id="loc-sub"></span><br><small style="color:var(--muted)">Localização aproximada: a morada exata é dada na visita.</small></div>
           <a class="btn btn-line" id="map-link" target="_blank" rel="noopener">Abrir no Google Maps</a></div>
+        <div class="near" id="near" hidden>
+          <h3>Perto daqui <small>num raio de 1,5 km</small></h3>
+          <div class="near-grid" id="near-grid"></div>
+          <p class="near-src">Dados do OpenStreetMap. Distâncias em linha reta, a partir do centro da zona.</p>
+        </div>
       </section>
       <section class="block reveal"><h2>Imóveis semelhantes</h2><div class="grid" id="similar" style="grid-template-columns:repeat(2,minmax(0,1fr))"></div></section>
     </div>
@@ -118,14 +123,32 @@
     $('wa').href = 'https://wa.me/351913613005?text=' + encodeURIComponent('Olá! Tenho interesse no imóvel ref. ' + l.ref + ' (' + l.typology + ', ' + l.area_name + ').');
     $('mb-wa').href = $('wa').href;
 
-    var facts = [];
-    if (l.beds) facts.push([l.beds, 'Quartos']);
-    if (l.baths) facts.push([l.baths, 'Casas de banho']);
-    if (l.area) facts.push([C361.area(l.area), l.type === 'Terreno' ? 'Área do terreno' : 'Área bruta']);
-    if (l.garage) facts.push([l.garage, 'Lugares de garagem']);
+    // Números principais com ícones; os números contam até ao valor quando aparecem.
+    var I = C361.icon, facts = [];
+    if (l.beds) facts.push(['bed', l.beds, l.beds == 1 ? 'Quarto' : 'Quartos']);
+    if (l.baths) facts.push(['bath', l.baths, l.baths == 1 ? 'Casa de banho' : 'Casas de banho']);
+    if (l.area) facts.push([l.type === 'Terreno' ? 'plot' : 'area', l.area, l.type === 'Terreno' ? 'Área do terreno' : 'Área bruta', ' m²']);
+    if (l.garage) facts.push(['car', l.garage, l.garage == 1 ? 'Lugar de garagem' : 'Lugares de garagem']);
+    if (l.year) facts.push(['year', l.year, l.year >= new Date().getFullYear() ? 'Construção nova' : 'Ano de construção', '', true]);
     var nrg = C361.energyBadge(l.energy, 'big');
-    $('facts').innerHTML = facts.map(function (f) { return '<div><strong>' + e(f[0]) + '</strong><span>' + e(f[1]) + '</span></div>'; }).join('') +
-      (nrg ? '<div class="fact-nrg">' + nrg + '<span>Certificado energético</span></div>' : '');
+    $('facts').innerHTML = facts.map(function (f, i) {
+      return '<div class="fx" style="--i:' + i + '"><span class="fx-ico">' + I(f[0]) + '</span><span class="fx-t"><strong><span class="fx-n" data-to="' + f[1] + '"' + (f[4] ? ' data-plain' : '') + '>' + e(String(f[1]).replace('.', ',')) + '</span>' + (f[3] || '') + '</strong><small>' + e(f[2]) + '</small></span></div>';
+    }).join('') + (nrg ? '<div class="fx fact-nrg" style="--i:' + facts.length + '"><span class="fx-ico">' + I('energy') + '</span><span class="fx-t">' + nrg + '<small>Certificado energético</small></span></div>' : '');
+    (function () {
+      var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches, box = $('facts');
+      function run() {
+        box.classList.add('in');
+        if (still) return;
+        box.querySelectorAll('.fx-n').forEach(function (n) {
+          if (n.hasAttribute('data-plain')) return;
+          var to = +n.getAttribute('data-to'), t0 = null;
+          if (!(to > 1)) return;
+          function tick(t) { t0 = t0 || t; var k = Math.min(1, (t - t0) / 1100), v = Math.round(to * (1 - Math.pow(1 - k, 3))); n.textContent = v.toLocaleString('pt-PT'); if (k < 1) requestAnimationFrame(tick); }
+          requestAnimationFrame(tick);
+        });
+      }
+      if ('IntersectionObserver' in window) { var io = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { run(); io.disconnect(); } }, { threshold: .3 }); io.observe(box); } else run();
+    })();
     if (C361.energyClass(l.energy)) { $('energy-block').hidden = false; $('energy-scale').innerHTML = C361.energyScale(l.energy); }
 
     var photos = l.photos;
@@ -135,11 +158,18 @@
     }).join('');
     if (photos.length < 3) { $('gallery').style.gridTemplateColumns = '1fr ' + (photos.length > 1 ? '1fr' : ''); $('gallery').style.gridTemplateRows = '1fr'; }
 
+    // Texto extra escrito no CRM para o site (ex.: dia aberto, exclusivo): antes da descrição.
+    if (l.note) $('desc').insertAdjacentHTML('beforebegin', '<div class="pnote">' + C361.icon('spark') + '<p>' + e(l.note).replace(/\n/g, '<br>') + '</p></div>');
+    if (l.featured) $('kicker').insertAdjacentHTML('afterbegin', '<span class="kick-star">★ Destaque</span> ');
     $('desc').innerHTML = (l.description || [l.summary || l.title + '. Contacte-nos para saber mais e marcar uma visita.']).map(function (p) { return '<p>' + e(p) + '</p>'; }).join('');
     if (l.rooms) $('rooms').innerHTML = l.rooms.map(function (r) { return '<tr><td>' + e(r[0]) + '</td><td>' + e(r[1]) + '</td></tr>'; }).join(''); else $('rooms-block').hidden = true;
     if (l.features) {
-      $('feats').innerHTML = l.features.map(function (f) { return '<li>' + e(f) + '</li>'; }).join('') +
-        (l.year ? '<li>Ano de construção: ' + l.year + '</li>' : '');
+      // Cada característica com o seu ícone.
+      var pick = function (f) { var t = f.toLowerCase();
+        return /garag|estacion|parque/.test(t) ? 'car' : /elevador/.test(t) ? 'lift' : /solar|fotovolt/.test(t) ? 'sun' : /varanda|terra[cç]o|sacada/.test(t) ? 'balcony' : /piscina/.test(t) ? 'pool' :
+          /cozinha|m[aá]quina|forno|placa/.test(t) ? 'home' : /ar condicionado|aquecimento|lareira|bomba de calor/.test(t) ? 'spark' : /porta|alarme|seguran|videoporteiro|portão/.test(t) ? 'key' :
+          /jardim|quintal|terreno/.test(t) ? 'plot' : /vidro|estore|janela/.test(t) ? 'expand' : /livre|dispon/.test(t) ? 'check' : 'check'; };
+      $('feats').innerHTML = l.features.map(function (f, i) { return '<li style="--i:' + i + '">' + C361.icon(pick(f)) + '<span>' + e(f) + '</span></li>'; }).join('');
     } else $('feat-block').hidden = true;
     // O vídeo do imóvel (YouTube ou Vimeo), quando a ficha no CRM o tem.
     var yt = String(l.video || '').match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{6,})/), vm = String(l.video || '').match(/vimeo\.com\/(?:video\/)?(\d+)/);
@@ -155,6 +185,8 @@
       C361.mapLayers(pm);
       L.circle([l.lat, l.lng], { radius: 400, color: '#b9925a', weight: 2, fillColor: '#b9925a', fillOpacity: .18 }).addTo(pm);
       pm.on('click', function () { pm.scrollWheelZoom.enable(); });
+      C361.mapFull(pm);
+      C361.nearby(pm, l.lat, l.lng, $('near'), $('near-grid'));
     } else $('pmap').hidden = true;
     $('similar').innerHTML = CASA361_LISTINGS.filter(function (x) { return x.ref !== l.ref && x.type === l.type; }).slice(0, 2).map(C361.card).join('');
     if (!$('similar').innerHTML) $('similar').closest('section').hidden = true;

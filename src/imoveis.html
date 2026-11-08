@@ -89,7 +89,7 @@
     var map = null, layer = null, pins = {}, follow = false, byMap = false, area = null;
     if (window.L) {
       map = L.map('map', { scrollWheelZoom: false, zoomControl: true }).setView([38.9, -9.05], 10);
-      C361.mapLayers(map);
+      C361.mapLayers(map); C361.mapFull(map);
       layer = L.layerGroup().addTo(map);
       var Follow = L.Control.extend({ options: { position: 'bottomright' }, onAdd: function () {
         var d = L.DomUtil.create('label', 'map-follow');
