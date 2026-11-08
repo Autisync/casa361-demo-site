@@ -13,10 +13,21 @@
   var PHONE = '913 613 005', TEL = '+351913613005', MAIL = 'geral@casa361.com';
   var page = document.body.getAttribute('data-page') || '';
   var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var links = [['imoveis.html', 'Imóveis', 'imoveis'], ['vender.html', 'Vender', 'vender'], ['index.html#credito', 'Crédito', 'credito'], ['servicos.html', 'Serviços', 'servicos'], ['empresa.html', 'Empresa', 'empresa'], ['contactos.html', 'Contactos', 'contactos']];
+  var links = [['imoveis.html', 'Imóveis', 'imoveis'], ['vender.html', 'Vender', 'vender'], ['credito.html', 'Crédito', 'credito'], ['servicos.html', 'Serviços', 'servicos'], ['empresa.html', 'Empresa', 'empresa'], ['contactos.html', 'Contactos', 'contactos']];
   var IG = 'https://www.instagram.com/casa.361com/', FB = 'https://www.facebook.com/Casa.361com';
   var igIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.3" cy="6.7" r="1.2" fill="currentColor"/></svg>';
   var fbIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 21v-7.5H16l.4-3h-2.9V8.6c0-.9.3-1.5 1.5-1.5h1.5V4.4c-.3 0-1.2-.1-2.2-.1-2.2 0-3.7 1.3-3.7 3.8v2.4H8.1v3h2.5V21h2.9z" fill="currentColor"/></svg>';
+
+  // O logótipo da Casa 361 redesenhado em vetor: a casa a ouro, "CASA" claro e "361" a ouro,
+  // sem a caixa preta do PNG e na horizontal, para ficar mais baixo no cabeçalho.
+  var MARK = '<svg class="logo-mark" viewBox="0 0 52 39" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 22.5 25.6 1.5 50 22.5"/><path d="M35 2.6V37"/><path d="M8.4 21.5V31"/><path d="M16 22.5v14"/><path d="M21.8 36.5v-11h7.8v11"/><path d="M42.8 21.5V31"/></g></svg>';
+  var LOCKUP = MARK + '<span class="logo-word"><span class="lw1">CASA <b>361</b></span><span class="lw2">Mais do que imóveis, soluções.</span></span>';
+  // O ícone no separador do browser: a mesma casa, a ouro sobre preto.
+  if (!document.querySelector('link[rel="icon"]')) {
+    var ico = document.createElement('link'); ico.rel = 'icon'; ico.type = 'image/svg+xml';
+    ico.href = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#181818"/><g transform="translate(6 12)" fill="none" stroke="#c9a15f" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 22.5 25.6 1.5 50 22.5"/><path d="M35 2.6V37"/><path d="M8.4 21.5V31"/><path d="M16 22.5v14"/><path d="M21.8 36.5v-11h7.8v11"/><path d="M42.8 21.5V31"/></g></svg>');
+    document.head.appendChild(ico);
+  }
 
   var bar = document.createElement('div');
   bar.className = 'mq-bar';
@@ -26,7 +37,7 @@
   var top = document.getElementById('top');
   if (top) {
     top.className = 'top' + (document.body.hasAttribute('data-hero') ? ' over' : '');
-    top.innerHTML = '<div class="wrap"><a class="logo" href="index.html" aria-label="Casa 361, página inicial"><img src="' + LOGO + '" alt="Casa 361 · Mais do que imóveis, soluções." width="128" height="89"></a>' +
+    top.innerHTML = '<div class="wrap"><a class="logo" href="index.html" aria-label="Casa 361, página inicial">' + LOCKUP + '</a>' +
       '<button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav">Menu</button>' +
       '<nav class="nav" id="nav" aria-label="Principal">' + links.map(function (l) {
         return '<a href="' + l[0] + '"' + (l[2] === page ? ' aria-current="page"' : '') + '>' + l[1] + '</a>';
@@ -46,9 +57,9 @@
     foot.innerHTML = '<div class="wrap">' +
       '<p class="foot-line">Mais do que imóveis, <em>soluções.</em></p>' +
       '<div class="cols">' +
-      '<div><img src="' + LOGO + '" alt="Casa 361" width="132" height="92" class="foot-logo"><p>Imobiliária na zona norte de Lisboa. Compra, venda e arrendamento em Vila Franca de Xira, Alverca, Póvoa de Santa Iria e Alhandra.</p></div>' +
+      '<div><a class="logo foot-logo" href="index.html" aria-label="Casa 361">' + LOCKUP + '</a><p>Imobiliária na zona norte de Lisboa. Compra, venda e arrendamento em Vila Franca de Xira, Alverca, Póvoa de Santa Iria e Alhandra.</p></div>' +
       '<div><h4>Imóveis</h4><ul><li><a href="imoveis.html">Comprar</a></li><li><a href="imoveis.html?deal=arrendamento">Arrendar</a></li><li><a href="imoveis.html?guardados=1">Guardados</a></li><li><a href="vender.html">Vender o seu imóvel</a></li><li><a href="vender.html#rapida">Compramos o seu imóvel</a></li></ul></div>' +
-      '<div><h4>Casa 361</h4><ul><li><a href="empresa.html">Sobre nós</a></li><li><a href="servicos.html">Serviços</a></li><li><a href="servicos.html#credito">Crédito habitação</a></li><li><a href="empresa.html#recrutamento">Recrutamento</a></li></ul></div>' +
+      '<div><h4>Casa 361</h4><ul><li><a href="empresa.html">Sobre nós</a></li><li><a href="servicos.html">Serviços</a></li><li><a href="credito.html">Crédito habitação</a></li><li><a href="empresa.html#recrutamento">Recrutamento</a></li></ul></div>' +
       '<div><h4>Contactos</h4><ul><li><a href="tel:' + TEL + '" class="num">' + PHONE + '</a><br><small>Chamada para rede móvel nacional</small></li><li><a href="mailto:' + MAIL + '">' + MAIL + '</a></li><li><a href="https://wa.me/351913613005" target="_blank" rel="noopener">WhatsApp</a></li></ul></div>' +
       '</div>' +
       // O que o rodapé do site atual tem e tem de continuar a ter: as ligações legais, o Livro de
@@ -70,12 +81,45 @@
       '</div></div>';
   }
 
-  // WhatsApp sempre à mão.
-  var wa = document.createElement('a');
-  wa.className = 'wa-float'; wa.href = 'https://wa.me/351913613005'; wa.target = '_blank'; wa.rel = 'noopener';
-  wa.setAttribute('aria-label', 'Falar connosco no WhatsApp');
-  wa.innerHTML = '<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3.5A12.4 12.4 0 0 0 5.3 22.2L3.6 28.4l6.4-1.7A12.4 12.4 0 1 0 16 3.5zm0 22.6c-1.9 0-3.7-.5-5.3-1.4l-.4-.2-3.8 1 1-3.7-.2-.4A10.2 10.2 0 1 1 16 26.1zm5.6-7.6c-.3-.2-1.8-.9-2.1-1-.3-.1-.5-.2-.7.2l-1 1.2c-.2.2-.4.2-.7.1a8.4 8.4 0 0 1-4.2-3.6c-.3-.5.3-.5.9-1.6.1-.2 0-.4 0-.5l-1-2.3c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.3 5.2 4.6 1.9.8 2.7.9 3.6.7.6-.1 1.8-.7 2-1.4.3-.7.3-1.3.2-1.4-.1-.2-.3-.2-.6-.4z" fill="currentColor"/></svg>';
+  // WhatsApp: um assistente guiado. A pessoa escolhe o assunto, diz o nome e a zona, e o WhatsApp
+  // abre com a mensagem já escrita para a Casa 361. Sem CRM nada fica guardado: a conversa
+  // continua no WhatsApp da Casa 361, com uma pessoa.
+  var WA = '351913613005';
+  var waIcon = '<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3.5A12.4 12.4 0 0 0 5.3 22.2L3.6 28.4l6.4-1.7A12.4 12.4 0 1 0 16 3.5zm0 22.6c-1.9 0-3.7-.5-5.3-1.4l-.4-.2-3.8 1 1-3.7-.2-.4A10.2 10.2 0 1 1 16 26.1zm5.6-7.6c-.3-.2-1.8-.9-2.1-1-.3-.1-.5-.2-.7.2l-1 1.2c-.2.2-.4.2-.7.1a8.4 8.4 0 0 1-4.2-3.6c-.3-.5.3-.5.9-1.6.1-.2 0-.4 0-.5l-1-2.3c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.3 5.2 4.6 1.9.8 2.7.9 3.6.7.6-.1 1.8-.7 2-1.4.3-.7.3-1.3.2-1.4-.1-.2-.3-.2-.6-.4z" fill="currentColor"/></svg>';
+  var TOPICS = ['Quero comprar casa', 'Quero vender o meu imóvel', 'Quero arrendar casa', 'Tenho um imóvel para arrendar', 'Quero saber quanto vale a minha casa', 'Preciso de ajuda com crédito habitação', 'Outro assunto'];
+  var wa = document.createElement('button');
+  wa.type = 'button'; wa.className = 'wa-float'; wa.setAttribute('aria-label', 'Falar connosco no WhatsApp'); wa.setAttribute('aria-expanded', 'false');
+  wa.innerHTML = waIcon;
+  var panel = document.createElement('div');
+  panel.className = 'wa-panel'; panel.hidden = true; panel.setAttribute('role', 'dialog'); panel.setAttribute('aria-label', 'Falar com a Casa 361 no WhatsApp');
+  panel.innerHTML = '<div class="wa-head"><span class="wa-ico">' + waIcon + '</span><div><b>Casa 361</b><small>Respondemos no WhatsApp</small></div><button type="button" class="wa-x" aria-label="Fechar">×</button></div>' +
+    '<form class="wa-body"><p class="wa-hi">Olá! Como podemos ajudar?</p><fieldset><legend class="sr">Assunto</legend>' +
+    TOPICS.map(function (t, i) { return '<label><input type="radio" name="wa-topic" value="' + t + '"' + (i ? '' : ' checked') + '><span>' + t + '</span></label>'; }).join('') +
+    '</fieldset><label class="wa-f">Nome<input name="wa-name" required autocomplete="name" placeholder="O seu nome"></label>' +
+    '<label class="wa-f">Localidade de interesse<input name="wa-zone" placeholder="Ex.: Alverca, Vila Franca de Xira"></label>' +
+    '<label class="wa-f">Mais algum detalhe? (opcional)<textarea name="wa-msg" rows="2" placeholder="Ex.: T2 até 250 000 €"></textarea></label>' +
+    '<button type="submit" class="btn btn-wa wa-go">' + waIcon + ' Continuar no WhatsApp</button>' +
+    '<p class="wa-note">Abre o WhatsApp com a mensagem pronta. Só é enviada quando carregar em enviar.</p></form>';
+  function waOpen(o) {
+    panel.hidden = !o; wa.setAttribute('aria-expanded', String(o));
+    if (o) { var f = panel.querySelector('input[name="wa-name"]'); setTimeout(function () { f.focus(); }, 30); } else wa.focus();
+  }
+  wa.addEventListener('click', function () { waOpen(panel.hidden); });
+  panel.querySelector('.wa-x').addEventListener('click', function () { waOpen(false); });
+  document.addEventListener('keydown', function (ev) { if (ev.key === 'Escape' && !panel.hidden) waOpen(false); });
+  panel.querySelector('form').addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    var f = ev.target; if (!f.reportValidity()) return;
+    var topic = (f.querySelector('input[name="wa-topic"]:checked') || {}).value || '';
+    var lines = ['Olá! Sou ' + f['wa-name'].value.trim() + '.', topic + '.'];
+    if (f['wa-zone'].value.trim()) lines.push('Localidade: ' + f['wa-zone'].value.trim() + '.');
+    if (f['wa-msg'].value.trim()) lines.push(f['wa-msg'].value.trim());
+    lines.push('(Mensagem enviada a partir do website)');
+    window.open('https://wa.me/' + WA + '?text=' + encodeURIComponent(lines.join('\n')), '_blank', 'noopener');
+    waOpen(false);
+  });
   document.body.appendChild(wa);
+  document.body.appendChild(panel);
 
   // Notas da maquete: mostrar / esconder (lembra-se neste browser).
   var t = document.getElementById('mq-toggle');

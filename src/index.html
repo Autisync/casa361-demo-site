@@ -8,7 +8,6 @@
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Manrope:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body data-page="inicio" data-hero>
@@ -108,43 +107,26 @@
     </div></div>
   </section>
 
-  <!-- 6 · Simulador de crédito habitação -->
+  <!-- 6 · Simulador de crédito habitação (o completo está em credito.html) -->
   <section class="sec dark" id="credito">
-    <div class="wrap">
-      <div class="sec-head reveal"><div><p class="kicker" style="color:var(--gold)">Simulador de crédito habitação</p><h2>Quanto vai pagar por mês?</h2><p>Mexa nos valores e veja a prestação estimada. Se quiser, ajudamos a encontrar o financiamento certo.</p></div></div>
-      <div class="credit reveal">
-        <div class="sim" id="sim">
-          <div class="sim-grid">
-            <label>Valor do imóvel <span class="v num" id="o-price"></span><input type="range" id="s-price" min="50000" max="800000" step="5000" value="250000"></label>
-            <label>Entrada <span class="v num" id="o-down"></span><input type="range" id="s-down" min="10" max="60" step="1" value="10"></label>
-            <label>Prazo <span class="v num" id="o-years"></span><input type="range" id="s-years" min="10" max="40" step="1" value="35"></label>
-            <label>Taxa anual (TAN) <span class="v num" id="o-rate"></span><input type="range" id="s-rate" min="1.5" max="6" step="0.05" value="3.3"></label>
-          </div>
-          <div class="sim-out">
-            <div><small>Prestação mensal</small><strong class="num" id="r-pay"></strong></div>
-            <div><small>Empréstimo</small><strong class="num" id="r-loan"></strong></div>
-            <div><small>Entrada</small><strong class="num" id="r-down"></strong></div>
-          </div>
-          <p class="sim-note">Simulação indicativa, não é uma proposta de crédito. Não inclui impostos (IMT e Imposto do Selo), seguros nem comissões; a taxa final depende do banco e do seu perfil.</p>
+    <div class="wrap ct">
+      <div class="ct-main reveal">
+        <p class="kicker" style="color:var(--gold)">Simulador de crédito habitação</p>
+        <h2>Quanto vai pagar por mês?</h2>
+        <p>Escolha o valor da casa e veja já uma prestação estimada. No simulador completo ajusta a entrada, o prazo e a taxa.</p>
+        <div class="ct-calc">
+          <label for="q-price">Valor da casa <span class="num" id="q-price-o"></span></label>
+          <input type="range" id="q-price" min="80000" max="600000" step="5000" value="250000">
+          <p class="ct-out"><span>Prestação estimada</span><strong class="num" id="q-pay"></strong><small>Com 10% de entrada, 35 anos e TAN de 3,30%. Valor indicativo.</small></p>
         </div>
-        <div class="credit-help">
-          <h3>Quer ajuda para encontrar financiamento?</h3>
-          <ul class="ticks"><li>Acompanhamento personalizado, do pedido à escritura</li><li>Imóveis dentro do seu orçamento</li><li>Uma chamada gratuita com um consultor, quando lhe der jeito</li></ul>
-          <form class="form" novalidate data-lead="credito">
-            <div class="hide-sent" style="display:grid;gap:12px">
-              <div class="row"><label>Nome<input name="name" required autocomplete="name"></label><label>Telefone<input name="phone" type="tel" required autocomplete="tel"></label></div>
-              <label>Email<input name="email" type="email" required autocomplete="email"></label>
-              <div class="row"><label>Zona pretendida<input name="zone" placeholder="Ex.: Vila Franca de Xira"></label><label>Tipologia<select name="tip"><option value="">Indiferente</option><option>T1</option><option>T2</option><option>T3</option><option>T4 ou mais</option><option>Moradia</option></select></label></div>
-              <input type="hidden" name="Valor do imóvel" id="h-price"><input type="hidden" name="Entrada disponível" id="h-down"><input type="hidden" name="Prestação estimada" id="h-pay"><input type="hidden" name="Prazo e taxa" id="h-terms"><input type="hidden" name="Data da simulação" id="h-date">
-              <label class="check"><input type="checkbox" required> Autorizo a Casa 361 a contactar-me sobre este pedido, de acordo com a Política de Privacidade.</label>
-              <label class="check"><input type="checkbox" name="Aceita sugestões de imóveis por email" value="Sim"> Quero receber sugestões de imóveis dentro deste orçamento.</label>
-              <button class="btn btn-gold" type="submit">Quero ajuda com o crédito</button>
-            </div>
-            <p class="ok" role="status">Obrigado! Enviámos-lhe um email com a simulação e um consultor liga-lhe para combinar a chamada.</p>
-            <div class="mq"><b>Para onde vai</b>Chega ao geral@casa361.com com nome, contactos, valor do imóvel, entrada, prestação, zona, tipologia e data da simulação. A pessoa recebe logo um email a agradecer, com os próximos passos.</div>
-          </form>
-        </div>
+        <a class="btn btn-gold" href="credito.html">Abrir o simulador completo <span class="arr" aria-hidden="true">→</span></a>
       </div>
+      <a class="ct-young reveal" href="credito.html#jovem">
+        <span class="ct-tag">Até aos 35 anos</span>
+        <h3>A primeira casa ficou mais fácil</h3>
+        <ul class="ticks"><li>0 € de IMT e Imposto do Selo em casas até 330 539 €</li><li>Até 100% de financiamento, com a garantia do Estado</li><li>Prazo até 40 anos</li></ul>
+        <span class="ct-more">Saber se tenho direito <span aria-hidden="true">→</span></span>
+      </a>
     </div>
   </section>
 
@@ -231,7 +213,7 @@
           <a class="soc" href="https://www.instagram.com/casa.361com/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.3" cy="6.7" r="1.2" fill="currentColor"/></svg>Instagram</a>
           <a class="soc" href="https://www.facebook.com/Casa.361com" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 21v-7.5H16l.4-3h-2.9V8.6c0-.9.3-1.5 1.5-1.5h1.5V4.4c-.3 0-1.2-.1-2.2-.1-2.2 0-3.7 1.3-3.7 3.8v2.4H8.1v3h2.5V21h2.9z" fill="currentColor"/></svg>Facebook</a>
         </p>
-        <div class="office-map" id="office-map" role="img" aria-label="Mapa: Casa 361 em São João dos Montes"></div>
+        <div class="office-map"><iframe title="Casa 361 no Google Maps" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=Casa%20361%20-%20Imobili%C3%A1ria%20Vila%20Franca%20de%20Xira%2C%20R.%20Joaquim%20Lu%C3%ADs%20Chico%203%2C%202600-782%20S%C3%A3o%20Jo%C3%A3o%20dos%20Montes&z=15&output=embed"></iframe></div>
       </div>
       <div class="panel reveal">
         <form class="form" novalidate data-lead="contacto">
@@ -251,7 +233,6 @@
 </main>
 
 <footer id="foot"></footer>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="config.js"></script>
 <script src="listings.js"></script>
 <script>
@@ -303,22 +284,15 @@
     });
   })();
 
-  // 6 · Simulador de crédito: prestação pela fórmula da renda constante.
+  // 6 · Estimativa rápida (o simulador completo está em credito.html).
   (function () {
-    var $ = function (id) { return document.getElementById(id); };
-    var eur = function (n) { return Math.round(n).toLocaleString('pt-PT') + ' €'; };
+    var p = document.getElementById('q-price'), eur = function (n) { return Math.round(n).toLocaleString('pt-PT') + ' €'; };
     function calc() {
-      var price = +$('s-price').value, pct = +$('s-down').value, years = +$('s-years').value, tan = +$('s-rate').value;
-      var down = price * pct / 100, loan = price - down, r = tan / 100 / 12, n = years * 12;
-      var pay = r ? loan * r / (1 - Math.pow(1 + r, -n)) : loan / n;
-      $('o-price').textContent = eur(price); $('o-down').textContent = pct + '% · ' + eur(down);
-      $('o-years').textContent = years + ' anos'; $('o-rate').textContent = tan.toFixed(2).replace('.', ',') + '%';
-      $('r-pay').textContent = eur(pay) + '/mês'; $('r-loan').textContent = eur(loan); $('r-down').textContent = eur(down);
-      $('h-price').value = eur(price); $('h-down').value = eur(down) + ' (' + pct + '%)'; $('h-pay').value = eur(pay) + '/mês';
-      $('h-terms').value = years + ' anos, TAN ' + tan.toFixed(2).replace('.', ',') + '%'; $('h-date').value = new Date().toLocaleString('pt-PT');
+      var price = +p.value, loan = price * 0.9, r = 0.033 / 12, n = 35 * 12;
+      document.getElementById('q-price-o').textContent = eur(price);
+      document.getElementById('q-pay').textContent = eur(loan * r / (1 - Math.pow(1 + r, -n))) + '/mês';
     }
-    ['s-price', 's-down', 's-years', 's-rate'].forEach(function (id) { $(id).addEventListener('input', calc); });
-    calc();
+    p.addEventListener('input', calc); calc();
   })();
 
   // 8 · Testemunhos
@@ -326,17 +300,6 @@
     return '<figure class="rev"><div class="stars" aria-label="5 estrelas">★★★★★</div><blockquote>' + esc(r[2]) + '</blockquote>' +
       '<figcaption><b>' + esc(r[0]) + '</b><span>' + esc(r[1]) + ' · Google</span></figcaption></figure>';
   }).join('');
-
-  // 11 · Mapa do escritório
-  (function () {
-    var el = document.getElementById('office-map');
-    if (!window.L || !el) { if (el) el.hidden = true; return; }
-    var m = L.map(el, { scrollWheelZoom: false, zoomControl: true, attributionControl: true }).setView([38.9406836, -9.0188828], 14);
-    if (window.C361 && C361.mapLayers) C361.mapLayers(m);
-    else L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(m);
-    L.marker([38.9406836, -9.0188828], { icon: L.divIcon({ className: '', html: '<span class="pin">Casa 361</span>', iconSize: [0, 0] }) })
-      .addTo(m).bindPopup('<b>Casa 361</b><br>R. Joaquim Luís Chico 3<br>2600-782 São João dos Montes<br><a href="https://www.google.com/maps?cid=11429435623754313206" target="_blank" rel="noopener">Abrir no Google Maps</a>');
-  })();
 
   C361.ready.then(function () {
     var e = C361.esc, L = CASA361_LISTINGS;

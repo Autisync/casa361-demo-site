@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Simulador de crédito habitação · Casa 361</title>
+<meta name="description" content="Simule a prestação do crédito habitação e saiba o que muda na primeira casa até aos 35 anos: isenção de IMT e Imposto do Selo e garantia do Estado. Casa 361, zona norte de Lisboa.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Manrope:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="credito">
+<a class="skip" href="#main">Saltar para o conteúdo</a>
+<header id="top"></header>
+
+<main id="main">
+  <section class="page-head">
+    <div class="wrap">
+      <p class="kicker">Crédito habitação</p>
+      <h1>Quanto vai pagar por mês?</h1>
+      <p>Mexa nos valores e veja a prestação estimada. Se quiser, ajudamos a encontrar o financiamento certo e casas dentro do seu orçamento.</p>
+    </div>
+  </section>
+
+  <section class="sec dark" id="simulador" style="padding-top:clamp(40px,5vw,72px)">
+    <div class="wrap">
+      <div class="credit reveal">
+        <div class="sim" id="sim">
+          <label class="young-toggle"><input type="checkbox" id="s-young"><span>Tenho 35 anos ou menos e é a minha primeira casa</span></label>
+          <div class="sim-grid">
+            <label>Valor do imóvel <span class="v num" id="o-price"></span><input type="range" id="s-price" min="50000" max="800000" step="5000" value="250000"></label>
+            <label>Entrada <span class="v num" id="o-down"></span><input type="range" id="s-down" min="10" max="60" step="1" value="10"></label>
+            <label>Prazo <span class="v num" id="o-years"></span><input type="range" id="s-years" min="10" max="40" step="1" value="35"></label>
+            <label>Taxa anual (TAN) <span class="v num" id="o-rate"></span><input type="range" id="s-rate" min="1.5" max="6" step="0.05" value="3.3"></label>
+          </div>
+          <div class="sim-out">
+            <div><small>Prestação mensal</small><strong class="num" id="r-pay"></strong></div>
+            <div><small>Empréstimo</small><strong class="num" id="r-loan"></strong></div>
+            <div><small>Entrada</small><strong class="num" id="r-down"></strong></div>
+          </div>
+          <p class="sim-note">Simulação indicativa, não é uma proposta de crédito. Não inclui impostos (IMT e Imposto do Selo), seguros nem comissões; a taxa final depende do banco e do seu perfil.</p>
+        </div>
+        <div class="credit-help">
+          <h3>Quer ajuda para encontrar financiamento?</h3>
+          <ul class="ticks"><li>Acompanhamento personalizado, do pedido à escritura</li><li>Imóveis dentro do seu orçamento</li><li>Uma chamada gratuita com um consultor, quando lhe der jeito</li></ul>
+          <form class="form" novalidate data-lead="credito">
+            <div class="hide-sent" style="display:grid;gap:12px">
+              <div class="row"><label>Nome<input name="name" required autocomplete="name"></label><label>Telefone<input name="phone" type="tel" required autocomplete="tel"></label></div>
+              <label>Email<input name="email" type="email" required autocomplete="email"></label>
+              <div class="row"><label>Zona pretendida<input name="zone" placeholder="Ex.: Vila Franca de Xira"></label><label>Tipologia<select name="tip"><option value="">Indiferente</option><option>T1</option><option>T2</option><option>T3</option><option>T4 ou mais</option><option>Moradia</option></select></label></div>
+              <input type="hidden" name="Valor do imóvel" id="h-price"><input type="hidden" name="Entrada disponível" id="h-down"><input type="hidden" name="Prestação estimada" id="h-pay"><input type="hidden" name="Prazo e taxa" id="h-terms"><input type="hidden" name="Data da simulação" id="h-date">
+              <label class="check"><input type="checkbox" required> Autorizo a Casa 361 a contactar-me sobre este pedido, de acordo com a Política de Privacidade.</label>
+              <label class="check"><input type="checkbox" name="Aceita sugestões de imóveis por email" value="Sim"> Quero receber sugestões de imóveis dentro deste orçamento.</label>
+              <button class="btn btn-gold" type="submit">Quero ajuda com o crédito</button>
+            </div>
+            <p class="ok" role="status">Obrigado! Enviámos-lhe um email com a simulação e um consultor liga-lhe para combinar a chamada.</p>
+            <div class="mq"><b>Para onde vai</b>Chega ao geral@casa361.com com nome, contactos, valor do imóvel, entrada, prestação, zona, tipologia e data da simulação. A pessoa recebe logo um email a agradecer, com os próximos passos.</div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Primeira casa até aos 35 anos -->
+  <section class="sec stone" id="jovem">
+    <div class="wrap">
+      <div class="sec-head reveal"><div><p class="kicker">Primeira casa até aos 35 anos</p><h2>Comprar a primeira casa ficou mais fácil</h2><p>Se tem 35 anos ou menos e vai comprar a sua primeira casa para morar, há dois apoios que fazem muita diferença.</p></div></div>
+      <div class="young-cards reveal">
+        <article><b>0 €</b><h3>de IMT e Imposto do Selo</h3><p>Isenção total em casas até 330 539 € (valor de 2026) e parcial acima desse valor. Numa casa de 250 000 €, são vários milhares de euros que ficam consigo.</p></article>
+        <article><b>até 100%</b><h3>de financiamento</h3><p>Com a garantia do Estado, que cobre até 15% do valor, o banco pode financiar a casa toda, em imóveis até 450 000 €.</p></article>
+        <article><b>40 anos</b><h3>de prazo</h3><p>Até aos 35 anos o crédito pode ir até 40 anos, o que baixa a prestação mensal.</p></article>
+      </div>
+      <p class="young-fine">Condições de 2026 resumidas: é preciso ser a primeira habitação própria e permanente e não ser dependente no IRS; a garantia do Estado tem limites de rendimento e, segundo as regras atuais, aplica-se a contratos assinados até 31 de dezembro de 2026. Confirmamos consigo, caso a caso, as condições em vigor.</p>
+      <p style="margin-top:22px;display:flex;gap:10px;flex-wrap:wrap"><a class="btn btn-ink" href="#simulador" id="go-young">Simular com estas condições <span class="arr" aria-hidden="true">→</span></a><a class="btn btn-line" href="imoveis.html?max=350000">Ver casas até 350 000 €</a></p>
+    </div>
+  </section>
+
+  <!-- Como ajudamos -->
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head reveal"><div><p class="kicker">Como ajudamos</p><h2>Do primeiro número à escritura</h2></div></div>
+      <ol class="steps reveal" style="padding:0">
+        <li><h3>Simulação</h3><p>Fica com uma ideia da prestação e do orçamento certo para si.</p></li>
+        <li><h3>Conversa</h3><p>Uma chamada gratuita com um consultor, para ver o seu caso e os apoios a que tem direito.</p></li>
+        <li><h3>A casa certa</h3><p>Mostramos imóveis dentro do orçamento, na zona que procura.</p></li>
+        <li><h3>Até à escritura</h3><p>Acompanhamos o processo de crédito, a avaliação do banco e a escritura.</p></li>
+      </ol>
+    </div>
+  </section>
+</main>
+
+<footer id="foot"></footer>
+<script src="config.js"></script>
+<script src="listings.js"></script>
+<script>
+  // Simulador: prestação pela fórmula da renda constante. "Até aos 35 anos" permite entrada desde 0% (garantia do Estado) e prazo até 40 anos.
+  (function () {
+    var $ = function (id) { return document.getElementById(id); };
+    var eur = function (n) { return Math.round(n).toLocaleString('pt-PT') + ' €'; };
+    function young() {
+      var y = $('s-young').checked, d = $('s-down'), t = $('s-years');
+      d.min = y ? 0 : 10; t.max = y ? 40 : 35;
+      if (+d.value < +d.min) d.value = d.min; if (+t.value > +t.max) t.value = t.max;
+      if (y && +d.value === 10) d.value = 0;
+      if (y && +t.value === 35) t.value = 40;
+      calc();
+    }
+    function calc() {
+      var price = +$('s-price').value, pct = +$('s-down').value, years = +$('s-years').value, tan = +$('s-rate').value;
+      var down = price * pct / 100, loan = price - down, r = tan / 100 / 12, n = years * 12;
+      var pay = r ? loan * r / (1 - Math.pow(1 + r, -n)) : loan / n;
+      $('o-price').textContent = eur(price); $('o-down').textContent = pct + '% · ' + eur(down);
+      $('o-years').textContent = years + ' anos'; $('o-rate').textContent = tan.toFixed(2).replace('.', ',') + '%';
+      $('r-pay').textContent = eur(pay) + '/mês'; $('r-loan').textContent = eur(loan); $('r-down').textContent = eur(down);
+      $('h-price').value = eur(price); $('h-down').value = eur(down) + ' (' + pct + '%)'; $('h-pay').value = eur(pay) + '/mês';
+      $('h-terms').value = years + ' anos, TAN ' + tan.toFixed(2).replace('.', ',') + '%' + ($('s-young').checked ? ', até 35 anos (primeira casa)' : '');
+      $('h-date').value = new Date().toLocaleString('pt-PT');
+    }
+    ['s-price', 's-down', 's-years', 's-rate'].forEach(function (id) { $(id).addEventListener('input', calc); });
+    $('s-young').addEventListener('change', young);
+    $('go-young').addEventListener('click', function () { $('s-young').checked = true; young(); });
+    if (location.hash === '#jovem') { $('s-young').checked = true; young(); } else calc();
+  })();
+</script>
+<script src="chrome.js"></script>
+</body>
+</html>
