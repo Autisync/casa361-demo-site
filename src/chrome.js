@@ -13,7 +13,10 @@
   var PHONE = '913 613 005', TEL = '+351913613005', MAIL = 'geral@casa361.com';
   var page = document.body.getAttribute('data-page') || '';
   var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var links = [['imoveis.html', 'Imóveis', 'imoveis'], ['vender.html', 'Vender', 'vender'], ['servicos.html', 'Serviços', 'servicos'], ['empresa.html', 'Empresa', 'empresa'], ['contactos.html', 'Contactos', 'contactos']];
+  var links = [['imoveis.html', 'Imóveis', 'imoveis'], ['vender.html', 'Vender', 'vender'], ['index.html#credito', 'Crédito', 'credito'], ['servicos.html', 'Serviços', 'servicos'], ['empresa.html', 'Empresa', 'empresa'], ['contactos.html', 'Contactos', 'contactos']];
+  var IG = 'https://www.instagram.com/casa.361com/', FB = 'https://www.facebook.com/Casa.361com';
+  var igIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.3" cy="6.7" r="1.2" fill="currentColor"/></svg>';
+  var fbIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 21v-7.5H16l.4-3h-2.9V8.6c0-.9.3-1.5 1.5-1.5h1.5V4.4c-.3 0-1.2-.1-2.2-.1-2.2 0-3.7 1.3-3.7 3.8v2.4H8.1v3h2.5V21h2.9z" fill="currentColor"/></svg>';
 
   var bar = document.createElement('div');
   bar.className = 'mq-bar';
@@ -27,7 +30,7 @@
       '<button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav">Menu</button>' +
       '<nav class="nav" id="nav" aria-label="Principal">' + links.map(function (l) {
         return '<a href="' + l[0] + '"' + (l[2] === page ? ' aria-current="page"' : '') + '>' + l[1] + '</a>';
-      }).join('') + '<a href="imoveis.html?guardados=1" class="saved" aria-label="Imóveis guardados"><span class="ico">' + C361.heart + '</span><span class="n" id="fav-n"></span></a><a class="nav-call" href="tel:' + TEL + '">☏ Ligar ' + PHONE + '</a></nav>' +
+      }).join('') + '<span class="nav-soc"><a href="' + IG + '" target="_blank" rel="noopener" aria-label="Casa 361 no Instagram">' + igIcon + '</a><a href="' + FB + '" target="_blank" rel="noopener" aria-label="Casa 361 no Facebook">' + fbIcon + '</a></span><a href="imoveis.html?guardados=1" class="saved" aria-label="Imóveis guardados"><span class="ico">' + C361.heart + '</span><span class="n" id="fav-n"></span></a><a class="nav-call" href="tel:' + TEL + '">☏ Ligar ' + PHONE + '</a></nav>' +
       '<a class="call" href="tel:' + TEL + '"><span aria-hidden="true">☏</span> ' + PHONE + '</a></div>';
     var btn = top.querySelector('.menu-btn'), nav = top.querySelector('.nav');
     btn.addEventListener('click', function () { var o = nav.classList.toggle('open'); btn.setAttribute('aria-expanded', String(o)); top.classList.toggle('menu-open', o); });
@@ -99,7 +102,9 @@
       if (!C361.api) { done(); return; }
       var data = { kind: f.getAttribute('data-lead') || 'contacto', consent: true, page: location.pathname, ref: document.body.getAttribute('data-ref') || '', details: {} };
       Array.prototype.forEach.call(f.elements, function (el) {
-        if (!el.name || el.type === 'submit' || el.type === 'checkbox' || (el.type === 'radio' && !el.checked)) return;
+        // Caixas com nome (ex.: "A casa tem"): os valores marcados, juntos. As de consentimento não têm nome.
+        if (el.type === 'checkbox') { if (el.name && el.checked) data.details[el.name] = data.details[el.name] ? data.details[el.name] + ', ' + el.value : el.value; return; }
+        if (!el.name || el.type === 'submit' || (el.type === 'radio' && !el.checked)) return;
         var v = String(el.value || '').trim(); if (!v) return;
         if (['name', 'email', 'phone', 'message', 'website'].indexOf(el.name) >= 0) { data[el.name] = v; return; }
         var lab = el.closest('label'), legend = el.closest('fieldset') && el.closest('fieldset').querySelector('legend');

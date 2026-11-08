@@ -8,6 +8,7 @@
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Manrope:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body data-page="inicio" data-hero>
@@ -15,13 +16,13 @@
 <header id="top"></header>
 
 <main id="main">
-  <!-- Hero: título e pesquisa sobre as fotografias, gradiente escuro, e o anel 361° a desenhar-se -->
+  <!-- 1 · Imagem principal + pesquisa de imóveis -->
   <section class="hero hero-s">
     <div class="slides" id="slides" aria-hidden="true"></div>
     <div class="wrap">
       <div>
-        <p class="kicker">Casa 361 · Zona norte de Lisboa</p>
-        <h1><span class="ln"><span>A sua próxima casa,</span></span><span class="ln"><span><em>entre Lisboa e o Tejo.</em></span></span></h1>
+        <p class="kicker">Mais do que imóveis, soluções.</p>
+        <h1><span class="ln"><span>Especialistas na</span></span><span class="ln"><span><em>zona norte de Lisboa.</em></span></span></h1>
         <div class="hsearch">
           <div class="tabs" role="tablist" aria-label="O que procura">
             <button type="button" role="tab" aria-selected="true" data-deal="venda">Comprar</button>
@@ -31,7 +32,7 @@
           <form action="imoveis.html" method="get" class="hsearch-row" aria-label="Pesquisar imóveis">
             <input type="hidden" name="deal" value="venda" id="deal">
             <label class="sr" for="zona">Zona</label>
-            <select name="zona" id="zona"><option value="">Todas as zonas</option><option>Vila Franca de Xira</option><option>Castanheira do Ribatejo</option><option>Forte da Casa</option><option>São João dos Montes</option><option>Amadora</option><option>Sobreda</option></select>
+            <select name="zona" id="zona"><option value="">Todas as zonas</option></select>
             <label class="sr" for="tipo">Tipo</label>
             <select name="tipo" id="tipo"><option value="">Qualquer tipo</option><option>Apartamento</option><option>Moradia</option><option>Terreno</option></select>
             <label class="sr" for="max">Preço até</label>
@@ -54,94 +55,183 @@
     <div class="slide-dots" id="dots" aria-hidden="true"></div>
   </section>
 
-  <!-- Três portas: comprar, vender, arrendar -->
+  <!-- 2 · Comprar, Vender e Arrendar (imagens fixas, não de imóveis à venda) -->
   <section class="doors wrap">
-    <a class="door reveal" href="imoveis.html"><img loading="lazy" src="https://api.autisync.com/uploads/media/5bb51851-12f5-4c63-a256-b9ffa95a51c4/properties/eebea4b8-9b38-4060-9cdd-605c61705de1.jpg" alt=""><span><small>Comprar</small>Encontre a sua casa</span></a>
-    <a class="door reveal" href="vender.html"><img loading="lazy" src="https://api.autisync.com/uploads/media/5bb51851-12f5-4c63-a256-b9ffa95a51c4/properties/86e56652-2d2a-4422-9a47-c080573ed7a9.jpg" alt=""><span><small>Vender</small>Quanto vale a sua casa?</span></a>
-    <a class="door reveal" href="imoveis.html?deal=arrendamento"><img loading="lazy" src="https://api.autisync.com/uploads/media/5bb51851-12f5-4c63-a256-b9ffa95a51c4/properties/da635993-1ec1-4921-ac16-9d65ec6cc975.jpg" alt=""><span><small>Arrendar</small>Casas para arrendar</span></a>
+    <a class="door reveal" href="imoveis.html"><img loading="lazy" src="img/casa-comprar.jpg" alt=""><span><small>Comprar</small>Encontre a sua casa</span></a>
+    <a class="door reveal" href="vender.html"><img loading="lazy" src="img/casa-vender.jpg" alt=""><span><small>Vender</small>Quanto vale a sua casa?</span></a>
+    <a class="door reveal" href="imoveis.html?deal=arrendamento"><img loading="lazy" src="img/casa-arrendar.jpg" alt=""><span><small>Arrendar</small>Casas para arrendar</span></a>
   </section>
 
-  <!-- Explorar por zona: carrossel centrado, que roda sozinho (pára com o rato ou o dedo em cima) -->
+  <!-- 3 · Imóveis em destaque -->
   <section class="sec" style="padding-top:clamp(56px,7vw,96px)">
     <div class="wrap">
-      <div class="sec-head reveal" style="justify-content:center;text-align:center">
-        <div style="display:grid;justify-items:center"><p class="kicker">Explorar por zona</p><h2>Onde quer viver?</h2><p>Da beira do Tejo às colinas de São João dos Montes. Conhecemos cada rua.</p></div>
+      <div class="sec-head reveal">
+        <div><p class="kicker">Imóveis em destaque</p><h2>Encontramos a casa. <em class="gold-i">A história é sua.</em></h2></div>
+        <a class="btn btn-line" href="imoveis.html">Ver todos os imóveis <span class="arr" aria-hidden="true">→</span></a>
       </div>
-      <div class="zcar reveal" id="zcar" role="region" aria-roledescription="carrossel" aria-label="Zonas">
-        <button type="button" class="zarrow prev" aria-label="Zona anterior">←</button>
+      <div class="mq reveal" style="margin-bottom:28px"><b>Ligação ao CRM</b>Estes imóveis vêm da conta UrbanFocus no CRM Autisync, sozinhos. Preço novo, fotografias, reservado ou vendido: altera no CRM e aparece aqui no máximo 10 minutos depois.</div>
+      <div class="grid" id="featured"></div>
+    </div>
+  </section>
+
+  <!-- 4 · Explorar por zona: fotografias aéreas de cada concelho -->
+  <section class="sec stone">
+    <div class="wrap">
+      <div class="sec-head reveal" style="justify-content:center;text-align:center">
+        <div style="display:grid;justify-items:center"><p class="kicker">Explorar por zona</p><h2>Onde quer viver?</h2><p>Conhecemos cada concelho. Ajudamos a encontrar o lugar certo para si.</p></div>
+      </div>
+      <div class="mq reveal" style="margin-bottom:24px"><b>A confirmar</b>Os nomes dos concelhos foram atribuídos às fotografias enviadas pelo Luís; confirmar cada um antes de publicar. Cada cartão abre os imóveis desse concelho.</div>
+      <div class="zcar reveal" id="zcar" role="region" aria-roledescription="carrossel" aria-label="Concelhos">
+        <button type="button" class="zarrow prev" aria-label="Concelho anterior">←</button>
         <div class="zview"><div class="ztrack" id="ztrack"></div></div>
-        <button type="button" class="zarrow next" aria-label="Zona seguinte">→</button>
+        <button type="button" class="zarrow next" aria-label="Concelho seguinte">→</button>
         <div class="zdots" id="zdots"></div>
       </div>
     </div>
   </section>
 
-  <section class="sec stone" style="padding-top:clamp(64px,8vw,104px)">
-    <div class="wrap spot" id="spot"></div>
+  <!-- 5 · Simulador de valor do imóvel -->
+  <section class="sec">
+    <div class="wrap"><div class="val-band reveal">
+      <div class="val-img"><img loading="lazy" src="img/casa-moradia.jpg" alt=""></div>
+      <div class="val-body">
+        <p class="kicker">Simulador de valor do imóvel</p>
+        <h2>Quanto vale a sua casa hoje?</h2>
+        <p>Diga-nos onde fica e como é. Um consultor da Casa 361 estuda os imóveis vendidos na sua zona e envia-lhe uma avaliação gratuita, sem compromisso.</p>
+        <form class="val-quick" action="vender.html#avaliacao" method="get">
+          <label>Localização<input name="local" placeholder="Ex.: Alverca do Ribatejo" required></label>
+          <label>Tipologia<select name="tipologia"><option>T0</option><option>T1</option><option selected>T2</option><option>T3</option><option>T4 ou mais</option><option>Moradia</option><option>Terreno</option></select></label>
+          <label>Área (m²)<input name="area" inputmode="numeric" placeholder="Ex.: 90"></label>
+          <button class="btn btn-gold" type="submit">Avaliar a minha casa <span class="arr" aria-hidden="true">→</span></button>
+        </form>
+      </div>
+    </div></div>
   </section>
 
+  <!-- 6 · Simulador de crédito habitação -->
+  <section class="sec dark" id="credito">
+    <div class="wrap">
+      <div class="sec-head reveal"><div><p class="kicker" style="color:var(--gold)">Simulador de crédito habitação</p><h2>Quanto vai pagar por mês?</h2><p>Mexa nos valores e veja a prestação estimada. Se quiser, ajudamos a encontrar o financiamento certo.</p></div></div>
+      <div class="credit reveal">
+        <div class="sim" id="sim">
+          <div class="sim-grid">
+            <label>Valor do imóvel <span class="v num" id="o-price"></span><input type="range" id="s-price" min="50000" max="800000" step="5000" value="250000"></label>
+            <label>Entrada <span class="v num" id="o-down"></span><input type="range" id="s-down" min="10" max="60" step="1" value="10"></label>
+            <label>Prazo <span class="v num" id="o-years"></span><input type="range" id="s-years" min="10" max="40" step="1" value="35"></label>
+            <label>Taxa anual (TAN) <span class="v num" id="o-rate"></span><input type="range" id="s-rate" min="1.5" max="6" step="0.05" value="3.3"></label>
+          </div>
+          <div class="sim-out">
+            <div><small>Prestação mensal</small><strong class="num" id="r-pay"></strong></div>
+            <div><small>Empréstimo</small><strong class="num" id="r-loan"></strong></div>
+            <div><small>Entrada</small><strong class="num" id="r-down"></strong></div>
+          </div>
+          <p class="sim-note">Simulação indicativa, não é uma proposta de crédito. Não inclui impostos (IMT e Imposto do Selo), seguros nem comissões; a taxa final depende do banco e do seu perfil.</p>
+        </div>
+        <div class="credit-help">
+          <h3>Quer ajuda para encontrar financiamento?</h3>
+          <ul class="ticks"><li>Acompanhamento personalizado, do pedido à escritura</li><li>Imóveis dentro do seu orçamento</li><li>Uma chamada gratuita com um consultor, quando lhe der jeito</li></ul>
+          <form class="form" novalidate data-lead="credito">
+            <div class="hide-sent" style="display:grid;gap:12px">
+              <div class="row"><label>Nome<input name="name" required autocomplete="name"></label><label>Telefone<input name="phone" type="tel" required autocomplete="tel"></label></div>
+              <label>Email<input name="email" type="email" required autocomplete="email"></label>
+              <div class="row"><label>Zona pretendida<input name="zone" placeholder="Ex.: Vila Franca de Xira"></label><label>Tipologia<select name="tip"><option value="">Indiferente</option><option>T1</option><option>T2</option><option>T3</option><option>T4 ou mais</option><option>Moradia</option></select></label></div>
+              <input type="hidden" name="Valor do imóvel" id="h-price"><input type="hidden" name="Entrada disponível" id="h-down"><input type="hidden" name="Prestação estimada" id="h-pay"><input type="hidden" name="Prazo e taxa" id="h-terms"><input type="hidden" name="Data da simulação" id="h-date">
+              <label class="check"><input type="checkbox" required> Autorizo a Casa 361 a contactar-me sobre este pedido, de acordo com a Política de Privacidade.</label>
+              <label class="check"><input type="checkbox" name="Aceita sugestões de imóveis por email" value="Sim"> Quero receber sugestões de imóveis dentro deste orçamento.</label>
+              <button class="btn btn-gold" type="submit">Quero ajuda com o crédito</button>
+            </div>
+            <p class="ok" role="status">Obrigado! Enviámos-lhe um email com a simulação e um consultor liga-lhe para combinar a chamada.</p>
+            <div class="mq"><b>Para onde vai</b>Chega ao geral@casa361.com com nome, contactos, valor do imóvel, entrada, prestação, zona, tipologia e data da simulação. A pessoa recebe logo um email a agradecer, com os próximos passos.</div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 · Conheça a Casa 361 -->
   <section class="sec">
+    <div class="wrap two about reveal">
+      <div class="about-img"><img loading="lazy" src="img/casa-escada.jpg" alt=""><div class="about-badge"><strong>361°</strong><span>Uma volta completa ao seu projeto, e mais um grau.</span></div></div>
+      <div>
+        <p class="kicker">Conheça a Casa 361</p>
+        <h2>Mais do que imóveis, <em class="gold-i">soluções.</em></h2>
+        <p class="about-lead">A Casa 361 é uma imobiliária focada na zona norte de Lisboa. Ajudamos famílias, investidores e proprietários a comprar, vender e arrendar com segurança, transparência e resultados.</p>
+        <p style="color:var(--muted);margin-top:14px">Trabalhamos todos os dias em Vila Franca de Xira, Alverca do Ribatejo, Póvoa de Santa Iria, Alhandra e Castanheira do Ribatejo. Conhecemos os preços, as ruas e o que cada zona tem para oferecer. E tratamos do resto: crédito habitação, documentação, obras e escritura.</p>
+        <div class="about-facts">
+          <a class="fact" href="https://www.google.com/maps?cid=11429435623754313206" target="_blank" rel="noopener"><strong>5,0 <span class="stars" aria-hidden="true">★★★★★</span></strong><span>36 avaliações no Google</span></a>
+          <div class="fact"><strong>AMI 24691</strong><span>Mediação imobiliária licenciada</span></div>
+          <div class="fact"><strong>Zona norte</strong><span>De Lisboa ao Tejo</span></div>
+        </div>
+        <p style="margin-top:26px"><a class="btn btn-ink" href="empresa.html">Conhecer a empresa <span class="arr" aria-hidden="true">→</span></a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 · Testemunhos de clientes (avaliações reais do Google) -->
+  <section class="sec stone" id="testemunhos">
     <div class="wrap">
       <div class="sec-head reveal">
-        <div><p class="kicker">Em destaque</p><h2>Encontramos a casa. <em class="gold-i">A história é sua.</em></h2></div>
-        <a class="btn btn-line" href="imoveis.html">Ver todos os imóveis <span class="arr" aria-hidden="true">→</span></a>
+        <div><p class="kicker">Testemunhos de clientes</p><h2>O que dizem de nós</h2><p>Avaliações reais, deixadas pelos nossos clientes no Google.</p></div>
+        <a class="g-badge" href="https://www.google.com/maps?cid=11429435623754313206" target="_blank" rel="noopener"><b>5,0</b><span class="stars" aria-hidden="true">★★★★★</span><small>36 avaliações no Google <span aria-hidden="true">↗</span></small></a>
       </div>
-      <div class="mq reveal" style="margin-bottom:28px"><b>Ligação ao CRM</b>Estes imóveis vêm da conta UrbanFocus no CRM Autisync, sozinhos. Preço novo, fotografias, reservado ou vendido: altera no CRM e aparece aqui no máximo 10 minutos depois, sem trabalho duplicado.</div>
-      <div class="grid" id="featured"></div>
+      <div class="reviews reveal" id="reviews" role="region" aria-label="Avaliações de clientes"></div>
+      <p class="rev-more"><a href="https://www.google.com/maps?cid=11429435623754313206" target="_blank" rel="noopener">Ler todas as avaliações no Google <span aria-hidden="true">↗</span></a></p>
     </div>
   </section>
 
-  <!-- Coleções: outra forma de explorar -->
-  <section class="sec dark">
-    <div class="wrap">
-      <div class="sec-head reveal"><div><p class="kicker" style="color:var(--gold)">Coleções</p><h2>Para cada maneira de viver</h2><p>Escolha pelo que importa: pronta a habitar, com exterior, ou para construir de raiz.</p></div></div>
-      <div class="cols3" id="collections"></div>
-    </div>
-  </section>
-
+  <!-- 9 · Venda já o seu imóvel → UrbanFocus -->
   <section class="sec">
-    <div class="wrap">
-      <div class="sec-head reveal"><div><p class="kicker">Vender</p><h2>Duas formas de vender a sua casa</h2><p>Pelo melhor preço, com tempo, ou com uma proposta de compra em menos de 48 horas após a avaliação.</p></div></div>
-      <div class="split">
-        <article class="route reveal">
-          <h3>Vender com a Casa 361</h3>
-          <p>Mediação completa para chegar ao melhor comprador.</p>
-          <ul><li>Avaliação gratuita, com comparação de imóveis semelhantes na zona</li><li>Fotografia profissional e home staging</li><li>Divulgação no Idealista, Imovirtual, Casa Sapo e redes sociais</li><li>Visitas, negociação, contrato-promessa e escritura</li></ul>
-          <a class="btn btn-ink" href="vender.html#avaliacao">Pedir avaliação gratuita <span class="arr" aria-hidden="true">→</span></a>
-        </article>
-        <article class="route ink reveal">
-          <h3>Venda rápida em 4 passos</h3>
-          <p>Temos investidores que compram o seu imóvel. Proposta após avaliação presencial em menos de 48 horas.</p>
-          <ul><li>Contacte-nos e indicamos o que é preciso</li><li>Avaliação e proposta, com prazos ajustados a si</li><li>Assina o contrato-promessa e recebe o sinal</li><li>Escritura em poucos dias</li></ul>
-          <a class="btn btn-gold" href="vender.html#rapida">Quero vender rápido <span class="arr" aria-hidden="true">→</span></a>
-        </article>
+    <div class="wrap"><div class="uf reveal">
+      <div class="uf-body">
+        <p class="kicker" style="color:var(--gold)">Venda já o seu imóvel</p>
+        <h2>Precisa de vender depressa?</h2>
+        <p>Se o tempo conta mais do que esperar pelo comprador certo, a UrbanFocus, a nossa empresa parceira, compra o seu imóvel diretamente. Avalia, faz uma proposta e trata da escritura em poucos dias: sem visitas, sem obras, sem esperar.</p>
+        <ul class="ticks light"><li>Proposta após avaliação presencial</li><li>Apartamentos, moradias, prédios, lojas e armazéns</li><li>Prazos ajustados a si</li></ul>
+        <p style="display:flex;gap:10px;flex-wrap:wrap;margin-top:24px"><a class="btn btn-gold" href="https://www.urbanfocus.pt/" target="_blank" rel="noopener">Pedir proposta à UrbanFocus <span class="arr" aria-hidden="true">↗</span></a><a class="btn btn-line light" href="vender.html">Prefiro vender pelo melhor preço</a></p>
       </div>
-      <div class="alert-box reveal" style="margin-top:56px">
-        <div><p class="kicker" style="color:var(--gold)">Alertas</p><h2>Ainda não encontrou a casa certa?</h2><p>Diga-nos o que procura. Quando entrar um imóvel assim, é o primeiro a saber.</p></div>
+      <div class="uf-img"><img loading="lazy" src="img/casa-predio.jpg" alt=""></div>
+    </div></div>
+  </section>
+
+  <!-- 10 · Alertas de novos imóveis -->
+  <section class="sec" id="alertas" style="padding-top:0">
+    <div class="wrap">
+      <div class="alert-box reveal">
+        <div><p class="kicker" style="color:var(--gold)">Alertas de novos imóveis</p><h2>Ainda não encontrou a casa certa?</h2><p>Diga-nos o que procura. Quando entrar um imóvel assim, é o primeiro a saber.</p></div>
         <form class="form" novalidate data-lead="alerta">
           <div class="hide-sent" style="display:grid;gap:14px">
-            <div class="row"><label>Zona<select name="zona"><option>Qualquer zona</option><option>Vila Franca de Xira</option><option>Alverca do Ribatejo</option><option>Póvoa de Santa Iria</option><option>Castanheira do Ribatejo</option></select></label>
-              <label>Tipologia<select name="tip"><option>T1</option><option selected>T2</option><option>T3</option><option>T4 ou mais</option><option>Moradia</option></select></label></div>
-            <div class="row"><label>Preço até<select name="max"><option>200 000 €</option><option selected>300 000 €</option><option>400 000 €</option><option>Sem limite</option></select></label><label>Email<input name="email" type="email" required autocomplete="email"></label></div>
+            <div class="row"><label>Zona<select name="zona" id="alert-zona"><option>Qualquer zona</option></select></label>
+              <label>Tipologia<select name="tip"><option>T1</option><option selected>T2</option><option>T3</option><option>T4 ou mais</option><option>Moradia</option><option>Terreno</option></select></label></div>
+            <div class="row"><label>Comprar ou arrendar<select name="negocio"><option>Comprar</option><option>Arrendar</option></select></label><label>Preço até<select name="max"><option>200 000 €</option><option selected>300 000 €</option><option>400 000 €</option><option>Sem limite</option></select></label></div>
+            <label>Email<input name="email" type="email" required autocomplete="email"></label>
             <label class="check"><input type="checkbox" required> Quero receber estes alertas da Casa 361 por email. Posso cancelar quando quiser.</label>
             <button class="btn btn-gold" type="submit">Criar alerta</button>
           </div>
           <p class="ok" role="status">Alerta criado. Avisamos quando entrar um imóvel assim.</p>
-          <div class="mq"><b>Para onde vai</b>Chega ao geral@casa361.com com o que a pessoa procura, para a avisar quando entrar um imóvel assim. Ela recebe logo uma resposta automática.</div>
+          <div class="mq"><b>Para onde vai</b>Chega ao geral@casa361.com com o que a pessoa procura. Ela recebe logo uma resposta automática.</div>
         </form>
       </div>
     </div>
   </section>
 
+  <!-- 11 · Contactos e localização -->
   <section class="sec stone" id="contactos">
     <div class="wrap two">
       <div class="reveal">
-        <p class="kicker">Contactos</p>
+        <p class="kicker">Contactos e localização</p>
         <h2 style="font-size:clamp(36px,4.6vw,58px);font-weight:500;margin:8px 0 14px">Fale connosco</h2>
         <p style="color:var(--muted);max-width:30em">Diga-nos o que procura ou o que quer vender. Respondemos o mais depressa possível.</p>
-        <p style="margin-top:26px;font-size:20px"><a href="tel:+351913613005" class="num" style="text-decoration:none;font-weight:700">913 613 005</a><br><small style="color:var(--muted);font-size:13px">Chamada para rede móvel nacional</small></p>
-        <p style="margin-top:10px"><a href="mailto:geral@casa361.com">geral@casa361.com</a></p>
-        <p style="margin-top:26px"><a class="btn btn-wa" href="https://wa.me/351913613005" target="_blank" rel="noopener">Escrever no WhatsApp</a></p>
+        <ul class="contact-list">
+          <li><span>Telefone</span><a href="tel:+351913613005" class="num">913 613 005</a><small>Chamada para rede móvel nacional</small></li>
+          <li><span>Email</span><a href="mailto:geral@casa361.com">geral@casa361.com</a></li>
+          <li><span>Morada</span><a href="https://www.google.com/maps?cid=11429435623754313206" target="_blank" rel="noopener">R. Joaquim Luís Chico 3<br>2600-782 São João dos Montes</a></li>
+        </ul>
+        <p class="social-big">
+          <a class="btn btn-wa" href="https://wa.me/351913613005" target="_blank" rel="noopener">WhatsApp</a>
+          <a class="soc" href="https://www.instagram.com/casa.361com/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.3" cy="6.7" r="1.2" fill="currentColor"/></svg>Instagram</a>
+          <a class="soc" href="https://www.facebook.com/Casa.361com" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 21v-7.5H16l.4-3h-2.9V8.6c0-.9.3-1.5 1.5-1.5h1.5V4.4c-.3 0-1.2-.1-2.2-.1-2.2 0-3.7 1.3-3.7 3.8v2.4H8.1v3h2.5V21h2.9z" fill="currentColor"/></svg>Facebook</a>
+        </p>
+        <div class="office-map" id="office-map" role="img" aria-label="Mapa: Casa 361 em São João dos Montes"></div>
       </div>
       <div class="panel reveal">
         <form class="form" novalidate data-lead="contacto">
@@ -153,7 +243,7 @@
             <button class="btn btn-ink" type="submit">Enviar</button>
           </div>
           <p class="ok" role="status">Obrigado! Recebemos o seu pedido e entramos em contacto consigo em breve.</p>
-          <div class="mq"><b>Para onde vai este pedido</b>Chega ao geral@casa361.com no momento (nome, email, telefone, mensagem), e a pessoa recebe logo uma resposta automática. Responde diretamente desse email.</div>
+          <div class="mq"><b>Para onde vai este pedido</b>Chega ao geral@casa361.com no momento, e a pessoa recebe logo uma resposta automática.</div>
         </form>
       </div>
     </div>
@@ -161,15 +251,42 @@
 </main>
 
 <footer id="foot"></footer>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="config.js"></script>
 <script src="listings.js"></script>
 <script>
-  C361.ready.then(function () {
-    var e = C361.esc, L = CASA361_LISTINGS, C = 'https://api.autisync.com/uploads/media/5bb51851-12f5-4c63-a256-b9ffa95a51c4/properties/';
-    var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Concelhos: a fotografia aérea de cada um (as que o Luís enviou). O cartão abre os imóveis desse concelho.
+  var C361_CONCELHOS = [
+    ['Vila Franca de Xira', 'img/zona-vila-franca-de-xira.jpg', 'A cidade à beira do Tejo, a 30 minutos de Lisboa'],
+    ['Lisboa', 'img/zona-lisboa.jpg', 'A capital, do rio às colinas'],
+    ['Loures', 'img/zona-loures.jpg', 'Entre a serra e o Trancão'],
+    ['Arruda dos Vinhos', 'img/zona-arruda-dos-vinhos.jpg', 'Vila tranquila entre vinhas'],
+    ['Alenquer', 'img/zona-alenquer.jpg', 'A vila presépio'],
+    ['Almada', 'img/zona-almada.jpg', 'Do Cristo Rei às praias da Costa'],
+    ['Alcochete', 'img/zona-alcochete.jpg', 'A margem sul, com o Tejo à porta'],
+    ['Barreiro', 'img/zona-barreiro.jpg', 'Frente ribeirinha, a um barco de Lisboa'],
+  ];
 
-    // Hero: as melhores fotografias dos imóveis, em sequência lenta.
-    var slides = [C + '81b0ac6b-c5f0-4f5a-8357-57a6e7da56c8.jpg', C + '86e56652-2d2a-4422-9a47-c080573ed7a9.jpg', C + '4188d621-9cf5-4b4d-8258-400ac40ab2c7.jpg', C + 'eebea4b8-9b38-4060-9cdd-605c61705de1.jpg'];
+  // Testemunhos: avaliações reais do Google (perfil Casa 361 - Imobiliária Vila Franca de Xira), sem alterações.
+  var C361_REVIEWS = [
+    ['Carlos D.', 'Venda', 'Obrigado por tudo: pela simpatia, transparência, profissionalismo e competência. A venda do nosso apartamento foi uma experiência perfeita graças ao acompanhamento do Luís Poças que dominava todos os detalhes do processo transmitindo-nos deste sempre confiança e tranquilidade. Recomendo vivamente a Casa 361.'],
+    ['Andreia F.', 'Arrendamento', 'Um agradecimento especial ao Sr. Luís, que foi sempre muito prestável, disponível e simpático ao longo de todo o processo de arrendamento. Sempre que precisei de alguma coisa, esteve pronto para ajudar e fez tudo o que podia para facilitar as coisas, tornando todo o processo muito mais simples e tranquilo.'],
+    ['Carolina C.', 'Compra', 'O Luís foi sempre super prestável e pronto a ajudar! Ajudou-nos imenso nesta procura de casa e apresentou-nos imensos imóveis com potencial até encontrar a nossa atual casa! Recomendamos bastante os seus serviços e agradecemos bastante pelo acompanhamento prestado ☺️'],
+    ['Diogo A.', 'Venda', 'Quero deixar um agradecimento especial à Casa 361 pelo excelente trabalho na venda da minha casa. Desde o primeiro momento mostraram profissionalismo, dedicação e um acompanhamento constante em todas as etapas do processo. Sentimo-nos sempre apoiados e acompanhados. Recomendo a 100% a quem procura um serviço de confiança e com resultados.'],
+    ['Daniel F.', 'Compra', 'Fomos muito bem acompanhados ao longo de todo o processo de compra da nossa primeira casa, com esclarecimentos para todas as nossas dúvidas durante estes longos meses. Um muito obrigado ao Luís!'],
+    ['Jorge S.', 'Várias compras', 'Trabalhar com esta agência imobiliária tem sido uma experiência verdadeiramente excepcional ao longo dos últimos anos e em várias compras realizadas. É raro encontrar um nível de profissionalismo, dedicação e confiança tão consistentes. (…) Recomendo esta agência de coração e, em particular, o trabalho do Luís Poças.'],
+    ['Madalena R.', 'Cliente', 'O profissionalismo, a simpatia e o acompanhamento, não têm preço! Não se podia pedir mais a esta empresa e ao sr. Luís Poças ☺️ desde o primeiro minuto sempre presente, atento e disponível. Recomendo a 100% para quem queira um negócio sério e sem problemas.'],
+    ['Joana S.', 'Compra', 'Comprámos um imóvel em Vialonga com o apoio do incansável Sr. Luís que muito nos apoiou para que o negócio de concretizasse da melhor forma possível. Sempre com uma postura muito profissional, transparente e com enorme sentido de prontidão para qualquer dúvida ou apoio necessário. Recomendo a 100%'],
+    ['Ermelinda P.', 'Cliente', 'Demonstra um real conhecimento do mercado imobiliário, quer na comercialização, quer nas questões técnicas inerentes ao imóvel. Linguagem simples e assertiva, transmitindo confiança em todo o processo. Apresenta soluções, elevada literacia financeira. Faz acontecer💪 Recomendo.'],
+    ['Tomás G.', 'Compra', 'Recomendo! O Sr. Luís Poças fez tudo aquilo que podia para que a compra da nossa casa corresse da melhor forma. Se alguma vez precisar de comprar ou de vender algum imóvel, sei com quem tratar! Muito obrigado.'],
+  ];
+
+  var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+
+  // 1 · Imagem forte: a moradia sobre o Tejo primeiro, depois outras fotografias fixas.
+  (function () {
+    var slides = ['img/hero-tejo.jpg', 'img/casa-render.jpg', 'img/casa-moradia.jpg'];
     var box = document.getElementById('slides'), dots = document.getElementById('dots');
     box.innerHTML = slides.map(function (s, i) { return '<div class="slide' + (i ? '' : ' on') + '" style="background-image:url(\'' + s + '\')"></div>'; }).join('');
     dots.innerHTML = slides.map(function (s, i) { return '<span' + (i ? '' : ' class="on"') + '></span>'; }).join('');
@@ -177,39 +294,73 @@
     if (!still) setInterval(function () {
       var all = box.children, d = dots.children; all[cur].classList.remove('on'); d[cur].classList.remove('on');
       cur = (cur + 1) % all.length; all[cur].classList.add('on'); d[cur].classList.add('on');
-    }, 6500);
-
-    // Separadores da pesquisa
+    }, 7000);
     document.querySelectorAll('.hsearch [data-deal]').forEach(function (b) {
       b.addEventListener('click', function () {
         document.querySelectorAll('.hsearch [role="tab"]').forEach(function (x) { x.setAttribute('aria-selected', 'false'); });
         b.setAttribute('aria-selected', 'true'); document.getElementById('deal').value = b.getAttribute('data-deal');
       });
     });
+  })();
 
-    // Explorar por zona: as zonas onde há imóveis agora, cada uma com a fotografia de um deles.
-    var ZT = {
-      'Castanheira do Ribatejo': 'Junto à estação, a 26 minutos de Lisboa',
-      'Vila Franca de Xira': 'A cidade à beira do Tejo',
-      'São João dos Montes': 'Terrenos com vista para o rio',
-      'Forte da Casa': 'Póvoa de Santa Iria e Forte da Casa',
-      'Sobreda': 'Entre Lisboa e as praias',
-      'Amadora': 'Encosta do Sol',
-    };
-    var byZone = {};
-    L.forEach(function (l) { if (l.area_name && l.photos && l.photos.length) (byZone[l.area_name] = byZone[l.area_name] || []).push(l); });
-    var zones = Object.keys(byZone).sort(function (a, b) { return byZone[b].length - byZone[a].length || a.localeCompare(b); })
-      .map(function (z) { return [z, byZone[z][0].photos[0], ZT[z] || byZone[z][0].county || '']; });
-    if (!zones.length) document.getElementById('zcar').closest('section').hidden = true;
-    else {
-    var tiles = zones.map(function (z) {
-      var n = byZone[z[0]].length;
-      return '<a class="ztile" href="imoveis.html?zona=' + encodeURIComponent(z[0]) + '"><img loading="lazy" src="' + e(z[1]) + '" alt=""><span class="zt"><b>' + e(z[0]) + '</b><small>' + e(z[2]) + '</small><em>' + (n === 1 ? '1 imóvel' : n + ' imóveis') + ' <span aria-hidden="true">→</span></em></span></a>';
+  // 6 · Simulador de crédito: prestação pela fórmula da renda constante.
+  (function () {
+    var $ = function (id) { return document.getElementById(id); };
+    var eur = function (n) { return Math.round(n).toLocaleString('pt-PT') + ' €'; };
+    function calc() {
+      var price = +$('s-price').value, pct = +$('s-down').value, years = +$('s-years').value, tan = +$('s-rate').value;
+      var down = price * pct / 100, loan = price - down, r = tan / 100 / 12, n = years * 12;
+      var pay = r ? loan * r / (1 - Math.pow(1 + r, -n)) : loan / n;
+      $('o-price').textContent = eur(price); $('o-down').textContent = pct + '% · ' + eur(down);
+      $('o-years').textContent = years + ' anos'; $('o-rate').textContent = tan.toFixed(2).replace('.', ',') + '%';
+      $('r-pay').textContent = eur(pay) + '/mês'; $('r-loan').textContent = eur(loan); $('r-down').textContent = eur(down);
+      $('h-price').value = eur(price); $('h-down').value = eur(down) + ' (' + pct + '%)'; $('h-pay').value = eur(pay) + '/mês';
+      $('h-terms').value = years + ' anos, TAN ' + tan.toFixed(2).replace('.', ',') + '%'; $('h-date').value = new Date().toLocaleString('pt-PT');
+    }
+    ['s-price', 's-down', 's-years', 's-rate'].forEach(function (id) { $(id).addEventListener('input', calc); });
+    calc();
+  })();
+
+  // 8 · Testemunhos
+  document.getElementById('reviews').innerHTML = C361_REVIEWS.map(function (r) {
+    return '<figure class="rev"><div class="stars" aria-label="5 estrelas">★★★★★</div><blockquote>' + esc(r[2]) + '</blockquote>' +
+      '<figcaption><b>' + esc(r[0]) + '</b><span>' + esc(r[1]) + ' · Google</span></figcaption></figure>';
+  }).join('');
+
+  // 11 · Mapa do escritório
+  (function () {
+    var el = document.getElementById('office-map');
+    if (!window.L || !el) { if (el) el.hidden = true; return; }
+    var m = L.map(el, { scrollWheelZoom: false, zoomControl: true, attributionControl: true }).setView([38.9406836, -9.0188828], 14);
+    if (window.C361 && C361.mapLayers) C361.mapLayers(m);
+    else L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(m);
+    L.marker([38.9406836, -9.0188828], { icon: L.divIcon({ className: '', html: '<span class="pin">Casa 361</span>', iconSize: [0, 0] }) })
+      .addTo(m).bindPopup('<b>Casa 361</b><br>R. Joaquim Luís Chico 3<br>2600-782 São João dos Montes<br><a href="https://www.google.com/maps?cid=11429435623754313206" target="_blank" rel="noopener">Abrir no Google Maps</a>');
+  })();
+
+  C361.ready.then(function () {
+    var e = C361.esc, L = CASA361_LISTINGS;
+
+    // Zonas na pesquisa e nos alertas: as dos imóveis que existem.
+    var zonas = Array.from(new Set(L.map(function (l) { return l.area_name; }).filter(Boolean))).sort();
+    document.getElementById('zona').innerHTML += zonas.map(function (z) { return '<option>' + e(z) + '</option>'; }).join('');
+    document.getElementById('alert-zona').innerHTML += C361_CONCELHOS.map(function (c) { return '<option>' + e(c[0]) + '</option>'; }).join('');
+
+    // 3 · Destaques
+    var forSale = L.filter(function (x) { return x.deal === 'venda' && x.photos && x.photos.length; });
+    var picks = ['0076', '0066', '0053', '0047', '0075', '0068'].map(C361.find).filter(Boolean);
+    if (picks.length < 6) picks = forSale.slice(0, 6);
+    document.getElementById('featured').innerHTML = picks.map(C361.card).join('');
+
+    // 4 · Concelhos: carrossel que roda sozinho (pára com o rato ou o dedo em cima).
+    var count = {}; L.forEach(function (l) { if (l.county) count[l.county] = (count[l.county] || 0) + 1; });
+    var tiles = C361_CONCELHOS.map(function (z) {
+      var n = count[z[0]] || 0;
+      return '<a class="ztile" href="imoveis.html?concelho=' + encodeURIComponent(z[0]) + '"><img loading="lazy" src="' + e(z[1]) + '" alt=""><span class="zt"><b>' + e(z[0]) + '</b><small>' + e(z[2]) + '</small><em>' + (n ? (n === 1 ? '1 imóvel' : n + ' imóveis') : 'Explorar') + ' <span aria-hidden="true">→</span></em></span></a>';
     });
-    // Carrossel: as zonas repetidas dos dois lados, para rodar sem fim.
     var track = document.getElementById('ztrack'), zc = document.getElementById('zcar'), zd = document.getElementById('zdots'), N = tiles.length;
     track.innerHTML = tiles.concat(tiles, tiles).join('');
-    zd.innerHTML = tiles.map(function (t, i) { return '<button type="button" aria-label="Zona ' + (i + 1) + '"></button>'; }).join('');
+    zd.innerHTML = tiles.map(function (t, i) { return '<button type="button" aria-label="Concelho ' + (i + 1) + '"></button>'; }).join('');
     var pos = N, timer = null, paused = false;
     function perView() { var w = window.innerWidth; return w >= 1100 ? 4 : w >= 820 ? 3 : w >= 560 ? 2 : 1; }
     function place(anim) {
@@ -233,31 +384,7 @@
     zc.addEventListener('touchend', function (ev) { if (tx !== null) { var dx = ev.changedTouches[0].clientX - tx; if (Math.abs(dx) > 40) { go(dx < 0 ? 1 : -1); restart(); } } tx = null; paused = false; }, { passive: true });
     window.addEventListener('resize', function () { place(false); });
     place(false); restart();
-    }
 
-    // Imóvel do mês
-    // Imóvel do mês: o 0076 enquanto existir; senão, o primeiro à venda com fotografias.
-    var forSale = L.filter(function (x) { return x.deal === 'venda' && x.photos && x.photos.length; });
-    var l = C361.find('0076') || forSale[0] || L[0];
-    if (!l) document.getElementById('spot').closest('section').hidden = true;
-    else document.getElementById('spot').innerHTML =
-      '<a class="spot-img reveal-img reveal" href="imovel.html?ref=' + e(l.ref) + '"><img data-parallax="0.08" src="' + e(l.photos[5] || l.photos[0]) + '" alt="' + e(l.title) + '"><span class="spot-badge">' + C361.price(l) + '</span></a>' +
-      '<div class="reveal"><p class="kicker">Imóvel do mês</p><h2>' + e(l.title) + '</h2><p style="color:var(--muted)">' + e(l.summary || (l.description || [])[0] || '') + '</p>' +
-      '<dl>' + [['Tipologia', l.typology], ['Área', l.area ? C361.area(l.area) : ''], ['Quartos', l.beds], ['Certificado', l.energy]].filter(function (x) { return x[1]; }).map(function (x) { return '<div><dt>' + x[0] + '</dt><dd>' + e(x[1]) + '</dd></div>'; }).join('') + '</dl>' +
-      '<p style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><a class="btn btn-ink" href="imovel.html?ref=' + e(l.ref) + '">Ver o imóvel <span class="arr" aria-hidden="true">→</span></a>' + C361.favButton(l.ref, 'big') + '</p></div>';
-
-    var picks = ['0066', '0053', '0047', '0075', '0068', '0071'].map(C361.find).filter(Boolean);
-    if (picks.length < 6) picks = forSale.filter(function (x) { return x !== l; }).slice(0, 6);
-    document.getElementById('featured').innerHTML = picks.map(C361.card).join('');
-
-    // Coleções
-    document.getElementById('collections').innerHTML = CASA361_COLLECTIONS.map(function (c) {
-      var rows = L.filter(function (x) { return x.tags.some(function (t) { return c.tags.indexOf(t) >= 0; }); });
-      if (!rows.length) return '';
-      var cover = rows.filter(function (x) { return String(x.id) === c.photo; })[0] || rows[0];
-      return '<a class="coll reveal" href="imoveis.html?colecao=' + c.id + '"><span class="coll-img"><img loading="lazy" src="' + e(cover.photos[0]) + '" alt=""></span>' +
-        '<span class="coll-t"><b>' + e(c.title) + '</b><small>' + e(c.line) + '</small><em>' + rows.length + ' imóveis · Descobrir <span aria-hidden="true">→</span></em></span></a>';
-    }).join('');
     if (window.C361Reveal) window.C361Reveal();
   });
 </script>
