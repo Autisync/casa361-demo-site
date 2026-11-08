@@ -135,17 +135,48 @@
     isFav: function (ref) { return favs().indexOf(ref) >= 0; },
     toggleFav: function (ref) { var a = favs(), i = a.indexOf(ref); if (i >= 0) a.splice(i, 1); else a.push(ref); setFavs(a); document.dispatchEvent(new CustomEvent('c361:favs')); return i < 0; },
     heart: heart,
-    // O mapa: OpenStreetMap (ruas, nomes, escolas, comboio, parques; os mosaicos da CARTO
-    // passaram a pedir chave) e, à escolha, a vista de satélite da Esri com os nomes por
-    // cima. Usado na lista de imóveis, na página de cada imóvel e nos contactos.
+    // O mapa: OpenFreeMap (estilo "Liberty"), um mapa vetorial nítido a cores, com ruas,
+    // nomes, edifícios, escolas, comboio e parques, feito a partir do OpenStreetMap e
+    // atualizado todas as semanas. Gratuito, sem chave e permitido em sites comerciais.
+    // Se não carregar, usa os mosaicos normais do OpenStreetMap. À escolha, a vista de
+    // satélite da Esri com os nomes por cima. Usado na lista de imóveis, na página de cada
+    // imóvel e nos contactos.
     mapLayers: function (map) {
-      var ruas = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, className: 'tiles-ruas', attribution: '© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>' });
+      var osm = '© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>';
+      var ruas = (window.maplibregl && L.maplibreGL && (function () { try { var c = document.createElement('canvas'); return !!(c.getContext('webgl2') || c.getContext('webgl')); } catch (x) { return false; } })())
+        ? L.maplibreGL({ style: 'https://tiles.openfreemap.org/styles/liberty' }) // os créditos (OpenFreeMap, OpenMapTiles, OpenStreetMap) vêm do próprio estilo
+        : L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: osm });
       var sat = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { maxZoom: 19, attribution: 'Imagens © Esri, Maxar, Earthstar Geographics' });
       var nomes = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', { maxZoom: 19, pane: 'shadowPane' });
       ruas.addTo(map);
       L.control.layers({ 'Mapa': ruas, 'Satélite': L.layerGroup([sat, nomes]) }, null, { position: 'topright' }).addTo(map);
       L.control.scale({ imperial: false, position: 'bottomleft' }).addTo(map);
       return map;
+    },
+    // Certificado energético (o campo "energia" da ficha no CRM): A+, A, B, B-, C, D, E, F ou Isento,
+    // com as cores da escala oficial, para se ver logo no cartão e na página do imóvel.
+    energyClass: function (v) {
+      var t = String(v || '').trim().toUpperCase().replace(/\s+/g, '');
+      if (!t) return '';
+      if (/ISENT/.test(t)) return 'Isento';
+      var m = t.match(/^(A\+|A|B-|B|C|D|E|F)/);
+      return m ? m[1] : '';
+    },
+    energySlug: function (k) { return { 'A+': 'ap', 'B-': 'bm', 'Isento': 'isento' }[k] || k.toLowerCase(); },
+    energyBadge: function (v, extra) {
+      var C = window.C361, k = C.energyClass(v);
+      if (!k) return '';
+      return '<span class="nrg nrg-' + C.energySlug(k) + (extra ? ' ' + extra : '') + '" title="Certificado energético ' + k + '"><small aria-hidden="true">Energia</small><b>' + (k === 'Isento' ? 'Isento' : k) + '</b><span class="sr">Certificado energético ' + k + '</span></span>';
+    },
+    energyScale: function (v) {
+      var C = window.C361, k = C.energyClass(v);
+      if (!k) return '';
+      if (k === 'Isento') return '<p class="nrg-free">' + C.energyBadge(k) + ' Este imóvel está isento de certificado energético.</p>';
+      var all = ['A+', 'A', 'B', 'B-', 'C', 'D', 'E', 'F'];
+      return '<ol class="nrg-scale" aria-label="Escala do certificado energético">' + all.map(function (c, i) {
+        var on = c === k;
+        return '<li class="nrg-' + C.energySlug(c) + (on ? ' on' : '') + '" style="--w:' + (34 + i * 8.5) + '%"' + (on ? ' aria-current="true"' : '') + '><b>' + c + '</b>' + (on ? '<em>Este imóvel</em>' : '') + '</li>';
+      }).join('') + '</ol><p class="nrg-note">A+ é o mais eficiente: menos energia gasta, contas mais baixas e mais conforto. F é o menos eficiente.</p>';
     },
     favButton: function (ref, extra) {
       var on = window.C361.isFav(ref);
@@ -160,7 +191,7 @@
       return '<article class="card reveal">' +
         '<a class="card-link" href="imovel.html?ref=' + e(l.ref) + '">' +
         '<div class="card-img"><img loading="lazy" src="' + e(l.photos[0]) + '" alt="' + e(l.type + ' ' + l.typology + ' em ' + l.area_name) + '">' +
-        (tag ? '<span class="card-tag">' + e(tag) + '</span>' : '') + (l.status ? '<span class="card-tag new">' + e(l.status.replace(/^\w/, function (c) { return c.toUpperCase(); })) + '</span>' : l.isNew ? '<span class="card-tag new">Construção nova</span>' : '') + '</div>' +
+        (tag ? '<span class="card-tag">' + e(tag) + '</span>' : '') + window.C361.energyBadge(l.energy, 'on-card') + (l.status ? '<span class="card-tag new">' + e(l.status.replace(/^\w/, function (c) { return c.toUpperCase(); })) + '</span>' : l.isNew ? '<span class="card-tag new">Construção nova</span>' : '') + '</div>' +
         '<div class="card-body"><p class="card-place">' + e(l.area_name) + ' · ' + e(l.county) + '</p>' +
         '<h3>' + e(l.title) + '</h3>' +
         '<p class="card-facts">' + facts.join('') + '</p>' +

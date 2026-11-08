@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Manrope:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body data-page="imoveis">
@@ -31,6 +32,7 @@
       <section class="block reveal" id="video-block" hidden><h2>Vídeo</h2><div class="video-frame" id="video"></div></section>
       <section class="block reveal" id="rooms-block"><h2>Divisões</h2><table class="rooms"><tbody id="rooms"></tbody></table></section>
       <section class="block reveal" id="feat-block"><h2>Características</h2><ul class="feats" id="feats"></ul></section>
+      <section class="block reveal" id="energy-block" hidden><h2>Certificado energético</h2><div id="energy-scale"></div></section>
       <section class="block" id="plans-block" hidden><h2>Plantas</h2><div class="grid" id="plans" style="grid-template-columns:repeat(2,minmax(0,1fr))"></div></section>
       <section class="block reveal" id="credito"><h2>Simulador de crédito</h2>
         <div class="sim">
@@ -91,6 +93,8 @@
 <div class="mbar" id="mbar"><div class="p"><span id="mb-price"></span><small id="mb-ref"></small></div><a class="btn btn-wa" id="mb-wa" target="_blank" rel="noopener" aria-label="WhatsApp">WhatsApp</a><a class="btn btn-ink" href="#visita">Visitar</a></div>
 <footer id="foot"></footer>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script src="https://unpkg.com/@maplibre/maplibre-gl-leaflet@0.1.3/leaflet-maplibre-gl.js"></script>
 <script src="config.js"></script>
 <script src="listings.js"></script>
 <script>
@@ -119,8 +123,10 @@
     if (l.baths) facts.push([l.baths, 'Casas de banho']);
     if (l.area) facts.push([C361.area(l.area), l.type === 'Terreno' ? 'Área do terreno' : 'Área bruta']);
     if (l.garage) facts.push([l.garage, 'Lugares de garagem']);
-    else if (l.energy) facts.push([l.energy, 'Certificado energético']);
-    $('facts').innerHTML = facts.map(function (f) { return '<div><strong>' + e(f[0]) + '</strong><span>' + e(f[1]) + '</span></div>'; }).join('');
+    var nrg = C361.energyBadge(l.energy, 'big');
+    $('facts').innerHTML = facts.map(function (f) { return '<div><strong>' + e(f[0]) + '</strong><span>' + e(f[1]) + '</span></div>'; }).join('') +
+      (nrg ? '<div class="fact-nrg">' + nrg + '<span>Certificado energético</span></div>' : '');
+    if (C361.energyClass(l.energy)) { $('energy-block').hidden = false; $('energy-scale').innerHTML = C361.energyScale(l.energy); }
 
     var photos = l.photos;
     $('gallery').innerHTML = photos.slice(0, 5).map(function (src, i) {
@@ -133,7 +139,7 @@
     if (l.rooms) $('rooms').innerHTML = l.rooms.map(function (r) { return '<tr><td>' + e(r[0]) + '</td><td>' + e(r[1]) + '</td></tr>'; }).join(''); else $('rooms-block').hidden = true;
     if (l.features) {
       $('feats').innerHTML = l.features.map(function (f) { return '<li>' + e(f) + '</li>'; }).join('') +
-        (l.energy ? '<li class="energy" style="padding-left:0">Certificado energético <b>' + e(l.energy) + '</b></li>' : '') + (l.year ? '<li>Ano de construção: ' + l.year + '</li>' : '');
+        (l.year ? '<li>Ano de construção: ' + l.year + '</li>' : '');
     } else $('feat-block').hidden = true;
     // O vídeo do imóvel (YouTube ou Vimeo), quando a ficha no CRM o tem.
     var yt = String(l.video || '').match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{6,})/), vm = String(l.video || '').match(/vimeo\.com\/(?:video\/)?(\d+)/);
