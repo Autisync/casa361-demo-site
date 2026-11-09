@@ -68,7 +68,19 @@ CASAFARI and to geral@casa361.com. Tested end to end against a fake CASAFARI.
    settings come from `vercel.json` (no build, `src/` is served).
 3. Name the project `casa361-demo`, so the address is `casa361-demo.vercel.app`.
 
-Search engines are told not to list it (`noindex`).
+Search engines are told not to list it (`noindex`), in one place only: the `X-Robots-Tag` header in `vercel.json`.
+
+## Basic SEO (included in the 490 € site)
+
+- `sitemap.xml` and `robots.txt` with the main pages.
+- Each page has its own title, description, canonical address and sharing preview (Open Graph).
+- Business details for Google (`RealEstateAgent`: name, phone, email, address, map position, AMI, Facebook and Instagram) on the home page and Contactos.
+- Each property page sets its title, description, canonical address, sharing photo and listing details (`RealEstateListing`) from the CRM data.
+- Old casa361.com addresses redirect to the new pages (`vercel.json`).
+
+At launch on casa361.com:
+1. Delete the `X-Robots-Tag: noindex` header from `vercel.json`.
+2. In Google Search Console (Luís's Google account, with Autisync invited), add the domain and submit `https://www.casa361.com/sitemap.xml`.
 
 ## Look at it on this computer
 

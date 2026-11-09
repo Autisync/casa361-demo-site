@@ -29,10 +29,13 @@
     document.head.appendChild(ico);
   }
 
+  // Notas internas da maquete (caixas azuis): escondidas no site; só aparecem com ?notas=1
+  // no endereço, para revermos com o cliente (pedido do Luís: nada interno no site publicado).
+  var NOTES = /[?&]notas=1/.test(location.search);
   var bar = document.createElement('div');
   bar.className = 'mq-bar';
   bar.innerHTML = '<div class="wrap"><span>Maquete para apreciação · proposta Autisync para a Casa 361. Imóveis da conta UrbanFocus no CRM Autisync · pedidos para geral@casa361.com.</span><button type="button" id="mq-toggle">Esconder notas</button></div>';
-  document.body.insertBefore(bar, document.body.firstChild);
+  if (NOTES) document.body.insertBefore(bar, document.body.firstChild); else document.body.classList.add('mq-off');
 
   var top = document.getElementById('top');
   if (top) {
@@ -42,7 +45,7 @@
       '<nav class="nav" id="nav" aria-label="Principal">' + links.map(function (l) {
         return '<a href="' + l[0] + '"' + (l[2] === page ? ' aria-current="page"' : '') + '>' + l[1] + '</a>';
       }).join('') + '<span class="nav-soc"><a href="' + IG + '" target="_blank" rel="noopener" aria-label="Casa 361 no Instagram">' + igIcon + '</a><a href="' + FB + '" target="_blank" rel="noopener" aria-label="Casa 361 no Facebook">' + fbIcon + '</a></span><a href="imoveis.html?guardados=1" class="saved" aria-label="Imóveis guardados"><span class="ico">' + C361.heart + '</span><span class="n" id="fav-n"></span></a><a class="nav-call" href="tel:' + TEL + '">☏ Ligar ' + PHONE + '</a></nav>' +
-      '<a class="call" href="tel:' + TEL + '"><span aria-hidden="true">☏</span> ' + PHONE + '</a></div>';
+      '<a class="call call-em" href="vender.html#avaliacao">Estudo de mercado <span aria-hidden="true">→</span></a></div>';
     var btn = top.querySelector('.menu-btn'), nav = top.querySelector('.nav');
     btn.addEventListener('click', function () { var o = nav.classList.toggle('open'); btn.setAttribute('aria-expanded', String(o)); top.classList.toggle('menu-open', o); });
     var onScroll = function () { top.classList.toggle('scrolled', window.scrollY > 24); };
@@ -122,9 +125,9 @@
   document.body.appendChild(panel);
 
   // Notas da maquete: mostrar / esconder (lembra-se neste browser).
-  var t = document.getElementById('mq-toggle');
+  var t = document.getElementById('mq-toggle') || bar.querySelector('#mq-toggle');
   function setNotes(off) { document.body.classList.toggle('mq-off', off); t.textContent = off ? 'Mostrar notas' : 'Esconder notas'; }
-  try { setNotes(localStorage.getItem('c361-mq') === 'off'); } catch (e) { /* sem memória, notas visíveis */ }
+  if (NOTES) { try { setNotes(localStorage.getItem('c361-mq') === 'off'); } catch (e) { /* sem memória, notas visíveis */ } }
   t.addEventListener('click', function () {
     var off = !document.body.classList.contains('mq-off');
     setNotes(off);
@@ -138,7 +141,7 @@
   var IC = function (k) { return window.C361 && C361.icon ? C361.icon(k) : ''; };
   // Qualquer elemento com data-ico="nome" recebe o ícone à frente.
   Array.prototype.forEach.call(document.querySelectorAll('[data-ico]'), function (el) { el.insertAdjacentHTML('afterbegin', '<span class="li-ico">' + IC(el.getAttribute('data-ico')) + '</span>'); });
-  var WA_TXT = { contacto: 'Olá! Gostava de falar com a Casa 361.', credito: 'Olá! Gostava de ajuda com o crédito habitação.', avaliacao: 'Olá! Gostava de saber quanto vale a minha casa.',
+  var WA_TXT = { contacto: 'Olá! Gostava de falar com a Casa 361.', credito: 'Olá! Gostava de ajuda com o crédito habitação.', avaliacao: 'Olá! Gostava de pedir um estudo de mercado do meu imóvel.',
     visita: 'Olá! Gostava de marcar uma visita' + (document.body.getAttribute('data-ref') ? ' ao imóvel ref. ' + document.body.getAttribute('data-ref') : '') + '.', alerta: 'Olá! Procuro casa e gostava de receber sugestões.', recrutamento: 'Olá! Tenho interesse em trabalhar na Casa 361.' };
   Array.prototype.forEach.call(document.querySelectorAll('form.form'), function (f) {
     Array.prototype.forEach.call(f.querySelectorAll('input[name], textarea, select[name]'), function (el) {

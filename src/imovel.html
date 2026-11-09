@@ -3,8 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Casa 361">
+<meta property="og:locale" content="pt_PT">
+<meta property="og:title" content="Imóvel · Casa 361">
+<meta property="og:description" content="Imóvel da Casa 361 na zona norte de Lisboa: fotografias, preço, características, certificado energético e marcação de visita.">
+<meta property="og:image" content="https://www.casa361.com/img/hero-tejo.jpg">
+<meta name="twitter:card" content="summary_large_image">
 <title>Imóvel · Casa 361</title>
-<meta name="robots" content="noindex">
+<meta name="description" content="Imóvel da Casa 361 na zona norte de Lisboa: fotografias, preço, características, certificado energético e marcação de visita.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Manrope:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
@@ -108,6 +115,31 @@
     var ref = q.get('ref') || (location.pathname.match(/imovel\/(\w+)/) || [])[1] || '0076';
     var l = C361.find(ref) || C361.find('0076'), e = C361.esc, $ = function (id) { return document.getElementById(id); };
     document.title = l.typology + ' em ' + l.area_name + ' · ' + C361.price(l) + ' · Casa 361';
+    (function seo() {
+      var url = 'https://www.casa361.com/imovel?ref=' + encodeURIComponent(l.ref);
+      var desc = ((l.deal === 'venda' ? 'Venda' : 'Arrendamento') + ': ' + l.title + ', em ' + l.area_name + ', ' + l.county + '. ' + C361.price(l) + '. ' + (l.summary || '')).replace(/\s+/g, ' ').trim().slice(0, 300);
+      var img = (l.photos || []).filter(Boolean)[0];
+      function meta(attr, key, val) {
+        if (!val) return; var m = document.head.querySelector('meta[' + attr + '="' + key + '"]');
+        if (!m) { m = document.createElement('meta'); m.setAttribute(attr, key); document.head.appendChild(m); }
+        m.setAttribute('content', val);
+      }
+      meta('name', 'description', desc); meta('property', 'og:description', desc);
+      meta('property', 'og:title', document.title); meta('property', 'og:url', url); meta('property', 'og:image', img);
+      var c = document.head.querySelector('link[rel="canonical"]') || document.head.appendChild(Object.assign(document.createElement('link'), { rel: 'canonical' }));
+      c.href = url;
+      var ld = {
+        '@context': 'https://schema.org', '@type': 'RealEstateListing', name: l.title, url: url, description: desc,
+        image: (l.photos || []).filter(Boolean).slice(0, 6),
+        offers: { '@type': 'Offer', price: l.price, priceCurrency: 'EUR', businessFunction: l.deal === 'venda' ? 'http://purl.org/goodrelations/v1#Sell' : 'http://purl.org/goodrelations/v1#LeaseOut', availability: l.status ? 'https://schema.org/SoldOut' : 'https://schema.org/InStock', seller: { '@type': 'RealEstateAgent', name: 'Casa 361', url: 'https://www.casa361.com/' } },
+        about: { '@type': l.type === 'Moradia' ? 'SingleFamilyResidence' : l.type === 'Apartamento' ? 'Apartment' : 'Accommodation',
+          numberOfRooms: l.beds || undefined, numberOfBathroomsTotal: l.baths || undefined,
+          floorSize: l.area ? { '@type': 'QuantitativeValue', value: l.area, unitCode: 'MTK' } : undefined,
+          address: { '@type': 'PostalAddress', addressLocality: l.area_name, addressRegion: l.county, addressCountry: 'PT' },
+          geo: l.lat ? { '@type': 'GeoCoordinates', latitude: l.lat, longitude: l.lng } : undefined }
+      };
+      var sc = document.createElement('script'); sc.type = 'application/ld+json'; sc.textContent = JSON.stringify(ld); document.head.appendChild(sc);
+    })();
     $('crumb').textContent = 'Ref. ' + l.ref;
     $('kicker').textContent = (l.deal === 'venda' ? 'Venda' : 'Arrendamento') + ' · ' + l.type + ' ' + l.typology + (l.isNew ? ' · Construção nova' : '');
     $('title').textContent = l.title;

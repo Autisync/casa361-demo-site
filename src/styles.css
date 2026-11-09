@@ -1395,3 +1395,17 @@ html.map-lock, html.map-lock body { overflow: hidden; }
 .pnote .ico { width: 22px; height: 22px; color: var(--gold-deep); margin-top: 2px; }
 .pnote p { margin: 0; font-weight: 600; }
 .kick-star { color: var(--gold-deep); }
+
+/* ── Identidade (pedido do Luís, 9/11) ─────────────────────────────────
+   Números alinhados em todo o site: a letra dos títulos (Cormorant) usa por
+   defeito números "antigos", que sobem e descem como minúsculas e não batem
+   com o 361 do logótipo. "lnum" junta-se ao tnum onde houver colunas. */
+html { font-feature-settings: "lnum" 1; }
+.ring .deg strong { letter-spacing: .01em; }
+/* Botão do topo: Estudo de mercado (no lugar do telefone; o telefone fica no menu, no rodapé e no WhatsApp) */
+.call.call-em { text-transform: uppercase; letter-spacing: .08em; font-size: 12.5px; padding: 10px 18px; }
+.call.call-em span { display: inline-block; transition: transform .25s; }
+.call.call-em:hover span { transform: translateX(3px); }
+/* Vender com destaque no primeiro ecrã (pedido do Luís) */
+.hsearch .tabs a[href="vender.html"] { background: var(--gold); color: var(--ink); font-weight: 700; }
+.hsearch .tabs a[href="vender.html"]:hover { background: #c9a46c; }
