@@ -18,14 +18,11 @@
   var igIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.3" cy="6.7" r="1.2" fill="currentColor"/></svg>';
   var fbIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 21v-7.5H16l.4-3h-2.9V8.6c0-.9.3-1.5 1.5-1.5h1.5V4.4c-.3 0-1.2-.1-2.2-.1-2.2 0-3.7 1.3-3.7 3.8v2.4H8.1v3h2.5V21h2.9z" fill="currentColor"/></svg>';
 
-  // O logótipo da Casa 361 redesenhado em vetor: a casa a ouro, "CASA" claro e "361" a ouro,
-  // sem a caixa preta do PNG e na horizontal, para ficar mais baixo no cabeçalho.
-  var MARK = '<svg class="logo-mark" viewBox="0 0 52 39" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 22.5 25.6 1.5 50 22.5"/><path d="M35 2.6V37"/><path d="M8.4 21.5V31"/><path d="M16 22.5v14"/><path d="M21.8 36.5v-11h7.8v11"/><path d="M42.8 21.5V31"/></g></svg>';
-  var LOCKUP = MARK + '<span class="logo-word"><span class="lw1">CASA <b>361</b></span><span class="lw2">Mais do que imóveis, soluções.</span></span>';
-  // O ícone no separador do browser: a mesma casa, a ouro sobre preto.
+  // O logótipo original da Casa 361 (do ficheiro PSD), recortado com fundo transparente.
+  var LOCKUP = '<img src="img/logo-casa361.png" width="720" height="504" alt="Casa 361 · Mais do que imóveis, soluções.">';
+  // O ícone no separador do browser e no ecrã do telemóvel: a casa do logótipo, a ouro sobre preto.
   if (!document.querySelector('link[rel="icon"]')) {
-    var ico = document.createElement('link'); ico.rel = 'icon'; ico.type = 'image/svg+xml';
-    ico.href = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#181818"/><g transform="translate(6 12)" fill="none" stroke="#c9a15f" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 22.5 25.6 1.5 50 22.5"/><path d="M35 2.6V37"/><path d="M8.4 21.5V31"/><path d="M16 22.5v14"/><path d="M21.8 36.5v-11h7.8v11"/><path d="M42.8 21.5V31"/></g></svg>');
+    var ico = document.createElement('link'); ico.rel = 'icon'; ico.type = 'image/png'; ico.href = 'img/favicon-48.png';
     document.head.appendChild(ico);
   }
 
