@@ -1532,3 +1532,54 @@ iframe[data-consent-src]:not([src]) { display: none; }
 .legal-text th, .legal-text td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
 .legal-text th { background: var(--stone); font-weight: 600; }
 .legal-text ol[type="a"] { padding-left: 1.4em; }
+
+/* ── Menu: Serviços com o crédito lá dentro ─────────────────────────────── */
+.nav-dd { position: relative; display: inline-flex; }
+.nav .caret { font-size: .7em; opacity: .7; margin-left: 2px; }
+.nav-sub { display: none; position: absolute; top: 100%; left: -16px; min-width: 250px; flex-direction: column; background: var(--ink); border: 1px solid rgba(185,146,90,.45); border-radius: 10px; padding: 8px 16px; box-shadow: 0 18px 40px rgba(0,0,0,.35); z-index: 5; }
+.nav-dd:hover .nav-sub, .nav-dd:focus-within .nav-sub { display: flex; }
+.nav-sub a { white-space: nowrap; padding: 9px 0; }
+@media (max-width: 1120px) {
+  .nav-dd { display: block; }
+  .nav-dd > a { display: block; }
+  .nav-sub { display: flex; position: static; min-width: 0; border: 0; border-radius: 0; box-shadow: none; padding: 0 0 0 18px; background: none; }
+  .nav .nav-sub a { font-size: 16px; padding: 11px 0; color: rgba(255,255,255,.72); }
+}
+.top .call.call-em { font-size: 12px; padding: 10px 16px; }
+@media (min-width: 1121px) and (max-width: 1280px) { .nav { gap: 20px; } }
+
+/* ── Angariação, a seguir à entrada ─────────────────────────────────────── */
+.angar { margin-top: 40px; }
+.angar-in { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, .75fr) minmax(0, 1fr); background: var(--ink); color: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 24px 60px rgba(0,0,0,.14); }
+.angar-copy { padding: clamp(26px, 3.2vw, 44px); display: grid; align-content: center; justify-items: start; gap: 10px; }
+.angar h2 { margin: 0; font: 500 clamp(30px, 3.2vw, 44px)/1.08 var(--serif); color: #fff; text-wrap: balance; }
+.angar h2 em { font-style: normal; background: linear-gradient(180deg, #f7e2b0 0%, #d9b36b 55%, #a87f43 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.angar-copy .angar-lead { margin: 0; font: 500 21px/1.3 var(--serif); color: #e2bd76; }
+.angar-copy p { margin: 0; max-width: 34em; color: rgba(255,255,255,.82); font-size: 15px; }
+.angar-copy .btn { margin-top: 10px; text-transform: uppercase; letter-spacing: .04em; font-size: 12.5px; padding-inline: 20px; white-space: normal; text-align: center; }
+.angar-copy small { color: rgba(255,255,255,.7); font-size: 13px; }
+.angar-pts { list-style: none; margin: 0; padding: clamp(22px, 2.6vw, 36px) clamp(18px, 2vw, 30px); display: grid; align-content: center; gap: 18px; border-left: 1px solid rgba(185,146,90,.55); }
+.angar-pts li { display: flex; align-items: center; gap: 14px; font-size: 14.5px; line-height: 1.3; color: rgba(255,255,255,.92); }
+.angar-pts svg { width: 34px; height: 34px; flex: none; fill: none; stroke: #d9b36b; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+.angar-img { position: relative; min-height: 240px; border-left: 2px solid #b9925a; border-radius: 120px 0 0 120px / 50% 0 0 50%; overflow: hidden; }
+.angar-img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+@media (max-width: 980px) {
+  .angar-in { grid-template-columns: minmax(0, 1fr) minmax(0, .8fr); }
+  .angar-img { grid-column: 1 / -1; grid-row: 1; min-height: 190px; border-left: 0; border-bottom: 2px solid #b9925a; border-radius: 0; }
+}
+@media (max-width: 620px) {
+  .angar-in { grid-template-columns: 1fr; }
+  .angar-pts { border-left: 0; border-top: 1px solid rgba(185,146,90,.45); grid-template-columns: 1fr 1fr; gap: 14px; }
+  .angar-pts li { font-size: 13.5px; gap: 10px; }
+  .angar-pts svg { width: 28px; height: 28px; }
+  .angar-copy .btn { width: 100%; }
+}
+
+/* ── Sobre nós: AMI ao tamanho dos outros números; freguesias por baixo das imagens ── */
+.em-nums strong.em-ami { font-size: clamp(22px, 2.3vw, 30px); min-height: clamp(34px, 3.6vw, 46px); display: flex; align-items: flex-end; white-space: nowrap; }
+.em-zones .ez { display: grid; align-content: start; gap: 10px; min-width: 0; }
+.em-zones .ez a { display: block; }
+.em-zones .ez-par { margin: 0; font-size: 13.5px; line-height: 1.5; color: var(--muted); }
+
+/* ── Estudo de mercado: "100% gratuito" ─────────────────────────────────── */
+.vf-free { margin: 14px 0 0; font-weight: 700; color: var(--gold); }

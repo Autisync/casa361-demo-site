@@ -13,7 +13,10 @@
   var PHONE = '913 613 005', TEL = '+351913613005', MAIL = 'geral@casa361.com';
   var page = document.body.getAttribute('data-page') || '';
   var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var links = [['imoveis.html', 'Imóveis', 'imoveis'], ['vender.html', 'Vender', 'vender'], ['credito.html', 'Crédito', 'credito'], ['servicos.html', 'Serviços', 'servicos'], ['empresa.html', 'Empresa', 'empresa'], ['contactos.html', 'Contactos', 'contactos']];
+  // O menu (pedido do Luís): Comprar, Arrendar, Vender, Serviços (com o crédito lá dentro), Sobre nós, Contactos.
+  var links = [['imoveis.html', 'Comprar', 'comprar'], ['imoveis.html?deal=arrendamento', 'Arrendar', 'arrendar'], ['vender.html', 'Vender', 'vender'], ['servicos.html', 'Serviços', 'servicos'], ['empresa.html', 'Sobre nós', 'empresa'], ['contactos.html', 'Contactos', 'contactos']];
+  var here = page === 'imoveis' ? (/[?&]deal=arrendamento/.test(location.search) ? 'arrendar' : /[?&]guardados=/.test(location.search) ? '' : 'comprar') : page === 'credito' ? 'servicos' : page;
+  var subServ = '<span class="nav-sub"><a href="servicos.html">Todos os serviços</a><a href="credito.html"' + (page === 'credito' ? ' aria-current="page"' : '') + '>Crédito à habitação</a><a href="credito.html#jovem">Primeira casa até aos 35 anos</a></span>';
   var IG = 'https://www.instagram.com/casa.361com/', FB = 'https://www.facebook.com/Casa.361com';
   var igIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.3" cy="6.7" r="1.2" fill="currentColor"/></svg>';
   var fbIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 21v-7.5H16l.4-3h-2.9V8.6c0-.9.3-1.5 1.5-1.5h1.5V4.4c-.3 0-1.2-.1-2.2-.1-2.2 0-3.7 1.3-3.7 3.8v2.4H8.1v3h2.5V21h2.9z" fill="currentColor"/></svg>';
@@ -35,9 +38,10 @@
     top.innerHTML = '<div class="wrap"><a class="logo" href="index.html" aria-label="Casa 361, página inicial">' + LOCKUP + '</a>' +
       '<button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav">Menu</button>' +
       '<nav class="nav" id="nav" aria-label="Principal">' + links.map(function (l) {
-        return '<a href="' + l[0] + '"' + (l[2] === page ? ' aria-current="page"' : '') + '>' + l[1] + '</a>';
+        var a = '<a href="' + l[0] + '"' + (l[2] === here ? ' aria-current="page"' : '') + '>' + l[1] + (l[2] === 'servicos' ? ' <span class="caret" aria-hidden="true">▾</span>' : '') + '</a>';
+        return l[2] === 'servicos' ? '<span class="nav-dd">' + a + subServ + '</span>' : a;
       }).join('') + '<span class="nav-soc"><a href="' + IG + '" target="_blank" rel="noopener" aria-label="Casa 361 no Instagram">' + igIcon + '</a><a href="' + FB + '" target="_blank" rel="noopener" aria-label="Casa 361 no Facebook">' + fbIcon + '</a></span><a href="imoveis.html?guardados=1" class="saved" aria-label="Imóveis favoritos"><span class="ico">' + C361.heart + '</span><span class="n" id="fav-n"></span></a><a class="nav-call" href="tel:' + TEL + '">☏ Ligar ' + PHONE + '</a></nav>' +
-      '<a class="call call-em" href="vender.html#avaliacao">Estudo de mercado <span aria-hidden="true">→</span></a></div>';
+      '<a class="call call-em" href="vender.html#avaliacao">Estudo de mercado gratuito <span aria-hidden="true">→</span></a></div>';
     var btn = top.querySelector('.menu-btn'), nav = top.querySelector('.nav');
     btn.addEventListener('click', function () { var o = nav.classList.toggle('open'); btn.setAttribute('aria-expanded', String(o)); top.classList.toggle('menu-open', o); });
     var onScroll = function () { top.classList.toggle('scrolled', window.scrollY > 24); };
@@ -52,7 +56,7 @@
     foot.innerHTML = '<div class="wrap">' +
       '<p class="foot-line">Mais do que imóveis, <em>soluções.</em></p>' +
       '<div class="cols">' +
-      '<div><a class="logo foot-logo" href="index.html" aria-label="Casa 361">' + LOCKUP + '</a><p>Imobiliária na zona norte de Lisboa, especializada na compra, venda e arrendamento de imóveis em Vila Franca de Xira, Alverca, Póvoa de Santa Iria e Alhandra.</p></div>' +
+      '<div><a class="logo foot-logo" href="index.html" aria-label="Casa 361">' + LOCKUP + '</a><p>A Casa 361 é uma imobiliária de proximidade, especializada na compra, venda e arrendamento de imóveis na zona norte de Lisboa, com especial enfoque em Vila Franca de Xira, Alverca, Póvoa de Santa Iria e Alhandra.</p><p>Mais do que imóveis, criamos soluções à medida de cada cliente.</p></div>' +
       '<div><h4>Imóveis</h4><ul><li><a href="imoveis.html">Comprar</a></li><li><a href="imoveis.html?deal=arrendamento">Arrendar</a></li><li><a href="imoveis.html?guardados=1">Favoritos</a></li><li><a href="vender.html">Vender o seu imóvel</a></li><li><a href="vender.html#rapida">Compramos o seu imóvel</a></li></ul></div>' +
       '<div><h4>Casa 361</h4><ul><li><a href="empresa.html">Sobre a Casa 361</a></li><li><a href="servicos.html">Serviços</a></li><li><a href="credito.html">Crédito à habitação</a></li><li><a href="empresa.html#recrutamento">Recrutamento</a></li></ul></div>' +
       '<div><h4>Contactos</h4><ul><li><a href="tel:' + TEL + '" class="num">' + PHONE + '</a><br><small>Chamada para rede móvel nacional</small></li><li><a href="mailto:' + MAIL + '">' + MAIL + '</a></li><li><a href="https://wa.me/351913613005" target="_blank" rel="noopener">WhatsApp</a></li></ul></div>' +
