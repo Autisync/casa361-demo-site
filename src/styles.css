@@ -1416,3 +1416,25 @@ html { font-feature-settings: "lnum" 1; }
 .top.scrolled .logo { width: 104px; }
 @media (max-width: 920px) { .logo { width: 108px; margin: 0; } .top.scrolled .logo { width: 88px; } }
 .foot-logo { width: 190px; margin: 0 0 18px; }
+
+/* ── 361° no herói: como no logótipo, sem órbita nem ponto a girar ───── */
+.ring .orbit, .ring .dot { display: none; }
+.ring .deg strong { font: 500 60px/1 var(--serif); color: var(--gold); letter-spacing: .02em; font-feature-settings: "lnum" 1; }
+.ring .deg strong sup { font-size: .42em; vertical-align: .95em; margin-left: .04em; }
+.ring .deg .deg-rule { display: block; width: 64px; height: 1px; background: var(--gold); margin: 14px auto 12px; opacity: .8; }
+.ring .deg span { font-size: 10.5px; letter-spacing: .18em; color: rgba(255,255,255,.72); }
+
+/* ── Destaque "Quer saber quanto vale a sua casa?" a seguir à entrada ─── */
+.valuebar { background: var(--ink); color: #fff; border-top: 1px solid rgba(185,146,90,.35); }
+.valuebar-in { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 28px 48px; align-items: center; padding-block: clamp(36px, 5vw, 56px); }
+.vb-kicker { margin: 0 0 6px; color: var(--gold); font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
+.valuebar h2 { margin: 0 0 10px; font: 500 clamp(30px, 3.6vw, 44px)/1.1 var(--serif); color: #fff; text-wrap: balance; }
+.valuebar p { margin: 0; max-width: 60ch; color: rgba(255,255,255,.78); }
+.vb-cta { display: grid; gap: 12px; justify-items: start; }
+.vb-cta .btn { white-space: nowrap; }
+.vb-alt { color: rgba(255,255,255,.85); font-size: 14px; text-decoration: none; border-bottom: 1px solid rgba(185,146,90,.6); }
+.vb-alt:hover { color: #fff; border-bottom-color: var(--gold); }
+@media (max-width: 760px) { .valuebar-in { grid-template-columns: 1fr; } }
+/* As portas deixam de subir sobre a fotografia: o destaque fica entre as duas. */
+.valuebar + .doors { margin-top: 40px; }
+
