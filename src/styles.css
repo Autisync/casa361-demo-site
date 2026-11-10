@@ -1438,3 +1438,68 @@ html { font-feature-settings: "lnum" 1; }
 /* As portas deixam de subir sobre a fotografia: o destaque fica entre as duas. */
 .valuebar + .doors { margin-top: 40px; }
 
+
+/* ── Herói como na proposta do Luís: 361° a ouro, à esquerda, com brilho ── */
+.hero-s .hmain { grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr); gap: clamp(28px, 4vw, 64px); padding-block: 160px 36px; }
+.hero-s .ring-361 { order: -1; width: min(400px, 30vw); justify-self: start; display: block; }
+.hero-s h1 em { font-style: normal; color: #e4c48a; background: linear-gradient(180deg, #f7e2b0 0%, #d9b36b 55%, #a87f43 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.hsub { margin: -4px 0 0; max-width: 34em; font-size: clamp(16px, 1.4vw, 19px); color: rgba(255,255,255,.86); }
+.ring-361 svg { overflow: visible; }
+.ring-361 .deg strong {
+  font: 500 clamp(86px, 9vw, 150px)/.9 var(--serif); letter-spacing: -.01em; font-feature-settings: "lnum" 1;
+  background: linear-gradient(180deg, #fbe9bf 0%, #e2bd76 38%, #b9925a 64%, #8a6a36 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  filter: drop-shadow(0 2px 14px rgba(217,179,107,.28));
+}
+.ring-361 .deg strong sup { font-size: .34em; vertical-align: 1.35em; margin-left: .02em; }
+.ring-361 .deg-rule { display: none; }
+.ring-361 .deg span { display: block; margin-top: 14px; font-size: clamp(11px, 1vw, 14px); letter-spacing: .2em; color: rgba(255,255,255,.9); }
+.ring-361 .flare { position: absolute; width: 22%; aspect-ratio: 1; left: 69%; top: 6%; transform: translate(-50%, -50%); border-radius: 50%; pointer-events: none;
+  background: radial-gradient(circle, rgba(255,247,225,1) 0 6%, rgba(255,220,150,.75) 14%, rgba(217,179,107,.25) 38%, transparent 70%); mix-blend-mode: screen; }
+.ring-361 .flare::after { content: ''; position: absolute; left: -40%; right: -40%; top: 50%; height: 2px; transform: translateY(-50%); background: linear-gradient(90deg, transparent, rgba(255,236,190,.8), transparent); }
+@media (prefers-reduced-motion: no-preference) {
+  .ring-361 .flare { animation: flare 5s ease-in-out 2.6s infinite both; }
+  @keyframes flare { 0%, 100% { opacity: .75; transform: translate(-50%, -50%) scale(.92); } 50% { opacity: 1; transform: translate(-50%, -50%) scale(1.06); } }
+}
+.hero-s .slide-dots { display: none; }
+
+/* Os quatro atalhos no fundo do herói */
+.hfeat { position: relative; z-index: 2; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); padding-block: 8px 92px; }
+.hf { display: grid; justify-items: center; align-content: start; gap: 4px; padding: 10px 18px; text-align: center; color: #fff; text-decoration: none; border-left: 1px solid rgba(185,146,90,.55); }
+.hf:first-child { border-left: 0; }
+.hf svg { width: 46px; height: 46px; fill: none; stroke: #d9b36b; stroke-width: 1.3; stroke-linecap: round; stroke-linejoin: round; margin-bottom: 8px; transition: transform .3s ease; }
+.hf strong { font: 500 clamp(19px, 1.6vw, 23px)/1.2 var(--serif); }
+.hf span { font-size: 14px; color: rgba(255,255,255,.78); }
+.hf em { margin-top: 10px; font: 500 15px var(--serif); font-style: normal; color: #d9b36b; }
+.hf em i { font-style: normal; display: inline-block; transition: transform .25s ease; }
+.hf:hover svg { transform: translateY(-3px); }
+.hf:hover em i { transform: translateX(4px); }
+.hf:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; border-radius: 6px; }
+.hwave { position: absolute; z-index: 2; left: 0; right: 0; bottom: -1px; width: 100%; height: clamp(36px, 5vw, 70px); display: block; }
+.hero-s + .doors { margin-top: 40px; }
+
+@media (max-width: 1100px) { .hfeat { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 22px; } .hf:nth-child(3) { border-left: 0; } }
+@media (max-width: 920px) {
+  .hero-s .hmain { grid-template-columns: 1fr; padding-block: 120px 24px; }
+  .hero-s .ring-361 { width: min(230px, 62vw); justify-self: center; margin-bottom: -6px; }
+}
+@media (max-width: 560px) {
+  .hero .hfeat { padding-block: 4px 64px; row-gap: 0; }
+  .hf { padding: 16px 8px; border-top: 1px solid rgba(185,146,90,.3); }
+  .hf:nth-child(-n+2) { border-top: 0; }
+  .hf svg { width: 34px; height: 34px; margin-bottom: 4px; }
+  .hf strong { font-size: 17px; }
+  .hf span { font-size: 12.5px; }
+  .hf em { margin-top: 6px; font-size: 14px; }
+}
+
+/* Acertos: os atalhos não herdam o espaço do herói; título em duas linhas; o anel completa-se */
+.hero .hfeat { padding-block: 8px 92px; }
+.hero-s h1 { font-size: clamp(40px, 4.5vw, 70px); }
+.ring-361 .deg strong sup { color: #e2bd76; -webkit-text-fill-color: #e2bd76; }
+@media (prefers-reduced-motion: no-preference) { .ring-361 .draw { stroke-dasharray: 1056; stroke-dashoffset: 1056; } }
+@keyframes draw361 { to { stroke-dashoffset: 0; } }
+@media (prefers-reduced-motion: no-preference) { .ring-361 .draw { animation: draw361 2.4s .5s cubic-bezier(.6,0,.2,1) forwards; } }
+.hero .hfeat { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; align-items: stretch; }
+@media (max-width: 1100px) { .hero .hfeat { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 22px; } }
+@media (max-width: 560px) { .hero .hfeat { row-gap: 0; } }

@@ -29,10 +29,10 @@
   <!-- 1 · Imagem principal + pesquisa de imóveis -->
   <section class="hero hero-s">
     <div class="slides" id="slides" aria-hidden="true"></div>
-    <div class="wrap">
+    <div class="wrap hmain">
       <div>
-        <p class="kicker">Mais do que imóveis, soluções.</p>
-        <h1><span class="ln"><span>A sua próxima casa,</span></span><span class="ln"><span><em>entre Lisboa e o Tejo.</em></span></span></h1>
+        <h1><span class="ln"><span>A sua próxima casa,</span></span><span class="ln"><span>entre <em>Lisboa</em> e o <em>Tejo</em>.</span></span></h1>
+        <p class="hsub">Conheça o mercado, encontre a casa certa e conte com o nosso acompanhamento em todas as etapas.</p>
         <div class="hsearch">
           <div class="tabs" role="tablist" aria-label="O que procura">
             <button type="button" role="tab" aria-selected="true" data-deal="venda">Comprar</button>
@@ -52,30 +52,45 @@
           <a class="explore" href="imoveis.html">Explorar todos os imóveis, no mapa <span class="arr" aria-hidden="true">→</span></a>
         </div>
       </div>
-      <div class="ring" aria-hidden="true">
-        <svg viewBox="0 0 300 300">
-          <circle cx="150" cy="150" r="128" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
-          <circle class="draw" cx="150" cy="150" r="128" fill="none" stroke="#b9925a" stroke-width="1" transform="rotate(-90 150 150)"/>
+      <div class="ring ring-361" aria-hidden="true">
+        <svg viewBox="0 0 400 400">
+          <defs>
+            <linearGradient id="gRing" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#f7e2b0"/><stop offset=".35" stop-color="#d9b36b"/><stop offset=".7" stop-color="#a87f43"/><stop offset="1" stop-color="#f0d39a"/>
+            </linearGradient>
+            <filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          </defs>
+          <path class="swoosh" d="M-60 330 C 60 250, 210 395, 470 300" fill="none" stroke="url(#gRing)" stroke-width="1.2" opacity=".55"/>
+          <path class="swoosh s2" d="M-60 352 C 90 285, 240 420, 470 330" fill="none" stroke="url(#gRing)" stroke-width=".8" opacity=".3"/>
+          <circle cx="200" cy="200" r="168" fill="rgba(10,10,10,.35)"/>
+          <circle class="draw" cx="200" cy="200" r="168" fill="none" stroke="url(#gRing)" stroke-width="3" filter="url(#glow)" transform="rotate(-90 200 200)"/>
+          <circle cx="200" cy="200" r="168" fill="none" stroke="rgba(247,226,176,.35)" stroke-width="1"/>
         </svg>
-        <div class="deg"><div><strong>361<sup>°</sup></strong><i class="deg-rule"></i><span>Mais do que imóveis,<br>soluções.</span></div></div>
+        <span class="flare"></span>
+        <div class="deg"><div><strong>361<sup>°</sup></strong><span>Mais do que imóveis,<br>soluções.</span></div></div>
       </div>
     </div>
+    <!-- Atalhos no fundo da imagem principal, como na proposta do Luís -->
+    <div class="wrap hfeat">
+      <a class="hf" href="vender.html#avaliacao">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 11.2 12 4l8.5 7.2"/><path d="M5.5 9.6V20h13V9.6"/><path d="M10 20v-5.5h4V20"/></svg>
+        <strong>Estudo de Mercado</strong><span>Conheça o valor do seu imóvel.</span><em>Pedir estudo <i aria-hidden="true">→</i></em>
+      </a>
+      <a class="hf" href="#zonas">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/></svg>
+        <strong>Explore por Zona</strong><span>Descubra as melhores localizações.</span><em>Ver zonas <i aria-hidden="true">→</i></em>
+      </a>
+      <a class="hf" href="vender.html">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12.5 6 9l3 1.2 2.6-2.4a2 2 0 0 1 2.7 0L21.5 14"/><path d="m7.5 13.5 3 3a1.4 1.4 0 0 0 2-2"/><path d="m11 12.5 3.5 3.5a1.4 1.4 0 0 0 2-2l-2.5-2.5"/><path d="M2.5 12.5 7 17"/><path d="M21.5 14 18 17.5"/></svg>
+        <strong>Duas Soluções para Vender</strong><span>Tradicional ou rápida.</span><em>Saber mais <i aria-hidden="true">→</i></em>
+      </a>
+      <a class="hf" href="empresa.html">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.5 3.2 8.2 7.5 9.5 4.3-1.3 7.5-5 7.5-9.5V6z"/><path d="m8.8 12 2.3 2.3 4.4-4.6"/></svg>
+        <strong>Porque escolher a Casa 361?</strong><span>Confiança, experiência e proximidade.</span><em>Conheça-nos <i aria-hidden="true">→</i></em>
+      </a>
+    </div>
+    <svg class="hwave" viewBox="0 0 1440 70" preserveAspectRatio="none" aria-hidden="true"><path d="M0 70 V40 C 360 78, 900 -6, 1440 30 V70 Z" fill="var(--paper)"/><path d="M0 40 C 360 78, 900 -6, 1440 30" fill="none" stroke="#b9925a" stroke-width="1.5" opacity=".8"/></svg>
     <div class="slide-dots" id="dots" aria-hidden="true"></div>
-  </section>
-
-  <!-- 1b · Destaque à venda: o estudo de mercado gratuito, logo a seguir à entrada -->
-  <section class="valuebar" aria-labelledby="vb-t">
-    <div class="wrap valuebar-in">
-      <div class="vb-copy">
-        <p class="vb-kicker">Vai vender?</p>
-        <h2 id="vb-t">Quer saber quanto vale a sua casa?</h2>
-        <p>A Casa 361 prepara um estudo de mercado personalizado do seu imóvel, comparado com o que se vende na sua zona. Sem custos e sem compromisso.</p>
-      </div>
-      <div class="vb-cta">
-        <a class="btn btn-gold" href="vender.html#avaliacao">Pedir estudo de mercado</a>
-        <a class="vb-alt" href="vender.html">Como vendemos a sua casa <span aria-hidden="true">→</span></a>
-      </div>
-    </div>
   </section>
 
   <!-- 2 · Comprar, Vender e Arrendar (imagens fixas, não de imóveis à venda) -->
@@ -98,7 +113,7 @@
   </section>
 
   <!-- 4 · Explorar por zona: fotografias aéreas de cada concelho -->
-  <section class="sec stone">
+  <section class="sec stone" id="zonas">
     <div class="wrap">
       <div class="sec-head reveal" style="justify-content:center;text-align:center">
         <div style="display:grid;justify-items:center"><p class="kicker">Explorar por zona</p><h2>Onde quer viver?</h2><p>Conhecemos cada concelho. Ajudamos a encontrar o lugar certo para si.</p></div>
