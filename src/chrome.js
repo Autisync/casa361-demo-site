@@ -26,13 +26,8 @@
     document.head.appendChild(ico);
   }
 
-  // Notas internas da maquete (caixas azuis): escondidas no site; só aparecem com ?notas=1
-  // no endereço, para revermos com o cliente (pedido do Luís: nada interno no site publicado).
-  var NOTES = /[?&]notas=1/.test(location.search);
-  var bar = document.createElement('div');
-  bar.className = 'mq-bar';
-  bar.innerHTML = '<div class="wrap"><span>Maquete para apreciação · proposta Autisync para a Casa 361. Imóveis da conta UrbanFocus no CRM Autisync · pedidos para geral@casa361.com.</span><button type="button" id="mq-toggle">Esconder notas</button></div>';
-  if (NOTES) document.body.insertBefore(bar, document.body.firstChild); else document.body.classList.add('mq-off');
+  document.body.classList.add('mq-off');
+
 
   var top = document.getElementById('top');
   if (top) {
@@ -41,7 +36,7 @@
       '<button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav">Menu</button>' +
       '<nav class="nav" id="nav" aria-label="Principal">' + links.map(function (l) {
         return '<a href="' + l[0] + '"' + (l[2] === page ? ' aria-current="page"' : '') + '>' + l[1] + '</a>';
-      }).join('') + '<span class="nav-soc"><a href="' + IG + '" target="_blank" rel="noopener" aria-label="Casa 361 no Instagram">' + igIcon + '</a><a href="' + FB + '" target="_blank" rel="noopener" aria-label="Casa 361 no Facebook">' + fbIcon + '</a></span><a href="imoveis.html?guardados=1" class="saved" aria-label="Imóveis guardados"><span class="ico">' + C361.heart + '</span><span class="n" id="fav-n"></span></a><a class="nav-call" href="tel:' + TEL + '">☏ Ligar ' + PHONE + '</a></nav>' +
+      }).join('') + '<span class="nav-soc"><a href="' + IG + '" target="_blank" rel="noopener" aria-label="Casa 361 no Instagram">' + igIcon + '</a><a href="' + FB + '" target="_blank" rel="noopener" aria-label="Casa 361 no Facebook">' + fbIcon + '</a></span><a href="imoveis.html?guardados=1" class="saved" aria-label="Imóveis favoritos"><span class="ico">' + C361.heart + '</span><span class="n" id="fav-n"></span></a><a class="nav-call" href="tel:' + TEL + '">☏ Ligar ' + PHONE + '</a></nav>' +
       '<a class="call call-em" href="vender.html#avaliacao">Estudo de mercado <span aria-hidden="true">→</span></a></div>';
     var btn = top.querySelector('.menu-btn'), nav = top.querySelector('.nav');
     btn.addEventListener('click', function () { var o = nav.classList.toggle('open'); btn.setAttribute('aria-expanded', String(o)); top.classList.toggle('menu-open', o); });
@@ -57,9 +52,9 @@
     foot.innerHTML = '<div class="wrap">' +
       '<p class="foot-line">Mais do que imóveis, <em>soluções.</em></p>' +
       '<div class="cols">' +
-      '<div><a class="logo foot-logo" href="index.html" aria-label="Casa 361">' + LOCKUP + '</a><p>Imobiliária na zona norte de Lisboa. Compra, venda e arrendamento em Vila Franca de Xira, Alverca, Póvoa de Santa Iria e Alhandra.</p></div>' +
-      '<div><h4>Imóveis</h4><ul><li><a href="imoveis.html">Comprar</a></li><li><a href="imoveis.html?deal=arrendamento">Arrendar</a></li><li><a href="imoveis.html?guardados=1">Guardados</a></li><li><a href="vender.html">Vender o seu imóvel</a></li><li><a href="vender.html#rapida">Compramos o seu imóvel</a></li></ul></div>' +
-      '<div><h4>Casa 361</h4><ul><li><a href="empresa.html">Sobre nós</a></li><li><a href="servicos.html">Serviços</a></li><li><a href="credito.html">Crédito habitação</a></li><li><a href="empresa.html#recrutamento">Recrutamento</a></li></ul></div>' +
+      '<div><a class="logo foot-logo" href="index.html" aria-label="Casa 361">' + LOCKUP + '</a><p>Imobiliária na zona norte de Lisboa, especializada na compra, venda e arrendamento de imóveis em Vila Franca de Xira, Alverca, Póvoa de Santa Iria e Alhandra.</p></div>' +
+      '<div><h4>Imóveis</h4><ul><li><a href="imoveis.html">Comprar</a></li><li><a href="imoveis.html?deal=arrendamento">Arrendar</a></li><li><a href="imoveis.html?guardados=1">Favoritos</a></li><li><a href="vender.html">Vender o seu imóvel</a></li><li><a href="vender.html#rapida">Compramos o seu imóvel</a></li></ul></div>' +
+      '<div><h4>Casa 361</h4><ul><li><a href="empresa.html">Sobre a Casa 361</a></li><li><a href="servicos.html">Serviços</a></li><li><a href="credito.html">Crédito à habitação</a></li><li><a href="empresa.html#recrutamento">Recrutamento</a></li></ul></div>' +
       '<div><h4>Contactos</h4><ul><li><a href="tel:' + TEL + '" class="num">' + PHONE + '</a><br><small>Chamada para rede móvel nacional</small></li><li><a href="mailto:' + MAIL + '">' + MAIL + '</a></li><li><a href="https://wa.me/351913613005" target="_blank" rel="noopener">WhatsApp</a></li></ul></div>' +
       '</div>' +
       // O que o rodapé do site atual tem e tem de continuar a ter: as ligações legais, o Livro de
@@ -68,12 +63,12 @@
       '<div class="legal-links"><ul>' + [
         ['empresa.html#recrutamento', 'Recrutamento'], ['mapa-do-site.html', 'Mapa do site'], ['https://www.livroreclamacoes.pt/inicio', 'Livro de reclamações'],
         ['litigios.html', 'Resolução alternativa de litígios'], ['privacidade.html', 'Política de privacidade'], ['cookies.html', 'Política de cookies'],
-        ['termos.html', 'Termos de uso'], ['#cookies', 'Preferências de cookies'],
+        ['termos.html', 'Termos de utilização'], ['#cookies', 'Preferências de cookies'],
       ].map(function (l) { var ext = /^https?:/.test(l[0]); return '<li><a href="' + l[0] + '"' + (ext ? ' target="_blank" rel="noopener"' : '') + '>' + l[1] + '</a></li>'; }).join('') +
-      '<li class="ami">Licença AMI 24691</li></ul></div>' +
+      '<li class="ami">Licença AMI n.º 24691</li></ul></div>' +
       '<div class="badges">' +
       '<a href="https://www.livroreclamacoes.pt/inicio" target="_blank" rel="noopener" aria-label="Livro de Reclamações Eletrónico"><span class="badge-lr"><img src="img/livro-reclamacoes-ouro.png" alt="Livro de Reclamações" width="143" height="26"></span></a>' +
-      '<a href="https://www.impic.pt/" target="_blank" rel="noopener" aria-label="IMPIC, Instituto dos Mercados Públicos, do Imobiliário e da Construção"><span class="badge-text"><b>IMPIC</b><small>Mediação imobiliária · AMI 24691</small></span></a>' +
+      '<a href="https://www.impic.pt/" target="_blank" rel="noopener" aria-label="IMPIC, Instituto dos Mercados Públicos, do Imobiliário e da Construção"><span class="badge-text"><b>IMPIC</b><small>Mediação imobiliária · AMI n.º 24691</small></span></a>' +
       '</div>' +
       '<div class="legal"><span>® Casa 361, Unipessoal Lda. Todos os direitos reservados.</span>' +
       '<span class="social"><a href="https://www.facebook.com/Casa.361com" target="_blank" rel="noopener" aria-label="Casa 361 no Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 21v-7.5H16l.4-3h-2.9V8.6c0-.9.3-1.5 1.5-1.5h1.5V4.4c-.3 0-1.2-.1-2.2-.1-2.2 0-3.7 1.3-3.7 3.8v2.4H8.1v3h2.5V21h2.9z" fill="currentColor"/></svg></a>' +
@@ -86,7 +81,7 @@
   // continua no WhatsApp da Casa 361, com uma pessoa.
   var WA = '351913613005';
   var waIcon = '<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3.5A12.4 12.4 0 0 0 5.3 22.2L3.6 28.4l6.4-1.7A12.4 12.4 0 1 0 16 3.5zm0 22.6c-1.9 0-3.7-.5-5.3-1.4l-.4-.2-3.8 1 1-3.7-.2-.4A10.2 10.2 0 1 1 16 26.1zm5.6-7.6c-.3-.2-1.8-.9-2.1-1-.3-.1-.5-.2-.7.2l-1 1.2c-.2.2-.4.2-.7.1a8.4 8.4 0 0 1-4.2-3.6c-.3-.5.3-.5.9-1.6.1-.2 0-.4 0-.5l-1-2.3c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.3 5.2 4.6 1.9.8 2.7.9 3.6.7.6-.1 1.8-.7 2-1.4.3-.7.3-1.3.2-1.4-.1-.2-.3-.2-.6-.4z" fill="currentColor"/></svg>';
-  var TOPICS = ['Quero comprar casa', 'Quero vender o meu imóvel', 'Quero arrendar casa', 'Tenho um imóvel para arrendar', 'Quero saber quanto vale a minha casa', 'Preciso de ajuda com crédito habitação', 'Outro assunto'];
+  var TOPICS = ['Quero comprar casa', 'Quero vender o meu imóvel', 'Quero arrendar casa', 'Tenho um imóvel para arrendar', 'Quero saber quanto vale a minha casa', 'Preciso de ajuda com crédito à habitação', 'Outro assunto'];
   var wa = document.createElement('button');
   wa.type = 'button'; wa.className = 'wa-float'; wa.setAttribute('aria-label', 'Falar connosco no WhatsApp'); wa.setAttribute('aria-expanded', 'false');
   wa.innerHTML = waIcon;
@@ -121,15 +116,68 @@
   document.body.appendChild(wa);
   document.body.appendChild(panel);
 
-  // Notas da maquete: mostrar / esconder (lembra-se neste browser).
-  var t = document.getElementById('mq-toggle') || bar.querySelector('#mq-toggle');
-  function setNotes(off) { document.body.classList.toggle('mq-off', off); t.textContent = off ? 'Mostrar notas' : 'Esconder notas'; }
-  if (NOTES) { try { setNotes(localStorage.getItem('c361-mq') === 'off'); } catch (e) { /* sem memória, notas visíveis */ } }
-  t.addEventListener('click', function () {
-    var off = !document.body.classList.contains('mq-off');
-    setNotes(off);
-    try { localStorage.setItem('c361-mq', off ? 'off' : 'on'); } catch (e) { /* ignore */ }
+
+
+  // ── Cookies: a escolha do visitante ───────────────────────────────────────
+  // Necessários: sempre (esta escolha e os favoritos, guardados só neste
+  // browser). Conteúdos de terceiros (mapa do Google, vídeos dos imóveis):
+  // só depois de aceitar. Sem escolha, nada de terceiros é carregado.
+  var CK = 'c361-consent';
+  function readConsent() { try { return JSON.parse(localStorage.getItem(CK) || 'null'); } catch (e) { return null; } }
+  var consent = readConsent();
+  function applyConsent() {
+    var ok = !!(consent && consent.third);
+    Array.prototype.forEach.call(document.querySelectorAll('iframe[data-consent-src]'), function (f) { if (ok && !f.getAttribute('src')) f.setAttribute('src', f.getAttribute('data-consent-src')); });
+    Array.prototype.forEach.call(document.querySelectorAll('.consent-ph'), function (p) { p.hidden = ok; });
+  }
+  window.C361ApplyConsent = applyConsent;
+  function saveConsent(third) {
+    consent = { necessary: true, third: !!third, at: new Date().toISOString(), v: 1 };
+    try { localStorage.setItem(CK, JSON.stringify(consent)); } catch (e) { /* sem memória: vale só nesta visita */ }
+    applyConsent(); closeCk();
+  }
+  var ck = document.createElement('div');
+  ck.className = 'ck'; ck.setAttribute('role', 'dialog'); ck.setAttribute('aria-labelledby', 'ck-t'); ck.hidden = true;
+  ck.innerHTML = '<div class="ck-in">' +
+    '<h2 id="ck-t">A sua privacidade é importante para nós</h2>' +
+    '<p>A Casa 361 utiliza cookies e tecnologias semelhantes para garantir o correto funcionamento deste website e, mediante a sua autorização, mostrar conteúdos de terceiros, como o mapa do Google Maps e os vídeos dos imóveis.</p>' +
+    '<p>Os cookies estritamente necessários asseguram o funcionamento e a segurança do website. Os restantes só são utilizados com o seu consentimento prévio. Pode aceitar todos, rejeitar os não essenciais ou personalizar as suas preferências, e alterá-las a qualquer momento em «Preferências de cookies», no rodapé.</p>' +
+    '<div class="ck-opts" hidden>' +
+      '<label class="ck-row"><input type="checkbox" checked disabled> <span><b>Estritamente necessários</b>Funcionamento do website, esta escolha e os seus imóveis favoritos (guardados apenas neste navegador). Sempre ativos.</span></label>' +
+      '<label class="ck-row"><input type="checkbox" id="ck-third"> <span><b>Conteúdos de terceiros</b>Mapa do escritório (Google Maps) e vídeos dos imóveis (YouTube, Vimeo), que podem utilizar cookies próprios.</span></label>' +
+    '</div>' +
+    '<p class="ck-links"><a href="cookies.html">Política de Cookies</a> · <a href="privacidade.html">Política de Privacidade</a></p>' +
+    '<div class="ck-acts">' +
+      '<button type="button" class="btn btn-gold" data-ck="all">Aceitar todos</button>' +
+      '<button type="button" class="btn btn-line" data-ck="none">Rejeitar não essenciais</button>' +
+      '<button type="button" class="btn btn-line" data-ck="custom">Personalizar</button>' +
+      '<button type="button" class="btn btn-gold" data-ck="save" hidden>Guardar preferências</button>' +
+    '</div></div>';
+  document.body.appendChild(ck);
+  var ckOpts = ck.querySelector('.ck-opts'), ckSave = ck.querySelector('[data-ck="save"]'), ckCustom = ck.querySelector('[data-ck="custom"]');
+  function openCk() {
+    ck.querySelector('#ck-third').checked = !!(consent && consent.third);
+    ck.hidden = false;
+    var b = ck.querySelector('[data-ck="all"]'); if (b) b.focus();
+  }
+  function closeCk() { ck.hidden = true; ckOpts.hidden = true; ckSave.hidden = true; ckCustom.hidden = false; }
+  ck.addEventListener('click', function (ev) {
+    var b = ev.target.closest('[data-ck]'); if (!b) return;
+    var k = b.getAttribute('data-ck');
+    if (k === 'all') saveConsent(true);
+    else if (k === 'none') saveConsent(false);
+    else if (k === 'custom') { ckOpts.hidden = false; ckSave.hidden = false; ckCustom.hidden = true; }
+    else if (k === 'save') saveConsent(ck.querySelector('#ck-third').checked);
   });
+  ck.addEventListener('keydown', function (ev) { if (ev.key === 'Escape' && consent) closeCk(); });
+  document.addEventListener('click', function (ev) {
+    var a = ev.target.closest('a[href="#cookies"]');
+    if (a) { ev.preventDefault(); openCk(); return; }
+    var t = ev.target.closest('[data-consent-third]');
+    if (t) { ev.preventDefault(); saveConsent(true); }
+  });
+  applyConsent();
+  if (!consent) openCk();
 
   // Formulários. Com a API ligada (config.js), o pedido vai para a casa361-api, que envia
   // um email para geral@casa361.com e a resposta automática à pessoa. Sem API, só confirma.
@@ -138,7 +186,7 @@
   var IC = function (k) { return window.C361 && C361.icon ? C361.icon(k) : ''; };
   // Qualquer elemento com data-ico="nome" recebe o ícone à frente.
   Array.prototype.forEach.call(document.querySelectorAll('[data-ico]'), function (el) { el.insertAdjacentHTML('afterbegin', '<span class="li-ico">' + IC(el.getAttribute('data-ico')) + '</span>'); });
-  var WA_TXT = { contacto: 'Olá! Gostava de falar com a Casa 361.', credito: 'Olá! Gostava de ajuda com o crédito habitação.', avaliacao: 'Olá! Gostava de pedir um estudo de mercado do meu imóvel.',
+  var WA_TXT = { contacto: 'Olá! Gostava de falar com a Casa 361.', credito: 'Olá! Gostava de ajuda com o crédito à habitação.', avaliacao: 'Olá! Gostava de pedir um estudo de mercado do meu imóvel.',
     visita: 'Olá! Gostava de marcar uma visita' + (document.body.getAttribute('data-ref') ? ' ao imóvel ref. ' + document.body.getAttribute('data-ref') : '') + '.', alerta: 'Olá! Procuro casa e gostava de receber sugestões.', recrutamento: 'Olá! Tenho interesse em trabalhar na Casa 361.' };
   Array.prototype.forEach.call(document.querySelectorAll('form.form'), function (f) {
     Array.prototype.forEach.call(f.querySelectorAll('input[name], textarea, select[name]'), function (el) {
@@ -157,7 +205,7 @@
       q.innerHTML = '<span class="quick-t">Prefere falar já?</span>' +
         '<a class="qk qk-wa" href="https://wa.me/351913613005?text=' + encodeURIComponent(WA_TXT[kind] || WA_TXT.contacto) + '" target="_blank" rel="noopener">' + waIcon + 'WhatsApp</a>' +
         '<a class="qk" href="tel:' + TEL + '">' + IC('phone') + 'Ligar</a>' +
-        '<a class="qk" href="mailto:' + MAIL + '">' + IC('mail') + 'Email</a>';
+        '<a class="qk" href="mailto:' + MAIL + '">' + IC('mail') + 'E-mail</a>';
       sb.insertAdjacentElement('afterend', q);
     }
     var okm = f.querySelector('.ok'); if (okm && !okm.querySelector('.ok-ico')) okm.insertAdjacentHTML('afterbegin', '<span class="ok-ico" aria-hidden="true"><svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="24"/><path d="m15 27 7.5 7.5L38 19"/></svg></span>');

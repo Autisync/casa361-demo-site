@@ -35,8 +35,6 @@
       <p class="where" id="where"></p>
       <div class="facts" id="facts"></div>
 
-      <div class="mq"><b>Ligação ao CRM</b>Tudo nesta página (título, preço, fotografias, descrição, características, certificado energético) vem da ficha do imóvel no CRM. Altera no CRM e a página muda sozinha.</div>
-
       <section class="block reveal" id="desc-block"><h2>Sobre este imóvel</h2><div id="desc"></div></section>
       <section class="block reveal" id="video-block" hidden><h2>Vídeo</h2><div class="video-frame" id="video"></div></section>
       <section class="block reveal" id="rooms-block"><h2>Divisões</h2><table class="rooms"><tbody id="rooms"></tbody></table></section>
@@ -54,7 +52,6 @@
           <div class="sim-out"><div class="main"><small>Prestação mensal</small><strong class="num" id="s-pay"></strong></div><div><small>A financiar</small><strong class="num" id="s-loan"></strong></div><div><small>Entrada</small><strong class="num" id="s-cash"></strong></div></div>
           <p class="sim-note">Simulação indicativa, sem seguros nem impostos (IMT e imposto do selo). A TAEG e as condições finais são dadas pelo banco. <a href="#visita">Peça-nos uma simulação com os nossos parceiros.</a></p>
         </div>
-        <div class="mq" style="margin-top:14px"><b>Vantagem sobre a concorrência</b>A Century 21 e os portais têm simulador; o site atual da Casa 361 não. Quem faz a simulação e pede ajuda chega ao geral@casa361.com como pedido de crédito, com o imóvel e os valores.</div>
       </section>
       <section class="block reveal"><h2>Localização</h2>
         <div id="pmap" class="pmap" role="img" aria-label="Mapa da zona do imóvel"></div>
@@ -84,17 +81,16 @@
         <form class="form" novalidate data-lead="visita">
           <div class="hide-sent" style="display:grid;gap:14px">
             <label>Nome<input name="name" required autocomplete="name"></label>
-            <div class="row"><label>Telefone<input name="phone" type="tel" required autocomplete="tel"></label><label>Email<input name="email" type="email" required autocomplete="email"></label></div>
+            <div class="row"><label>Telefone<input name="phone" type="tel" required autocomplete="tel"></label><label>E-mail<input name="email" type="email" required autocomplete="email"></label></div>
             <div class="row"><label>Dia preferido<select name="day"><option>Dias úteis</option><option>Sábado</option><option>Qualquer dia</option></select></label>
               <label>Hora<select name="time"><option>Manhã</option><option>Hora de almoço</option><option>Tarde</option><option>Fim do dia</option></select></label></div>
             <label>Mensagem (opcional)<textarea name="message" id="msg"></textarea></label>
-            <label class="check"><input type="checkbox" required> Autorizo a Casa 361 a usar estes dados para marcar a visita, de acordo com a Política de Privacidade.</label>
+            <label class="check"><input type="checkbox" required> Autorizo a Casa 361 a utilizar estes dados para marcar a visita, de acordo com a Política de Privacidade.</label>
             <button class="btn btn-ink" type="submit">Pedir visita</button>
           </div>
           <p class="ok" role="status">Pedido de visita recebido. Ligamos-lhe para combinar o dia e a hora.</p>
         </form>
       </div>
-      <div class="mq"><b>Para onde vai este pedido</b>Chega ao geral@casa361.com como pedido de visita, já com a referência do imóvel (<span class="mq-ref"></span>), e a pessoa recebe logo uma resposta automática. Responde diretamente desse email.</div>
     </aside>
   </div>
 </main>
@@ -208,7 +204,7 @@
     // O vídeo do imóvel (YouTube ou Vimeo), quando a ficha no CRM o tem.
     var yt = String(l.video || '').match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{6,})/), vm = String(l.video || '').match(/vimeo\.com\/(?:video\/)?(\d+)/);
     var vsrc = yt ? 'https://www.youtube-nocookie.com/embed/' + yt[1] + '?rel=0' : vm ? 'https://player.vimeo.com/video/' + vm[1] : '';
-    if (vsrc) { $('video-block').hidden = false; $('video').innerHTML = '<iframe src="' + e(vsrc) + '" title="Vídeo do imóvel ref. ' + e(l.ref) + '" loading="lazy" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>'; }
+    if (vsrc) { $('video-block').hidden = false; $('video').innerHTML = '<div class="consent-ph"><p>O vídeo é fornecido por ' + (yt ? 'YouTube' : 'Vimeo') + ', que pode utilizar cookies. Só é mostrado com a sua autorização.</p><p><button type="button" class="btn btn-ink" data-consent-third>Mostrar o vídeo</button></p></div><iframe data-consent-src="' + e(vsrc) + '" title="Vídeo do imóvel ref. ' + e(l.ref) + '" loading="lazy" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>'; if (window.C361ApplyConsent) window.C361ApplyConsent(); }
     if (l.plans && l.plans.length) { $('plans-block').hidden = false; $('plans').innerHTML = l.plans.map(function (src, i) { return '<img src="' + e(src) + '" alt="Planta ' + (i + 1) + '" loading="lazy" style="border:1px solid var(--line);border-radius:6px;background:#fff">'; }).join(''); }
     $('loc-name').textContent = l.area_name;
     $('loc-sub').textContent = l.parish + ', ' + l.county;

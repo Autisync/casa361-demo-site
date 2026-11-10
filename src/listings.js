@@ -259,7 +259,7 @@
     },
     favButton: function (ref, extra) {
       var on = window.C361.isFav(ref);
-      return '<button type="button" class="fav' + (extra ? ' ' + extra : '') + '" data-fav="' + ref + '" aria-pressed="' + on + '" aria-label="' + (on ? 'Retirar dos guardados' : 'Guardar este imóvel') + '">' + heart + '</button>';
+      return '<button type="button" class="fav' + (extra ? ' ' + extra : '') + '" data-fav="' + ref + '" aria-pressed="' + on + '" aria-label="' + (on ? 'Retirar dos favoritos' : 'Adicionar aos favoritos') + '">' + heart + '</button>';
     },
     // Ícones de linha (os mesmos em todo o site).
     icon: function (k, cls) {
@@ -355,7 +355,7 @@
     ev.preventDefault();
     var on = window.C361.toggleFav(b.getAttribute('data-fav'));
     document.querySelectorAll('[data-fav="' + b.getAttribute('data-fav') + '"]').forEach(function (x) {
-      x.setAttribute('aria-pressed', String(on)); x.setAttribute('aria-label', on ? 'Retirar dos guardados' : 'Guardar este imóvel');
+      x.setAttribute('aria-pressed', String(on)); x.setAttribute('aria-label', on ? 'Retirar dos favoritos' : 'Adicionar aos favoritos');
       x.classList.remove('pop'); void x.offsetWidth; x.classList.add('pop');
     });
   });

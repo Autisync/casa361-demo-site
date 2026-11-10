@@ -38,11 +38,10 @@
         <select id="f-zona" aria-label="Zona"><option value="">Todas as zonas</option></select>
         <select id="f-max" aria-label="Preço máximo"><option value="">Qualquer preço</option><option value="150000">Até 150 000 €</option><option value="250000">Até 250 000 €</option><option value="350000">Até 350 000 €</option><option value="500000">Até 500 000 €</option></select>
         <select id="f-sort" aria-label="Ordenar"><option value="new">Mais recentes</option><option value="asc">Preço: mais baixo</option><option value="desc">Preço: mais alto</option></select>
-        <label style="display:inline-flex;gap:8px;align-items:center;font-size:14px;font-weight:600"><input type="checkbox" id="f-fav"> Só guardados</label>
+        <label style="display:inline-flex;gap:8px;align-items:center;font-size:14px;font-weight:600"><input type="checkbox" id="f-fav"> Só favoritos</label>
         <span class="view" role="group" aria-label="Vista"><button type="button" id="v-map" aria-pressed="true">Ver no mapa</button><button type="button" id="v-list" aria-pressed="false">Só a lista</button></span>
         <span class="count" id="count" aria-live="polite"></span>
       </div>
-      <div class="mq" style="margin-bottom:24px"><b>Ligação ao CRM</b>A lista vem da conta UrbanFocus no CRM Autisync (só a parte de Imóveis). Um imóvel publicado no CRM aparece aqui sozinho; um imóvel vendido ou retirado sai sozinho. No mapa, cada imóvel aparece pela localização da ficha no CRM (sem a morada exata, só a zona).</div>
       <div class="list-wrap with-map" id="wrap"><div class="grid" id="list"></div><div id="map" role="region" aria-label="Mapa dos imóveis"></div></div>
     </div>
   </section>
@@ -50,18 +49,17 @@
   <section class="sec" id="alertas">
     <div class="wrap">
       <div class="alert-box reveal">
-        <div><p class="kicker" style="color:var(--gold)">Alertas de novos imóveis</p><h2>Ainda não encontrou a casa certa?</h2><p>Diga-nos o que procura. Quando entrar um imóvel assim, é o primeiro a saber.</p></div>
+        <div><p class="kicker" style="color:var(--gold)">Alertas de novos imóveis</p><h2>Ainda não encontrou a casa certa?</h2><p>Diga-nos o que procura e será dos primeiros a saber quando surgir um imóvel que corresponda aos seus critérios.</p></div>
         <form class="form" novalidate data-lead="alerta">
           <div class="hide-sent" style="display:grid;gap:14px">
             <div class="row"><label>Zona<select name="zona" id="alert-zona"><option>Qualquer zona</option></select></label>
               <label>Tipologia<select name="tip"><option>T1</option><option selected>T2</option><option>T3</option><option>T4 ou mais</option><option>Moradia</option><option>Terreno</option></select></label></div>
             <div class="row"><label>Comprar ou arrendar<select name="negocio"><option>Comprar</option><option>Arrendar</option></select></label><label>Preço até<select name="max"><option>200 000 €</option><option selected>300 000 €</option><option>400 000 €</option><option>Sem limite</option></select></label></div>
-            <label>Email<input name="email" type="email" required autocomplete="email"></label>
-            <label class="check"><input type="checkbox" required> Quero receber estes alertas da Casa 361 por email. Posso cancelar quando quiser.</label>
+            <label>E-mail<input name="email" type="email" required autocomplete="email"></label>
+            <label class="check"><input type="checkbox" required> Quero receber alertas de novos imóveis da Casa 361 por e-mail. Posso cancelar a subscrição a qualquer momento.</label>
             <button class="btn btn-gold" type="submit">Criar alerta</button>
           </div>
-          <p class="ok" role="status">Alerta criado. Avisamos quando entrar um imóvel assim.</p>
-          <div class="mq"><b>Para onde vai</b>Chega ao geral@casa361.com com o que a pessoa procura. Ela recebe logo uma resposta automática.</div>
+          <p class="ok" role="status">Alerta criado com sucesso! Será notificado quando surgir um imóvel que corresponda aos seus critérios.</p>
         </form>
       </div>
     </div>
@@ -93,7 +91,7 @@
     if (q.get('max')) $('f-max').value = q.get('max');
     var col = (window.CASA361_COLLECTIONS || []).filter(function (c) { return c.id === q.get('colecao'); })[0];
     if (col) $('h1').textContent = col.title;
-    if (q.get('guardados')) { $('f-fav').checked = true; $('h1').textContent = 'Os seus imóveis guardados'; }
+    if (q.get('guardados')) { $('f-fav').checked = true; $('h1').textContent = 'Os seus imóveis favoritos'; }
 
     // Mapa detalhado (ruas ou satélite). Com "Atualizar ao mover o mapa", a lista mostra só
     // os imóveis da zona à vista: arraste e aproxime para procurar numa rua ou freguesia.
