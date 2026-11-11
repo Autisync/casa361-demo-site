@@ -128,6 +128,32 @@
     ready: ready,
     price: function (l) { return l.price ? eur.format(l.price) : 'Sob consulta'; },
     eur: function (n) { return eur.format(n); },
+    // IMT de uma habitação no Continente, pelas tabelas de 2026 (Ofício Circulado AT n.º 40129/2026).
+    // home: 'own' (própria e permanente) ou 'second' (secundária ou arrendamento).
+    // young: IMT Jovem (até 35 anos, primeira habitação própria): isento até 330 539 €, 8% sobre o excedente até 660 982 €.
+    imt: function (price, home, young) {
+      var own = home !== 'second';
+      var t = own
+        ? [[106346, 0, 0], [145470, .02, 2126.92], [198347, .05, 6491.02], [330539, .07, 10457.96], [660982, .08, 13763.35]]
+        : [[106346, .01, 0], [145470, .02, 1063.46], [198347, .05, 5427.56], [330539, .07, 9394.50], [633931, .08, 12699.89]];
+      if (price > 1150853) return price * .075;
+      if (price > t[4][0]) return price * .06;
+      if (young && own) return price <= 330539 ? 0 : (price - 330539) * .08;
+      for (var k = 0; k < t.length; k++) if (price <= t[k][0]) return Math.max(0, price * t[k][1] - t[k][2]);
+      return 0;
+    },
+    // Impostos e despesas de comprar com crédito: IMT, Imposto do Selo na compra (0,8%; no IMT Jovem só sobre o
+    // excedente) e no crédito (0,6%, prazo superior a 5 anos), e a escritura com registos no Casa Pronta
+    // (cerca de 375 € um ato, até 700 € com hipoteca). Valores indicativos; sem seguros nem custos do banco.
+    buyCosts: function (price, loan, o) {
+      o = o || {};
+      var jovem = !!o.young && o.home !== 'second' && price <= 660982;
+      var imt = this.imt(price, o.home, jovem);
+      var selo = (jovem ? Math.max(0, price - 330539) : price) * .008;
+      var seloLoan = loan > 0 ? loan * .006 : 0;
+      var reg = loan > 0 ? 700 : 375;
+      return { imt: imt, selo: selo, seloLoan: seloLoan, reg: reg, total: imt + selo + seloLoan + reg };
+    },
     area: function (n) { return num.format(n) + ' m²'; },
     find: function (ref) { return window.CASA361_LISTINGS.filter(function (l) { return l.ref === ref; })[0]; },
     esc: function (s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); },

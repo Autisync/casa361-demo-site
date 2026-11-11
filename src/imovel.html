@@ -44,13 +44,31 @@
       <section class="block reveal" id="credito"><h2>Simulador de crédito</h2>
         <div class="sim">
           <div class="sim-grid">
-            <label>Preço do imóvel <span class="v num" id="s-price-v"></span><input type="range" id="s-price" step="500"></label>
+            <label>Preço do imóvel <span class="v num" id="s-price-v"></span><input type="range" id="s-price" step="100"></label>
             <label>Entrada <span class="v num" id="s-down-v"></span><input type="range" id="s-down" min="10" max="50" step="1" value="10"></label>
             <label>Prazo <span class="v num" id="s-years-v"></span><input type="range" id="s-years" min="10" max="40" step="1" value="35"></label>
             <label>Taxa de juro anual (TAN) <span class="v num" id="s-rate-v"></span><input type="range" id="s-rate" min="1" max="6" step="0.05" value="3.2"></label>
           </div>
           <div class="sim-out"><div class="main"><small>Prestação mensal</small><strong class="num" id="s-pay"></strong></div><div><small>A financiar</small><strong class="num" id="s-loan"></strong></div><div><small>Entrada</small><strong class="num" id="s-cash"></strong></div></div>
-          <p class="sim-note">Simulação indicativa, sem seguros nem impostos (IMT e imposto do selo). A TAEG e as condições finais são dadas pelo banco. <a href="#visita">Peça-nos uma simulação com os nossos parceiros.</a></p>
+          <div class="sim-costs">
+            <div class="sim-costs-head">
+              <h3>Impostos e despesas</h3>
+              <div class="sim-seg" role="radiogroup" aria-label="Tipo de habitação">
+                <label><input type="radio" name="s-home" value="own" checked><span>Habitação própria</span></label>
+                <label><input type="radio" name="s-home" value="second"><span>Secundária</span></label>
+              </div>
+            </div>
+            <label class="sim-check"><input type="checkbox" id="s-young"><span>Tenho 35 anos ou menos e é a minha primeira casa (IMT Jovem)</span></label>
+            <dl class="sim-rows">
+              <div><dt>IMT</dt><dd class="num" id="c-imt"></dd></div>
+              <div><dt>Imposto do Selo na compra (0,8%)</dt><dd class="num" id="c-selo"></dd></div>
+              <div><dt>Imposto do Selo no crédito (0,6%)</dt><dd class="num" id="c-selo-loan"></dd></div>
+              <div><dt>Escritura e registos (Casa Pronta)</dt><dd class="num" id="c-reg"></dd></div>
+              <div class="tot"><dt>Total de impostos e despesas</dt><dd class="num" id="c-total"></dd></div>
+              <div class="need"><dt>Dinheiro necessário à partida <small>entrada + impostos e despesas</small></dt><dd class="num" id="c-need"></dd></div>
+            </dl>
+          </div>
+          <p class="sim-note">Simulação indicativa. Impostos pelas tabelas de 2026 para Portugal continental; não inclui seguros, avaliação nem comissões do banco. A TAEG e as condições finais são dadas pelo banco. <a href="#visita">Peça-nos uma simulação com os nossos parceiros.</a></p>
         </div>
       </section>
       <section class="block reveal"><h2>Localização</h2>
@@ -69,6 +87,7 @@
     <aside class="side" aria-label="Marcar visita">
       <div class="panel">
         <p class="price" id="price"></p>
+        <p class="ppm num" id="ppm" hidden></p>
         <p class="ref" id="ref"></p>
         <div style="margin-top:14px">FAVBTN</div>
         <div class="actions" style="margin-top:12px">
@@ -143,6 +162,8 @@
     $('title').textContent = l.title;
     $('where').textContent = l.parish + ', ' + l.county + ' · ' + l.district;
     $('price').textContent = C361.price(l);
+    // Preço por metro quadrado, por baixo do preço (só na venda, com preço e área).
+    if (l.deal === 'venda' && l.price && l.area) { $('ppm').textContent = C361.eur(Math.round(l.price / l.area)) + '/m²'; $('ppm').hidden = false; }
     document.querySelector('.side .panel').innerHTML = document.querySelector('.side .panel').innerHTML.replace('FAVBTN', C361.favButton(l.ref, 'big'));
     $('ref').textContent = 'Referência ' + l.ref;
     document.body.classList.add('has-mbar');
@@ -232,8 +253,13 @@
         $('s-price-v').textContent = C361.eur(price); $('s-down-v').textContent = sd.value + '%'; $('s-years-v').textContent = sy.value + ' anos';
         $('s-rate-v').textContent = (+sr.value).toLocaleString('pt-PT', { minimumFractionDigits: 2 }) + '%';
         $('s-pay').textContent = C361.eur(Math.round(pay)); $('s-loan').textContent = C361.eur(Math.round(loan)); $('s-cash').textContent = C361.eur(Math.round(price * down));
+        var costs = C361.buyCosts(price, loan, { home: document.querySelector('input[name="s-home"]:checked').value, young: $('s-young').checked });
+        $('c-imt').textContent = C361.eur(costs.imt); $('c-selo').textContent = C361.eur(costs.selo); $('c-selo-loan').textContent = C361.eur(costs.seloLoan);
+        $('c-reg').textContent = C361.eur(costs.reg); $('c-total').textContent = C361.eur(costs.total); $('c-need').textContent = C361.eur(price * down + costs.total);
       };
-      [sp, sd, sy, sr].forEach(function (x) { x.addEventListener('input', calc); }); calc();
+      [sp, sd, sy, sr].forEach(function (x) { x.addEventListener('input', calc); });
+      Array.prototype.forEach.call(document.querySelectorAll('input[name="s-home"], #s-young'), function (x) { x.addEventListener('change', calc); });
+      calc();
     }
 
     // Fotografias em ecrã inteiro

@@ -49,7 +49,24 @@
             <div><small>Empréstimo</small><strong class="num" id="r-loan"></strong></div>
             <div><small>Entrada</small><strong class="num" id="r-down"></strong></div>
           </div>
-          <p class="sim-note">Simulação indicativa, não é uma proposta de crédito. Não inclui impostos (IMT e Imposto do Selo), seguros nem comissões; a taxa final depende do banco e do seu perfil.</p>
+          <div class="sim-costs">
+            <div class="sim-costs-head">
+              <h3>Impostos e despesas</h3>
+              <div class="sim-seg" role="radiogroup" aria-label="Tipo de habitação">
+                <label><input type="radio" name="s-home" value="own" checked><span>Habitação própria</span></label>
+                <label><input type="radio" name="s-home" value="second"><span>Secundária</span></label>
+              </div>
+            </div>
+            <dl class="sim-rows">
+              <div><dt>IMT</dt><dd class="num" id="c-imt"></dd></div>
+              <div><dt>Imposto do Selo na compra (0,8%)</dt><dd class="num" id="c-selo"></dd></div>
+              <div><dt>Imposto do Selo no crédito (0,6%)</dt><dd class="num" id="c-selo-loan"></dd></div>
+              <div><dt>Escritura e registos (Casa Pronta)</dt><dd class="num" id="c-reg"></dd></div>
+              <div class="tot"><dt>Total de impostos e despesas</dt><dd class="num" id="c-total"></dd></div>
+              <div class="need"><dt>Dinheiro necessário à partida <small>entrada + impostos e despesas</small></dt><dd class="num" id="c-need"></dd></div>
+            </dl>
+          </div>
+          <p class="sim-note">Simulação indicativa, não é uma proposta de crédito. Impostos pelas tabelas de 2026 para Portugal continental; não inclui seguros, avaliação nem comissões do banco. A taxa final depende do banco e do seu perfil.</p>
         </div>
         <div class="credit-help">
           <h3>Quer ajuda para encontrar financiamento?</h3>
@@ -122,12 +139,16 @@
       $('o-price').textContent = eur(price); $('o-down').textContent = pct + '% · ' + eur(down);
       $('o-years').textContent = years + ' anos'; $('o-rate').textContent = tan.toFixed(2).replace('.', ',') + '%';
       $('r-pay').textContent = eur(pay) + '/mês'; $('r-loan').textContent = eur(loan); $('r-down').textContent = eur(down);
+      var costs = C361.buyCosts(price, loan, { home: document.querySelector('input[name="s-home"]:checked').value, young: $('s-young').checked });
+      $('c-imt').textContent = eur(costs.imt); $('c-selo').textContent = eur(costs.selo); $('c-selo-loan').textContent = eur(costs.seloLoan);
+      $('c-reg').textContent = eur(costs.reg); $('c-total').textContent = eur(costs.total); $('c-need').textContent = eur(down + costs.total);
       $('h-price').value = eur(price); $('h-down').value = eur(down) + ' (' + pct + '%)'; $('h-pay').value = eur(pay) + '/mês';
       $('h-terms').value = years + ' anos, TAN ' + tan.toFixed(2).replace('.', ',') + '%' + ($('s-young').checked ? ', até 35 anos (primeira casa)' : '');
       $('h-date').value = new Date().toLocaleString('pt-PT');
     }
     ['s-price', 's-down', 's-years', 's-rate'].forEach(function (id) { $(id).addEventListener('input', calc); });
     $('s-young').addEventListener('change', young);
+    Array.prototype.forEach.call(document.querySelectorAll('input[name="s-home"]'), function (x) { x.addEventListener('change', calc); });
     $('go-young').addEventListener('click', function () { $('s-young').checked = true; young(); });
     if (location.hash === '#jovem') { $('s-young').checked = true; young(); } else calc();
   })();
