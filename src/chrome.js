@@ -44,7 +44,9 @@
       '<a class="call call-em" href="vender.html#avaliacao">Estudo de mercado gratuito <span aria-hidden="true">→</span></a></div>';
     var btn = top.querySelector('.menu-btn'), nav = top.querySelector('.nav');
     btn.addEventListener('click', function () { var o = nav.classList.toggle('open'); btn.setAttribute('aria-expanded', String(o)); top.classList.toggle('menu-open', o); });
-    var onScroll = function () { top.classList.toggle('scrolled', window.scrollY > 24); };
+    // Encolhe depois de 48 px e só volta a crescer abaixo de 8: com um único limite, parar
+    // mesmo em cima dele fazia a barra mudar de estado a cada pixel.
+    var onScroll = function () { var y = window.scrollY, on = top.classList.contains('scrolled'); if (!on && y > 48) top.classList.add('scrolled'); else if (on && y < 8) top.classList.remove('scrolled'); };
     window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
   }
   function favCount() { var n = C361.favs().length, el = document.getElementById('fav-n'); if (el) el.textContent = n ? String(n) : ''; }

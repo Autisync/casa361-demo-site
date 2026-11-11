@@ -287,11 +287,15 @@ body.mq-off .mq { display: none; }
 
 /* Cabeçalho: mais ar à volta do logótipo; transparente sobre a fotografia
    e sólido (mais baixo) quando se desce a página. */
-.top { transition: background-color .35s ease, box-shadow .35s ease; }
+.top { transition: background-color .35s ease, box-shadow .35s ease, margin-bottom .35s ease; }
 .top .wrap { height: 116px; min-height: 0; gap: 32px; transition: height .35s ease; }
 /* O logótipo tem 16 px de ar por cima e por baixo, e 28 px até ao menu. */
 .logo { width: 120px; margin: 0 28px 0 0; transition: width .35s ease; }
-.top.scrolled { box-shadow: 0 10px 30px rgba(0,0,0,.28); }
+/* A barra encolhe 32 px ao descer. Está no fluxo da página (sticky), por isso
+   encolher subia tudo 32 px; o browser corrigia o scroll, o scroll voltava a
+   ficar abaixo do limite, a barra crescia, e o topo ficava aos saltos. A margem
+   devolve os 32 px: a página não muda de altura, só a barra. */
+.top.scrolled { box-shadow: 0 10px 30px rgba(0,0,0,.28); margin-bottom: 32px; }
 .top.scrolled .wrap { height: 84px; }
 .top.scrolled .logo { width: 96px; }
 .top.over:not(.scrolled):not(.menu-open) { background: transparent; }
@@ -307,6 +311,7 @@ body[data-hero] main { margin-top: -116px; }
   .top .wrap { height: 92px; }
   .logo { width: 100px; margin: 0; }
   body[data-hero] main { margin-top: -92px; }
+  .top.scrolled { margin-bottom: 20px; }
   .top.scrolled .wrap { height: 72px; }
   .top.scrolled .logo { width: 80px; }
 }
