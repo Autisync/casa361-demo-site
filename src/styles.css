@@ -1619,3 +1619,6 @@ iframe[data-consent-src]:not([src]) { display: none; }
 
 /* ── Estudo de mercado: "100% gratuito" ─────────────────────────────────── */
 .vf-free { margin: 14px 0 0; font-weight: 700; color: var(--gold); }
+
+/* The registered office is not open to the public: said plainly beside the address. */
+.contact-list .office-note { margin: 10px 0 0; padding: 10px 14px; border-left: 2px solid var(--gold); background: rgba(0,0,0,.035); font-size: 15px; line-height: 1.5; color: var(--ink, inherit); max-width: 46ch; }

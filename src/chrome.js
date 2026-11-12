@@ -150,7 +150,7 @@
     '<p>Os cookies estritamente necessários asseguram o funcionamento e a segurança do website. Os restantes só são utilizados com o seu consentimento prévio. Pode aceitar todos, rejeitar os não essenciais ou personalizar as suas preferências, e alterá-las a qualquer momento em «Preferências de cookies», no rodapé.</p>' +
     '<div class="ck-opts" hidden>' +
       '<label class="ck-row"><input type="checkbox" checked disabled> <span><b>Estritamente necessários</b>Funcionamento do website, esta escolha e os seus imóveis favoritos (guardados apenas neste navegador). Sempre ativos.</span></label>' +
-      '<label class="ck-row"><input type="checkbox" id="ck-third"> <span><b>Conteúdos de terceiros</b>Mapa do escritório (Google Maps) e vídeos dos imóveis (YouTube, Vimeo), que podem utilizar cookies próprios.</span></label>' +
+      '<label class="ck-row"><input type="checkbox" id="ck-third"> <span><b>Conteúdos de terceiros</b>Mapa da sede (Google Maps) e vídeos dos imóveis (YouTube, Vimeo), que podem utilizar cookies próprios.</span></label>' +
     '</div>' +
     '<p class="ck-links"><a href="cookies.html">Política de Cookies</a> · <a href="privacidade.html">Política de Privacidade</a></p>' +
     '<div class="ck-acts">' +
